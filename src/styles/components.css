@@ -1,0 +1,105 @@
+/* Component Styles */
+
+@layer components {
+  /* Page Layout */
+  .hx-page {
+    @apply mx-auto w-full max-w-6xl px-3 py-6 sm:px-4 sm:py-10 md:py-14;
+  }
+
+  .hx-page-md {
+    @apply mx-auto w-full max-w-4xl px-3 py-6 sm:px-4 sm:py-10;
+  }
+
+  .hx-page-title {
+    @apply text-3xl font-black tracking-tight sm:text-4xl;
+    color: hsl(var(--sidebar-foreground));
+  }
+
+  .hx-page-description {
+    @apply mt-2 max-w-2xl text-sm leading-6 sm:text-base;
+    color: hsl(var(--sidebar-foreground) / 0.72);
+  }
+
+  /* Typography */
+  .hx-text-title {
+    @apply text-lg font-bold;
+    color: hsl(var(--sidebar-foreground));
+  }
+
+  .hx-text-subtitle {
+    @apply text-sm font-medium;
+    color: hsl(var(--sidebar-foreground) / 0.8);
+  }
+
+  .hx-text-muted {
+    @apply text-sm;
+    color: hsl(var(--sidebar-foreground) / 0.6);
+  }
+
+  /* Cards */
+  .hx-card {
+    @apply rounded-xl border border-white/10 bg-white/[0.03] p-4;
+  }
+
+  .hx-card-hover {
+    @apply hx-card transition-all hover:border-white/20 hover:bg-white/[0.05];
+  }
+
+  /* Buttons */
+  .hx-btn-primary {
+    @apply rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-hover;
+  }
+
+  .hx-btn-secondary {
+    @apply rounded-lg border border-white/10 bg-white/[0.03] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/[0.08];
+  }
+
+  .hx-btn-ghost {
+    @apply rounded-lg px-4 py-2 text-sm font-medium text-white/70 transition-colors hover:bg-white/[0.05] hover:text-white;
+  }
+
+  /* Forms */
+  .hx-input {
+    @apply w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-white placeholder-white/40 transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary;
+  }
+
+  .hx-label {
+    @apply mb-2 block text-sm font-medium text-white/80;
+  }
+
+  /* Badges */
+  .hx-badge {
+    @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium;
+  }
+
+  .hx-badge-primary {
+    @apply hx-badge bg-primary/20 text-primary;
+  }
+
+  .hx-badge-accent {
+    @apply hx-badge bg-accent/20 text-accent;
+  }
+
+  .hx-badge-muted {
+    @apply hx-badge bg-white/10 text-white/60;
+  }
+
+  /* Dividers */
+  .hx-divider {
+    @apply border-t border-white/10;
+  }
+
+  /* Loading States */
+  .hx-skeleton {
+    @apply animate-pulse rounded bg-white/10;
+  }
+
+  /* XP Bar */
+  .hx-xp-bar {
+    @apply h-2 overflow-hidden rounded-full bg-white/10;
+  }
+
+  .hx-xp-bar-fill {
+    @apply h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all duration-500;
+  }
+}

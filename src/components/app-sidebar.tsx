@@ -1,0 +1,304 @@
+"use client";
+
+import { useEffect, useMemo } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  Award,
+  BarChart2,
+  BarChart3,
+  BookOpen,
+  Compass,
+  GraduationCap,
+  History,
+  Radio,
+  Settings,
+  Shield,
+  ShoppingBag,
+  Package,
+  Target,
+  Users,
+  Video,
+  type LucideIcon,
+} from "lucide-react";
+import { ClientOnly } from "@/components/ui/client-only";
+import { Avatar } from "@/components/ui/avatar";
+import { cn } from "@/lib/cn";
+import { canModerate, isInstructor } from "@/lib/permissions";
+import type { NavSession } from "@/lib/nav-session";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSkeleton,
+  SidebarSeparator,
+  useSidebar,
+} from "@/components/ui/sidebar";
+
+type NavItem = {
+  icon: LucideIcon;
+  label: string;
+  href: string;
+  requiresAuth?: boolean;
+  requiresInstructor?: boolean;
+  requiresModerator?: boolean;
+};
+
+type NavSection = {
+  id: string;
+  label: string;
+  items: NavItem[];
+};
+
+const NAV_SECTIONS: NavSection[] = [
+  {
+    id: "home",
+    label: "Início",
+    items: [{ icon: Compass, label: "Introdução", href: "/" }],
+  },
+  {
+    id: "study",
+    label: "Estudos",
+    items: [
+      { icon: BookOpen, label: "Cursos", href: "/courses" },
+      { icon: Target, label: "Simulados", href: "/simulados" },
+      { icon: BarChart3, label: "Estatísticas", href: "/estatisticas", requiresAuth: true },
+      { icon: ShoppingBag, label: "Loja", href: "/shop", requiresAuth: true },
+      { icon: Package, label: "Inventário", href: "/inventario", requiresAuth: true },
+    ],
+  },
+  {
+    id: "community",
+    label: "Comunidade",
+    items: [
+      { icon: Radio, label: "Ao vivo", href: "/live-rooms", requiresAuth: true },
+      { icon: Users, label: "Comunidade", href: "/social", requiresAuth: true },
+      { icon: BarChart2, label: "Ranking", href: "/ranking" },
+      { icon: Award, label: "Certificados", href: "/certificados", requiresAuth: true },
+      {
+        icon: History,
+        label: "Histórico de simulados",
+        href: "/simulados/historico",
+        requiresAuth: true,
+      },
+    ],
+  },
+];
+
+const ACCOUNT_ITEMS: NavItem[] = [
+  { icon: GraduationCap, label: "Meus cursos", href: "/instructor/courses", requiresAuth: true },
+  { icon: Video, label: "Minhas salas", href: "/instructor/live-rooms", requiresInstructor: true },
+  { icon: Shield, label: "Moderação", href: "/moderacao", requiresModerator: true },
+];
+
+type Props = {
+  session: NavSession;
+};
+
+function isItemVisible(item: NavItem, session: NavSession): boolean {
+  if (item.requiresModerator && !canModerate(session?.user.roles)) return false;
+  if (item.requiresInstructor && !isInstructor(session?.user.roles)) return false;
+  return true;
+}
+
+function resolveNavHref(item: NavItem, session: NavSession): string {
+  if (item.requiresAuth && !session) {
+    return `/login?callbackUrl=${encodeURIComponent(item.href)}`;
+  }
+  return item.href;
+}
+
+function isActive(pathname: string, href: string): boolean {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+function SidebarBrand() {
+  return (
+    <Link href="/" className="hx-sidebar-brand group" aria-label="Hexavante - Página inicial">
+      <span className="hx-sidebar-brand-mark">
+        <Image
+          src="/brand/hexavante-logo.png"
+          alt=""
+          width={36}
+          height={36}
+          className="h-9 w-9 object-contain"
+          priority
+          aria-hidden
+        />
+      </span>
+      <span className="min-w-0">
+        <span className="block truncate text-sm font-extrabold tracking-tight text-white transition group-hover:text-cyan-100">
+          HEXAVANTE
+        </span>
+        <span className="hx-sidebar-brand-subtitle block truncate text-[11px] font-medium">
+          Plataforma de estudos
+        </span>
+      </span>
+    </Link>
+  );
+}
+
+function NavSectionBlock({
+  section,
+  session,
+  pathname,
+}: {
+  section: NavSection;
+  session: NavSession;
+  pathname: string;
+}) {
+  const visible = section.items.filter((item) => isItemVisible(item, session));
+  if (!visible.length) return null;
+
+  return (
+    <SidebarGroup className="px-2 py-1">
+      <SidebarGroupLabel className="hx-sidebar-group-label">{section.label}</SidebarGroupLabel>
+      <SidebarGroupContent>
+        <SidebarMenu className="gap-0.5">
+          {visible.map((item) => {
+            const href = resolveNavHref(item, session);
+            const active = isActive(pathname, item.href);
+            const Icon = item.icon;
+
+            return (
+              <SidebarMenuItem key={item.href}>
+                <SidebarMenuButton
+                  asChild
+                  isActive={active}
+                  tooltip={item.label}
+                  className={cn("hx-sidebar-link", active && "hx-sidebar-link-active")}
+                >
+                  <Link href={href} title={item.label}>
+                    <span className={cn("hx-sidebar-link-icon", active && "hx-sidebar-link-icon-active")}>
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <span className="truncate">{item.label}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  );
+}
+
+function SidebarNavSkeleton() {
+  return (
+    <div className="space-y-4 px-2 py-2">
+      {["Início", "Estudos", "Comunidade"].map((label) => (
+        <div key={label} className="space-y-2">
+          <div className="h-3 w-16 rounded bg-white/5" aria-hidden />
+          {Array.from({ length: label === "Estudos" ? 5 : label === "Comunidade" ? 4 : 1 }).map(
+            (_, index) => (
+              <SidebarMenuSkeleton key={`${label}-${index}`} showIcon />
+            ),
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function SidebarNav({ session, pathname, accountItems }: { session: NavSession; pathname: string; accountItems: NavItem[] }) {
+  const accountSection: NavSection = {
+    id: "account",
+    label: "Conta",
+    items: accountItems,
+  };
+
+  return (
+    <>
+      {NAV_SECTIONS.map((section) => (
+        <NavSectionBlock key={section.id} section={section} session={session} pathname={pathname} />
+      ))}
+      {accountItems.length > 0 ? (
+        <>
+          <SidebarSeparator className="mx-3 bg-sidebar-border/80" />
+          <NavSectionBlock section={accountSection} session={session} pathname={pathname} />
+        </>
+      ) : null}
+    </>
+  );
+}
+
+function SidebarUserFooter({ session }: { session: NavSession }) {
+  if (!session) {
+    return (
+      <div className="flex flex-col gap-2">
+        <Link href="/login" className="hx-sidebar-auth-btn hx-sidebar-auth-btn-secondary">
+          Entrar
+        </Link>
+        <Link href="/register" className="hx-sidebar-auth-btn hx-sidebar-auth-btn-primary">
+          Criar conta
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-2">
+      <Link href={`/perfil/${session.user.username}`} className="hx-sidebar-profile">
+        <Avatar src={session.user.image} alt={session.user.username ?? ""} size="sm" />
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-sm font-semibold text-white">
+            @{session.user.username}
+          </span>
+          <span className="block truncate text-xs text-slate-400">Ver perfil</span>
+        </span>
+      </Link>
+      <Link href="/configuracoes" className="hx-sidebar-settings">
+        <Settings className="h-4 w-4" />
+        Configurações
+      </Link>
+    </div>
+  );
+}
+
+export function AppSidebar({ session }: Props) {
+  const pathname = usePathname();
+  const { setOpenMobile } = useSidebar();
+
+  useEffect(() => {
+    setOpenMobile(false);
+  }, [pathname, setOpenMobile]);
+
+  const roles = session?.user.roles;
+
+  const accountItems = useMemo(() => {
+    return ACCOUNT_ITEMS.filter((item) => isItemVisible(item, session)).map((item) => {
+      if (item.label === "Meus cursos" && (!session || !isInstructor(roles))) {
+        return { ...item, label: "Instrutor", href: "/instructor/apply" };
+      }
+      return item;
+    });
+  }, [session, roles]);
+
+  return (
+    <Sidebar collapsible="offcanvas" variant="sidebar" className="hx-sidebar-shell">
+      <SidebarHeader className="hx-sidebar-header border-b border-sidebar-border px-3 py-3">
+        <SidebarBrand />
+      </SidebarHeader>
+
+      <SidebarContent className="hx-sidebar-content gap-1 py-2" data-tour="sidebar-nav">
+        <ClientOnly fallback={<SidebarNavSkeleton />}>
+          <SidebarNav session={session} pathname={pathname} accountItems={accountItems} />
+        </ClientOnly>
+      </SidebarContent>
+
+      <SidebarFooter className="hx-sidebar-footer mt-auto shrink-0 border-t border-sidebar-border px-3 py-3">
+        <SidebarUserFooter session={session} />
+      </SidebarFooter>
+    </Sidebar>
+  );
+}
