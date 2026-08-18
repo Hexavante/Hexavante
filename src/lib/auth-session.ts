@@ -66,4 +66,4 @@ export async function getApiSession(): Promise<AuthSession | null> {
 }
 
 // Re-export for backward compatibility
-export { SERVER_API_URL as getApiUrl };
+export function getApiUrl(): string { return SERVER_API_URL; }

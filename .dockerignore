@@ -1,40 +1,25 @@
-# ============================================
-# Hexavante Frontend — .dockerignore
-# ============================================
-
-# --- Dependencies ---
 node_modules/
 .npm
 .yarn
 .pnp
 .pnp.js
-
-# --- Build ---
 .next/
 out/
 build/
 dist/
-
-# --- Git ---
 .git/
 .gitignore
 .github/
-
-# --- Environment ---
 .env
 .env.local
 .env.*.local
 .env.example
 .env.production
-
-# --- IDE ---
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
-
-# --- Tests ---
 tests/
 coverage/
 .nyc_output/
@@ -43,27 +28,18 @@ coverage/
 *.test.js
 *.spec.js
 __tests__/
-
-# --- Documentation ---
 *.md
 docs/
 LICENSE
-
-# --- Misc ---
 .dockerignore
 Dockerfile
 docker-compose*.yml
 .prettierrc
 eslint.config.js
 vitest.config.ts
-tsconfig.json
 tailwind.config.ts
 postcss.config.js
-
-# --- Mobile/Capacitor ---
 android/
 ios/
 .capacitor/
-
-# --- Public uploads (should be mounted as volume) ---
 public/uploads/

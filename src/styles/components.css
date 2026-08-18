@@ -42,7 +42,7 @@
   }
 
   .hx-card-hover {
-    @apply hx-card transition-all hover:border-white/20 hover:bg-white/[0.05];
+    @apply rounded-xl border border-white/10 bg-white/[0.03] p-4 transition-all hover:border-white/20 hover:bg-white/[0.05];
   }
 
   /* Buttons */
@@ -73,15 +73,15 @@
   }
 
   .hx-badge-primary {
-    @apply hx-badge bg-primary/20 text-primary;
+    @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-primary/20 text-primary;
   }
 
   .hx-badge-accent {
-    @apply hx-badge bg-accent/20 text-accent;
+    @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-accent/20 text-accent;
   }
 
   .hx-badge-muted {
-    @apply hx-badge bg-white/10 text-white/60;
+    @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-white/10 text-white/60;
   }
 
   /* Dividers */
