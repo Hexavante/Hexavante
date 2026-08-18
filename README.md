@@ -133,7 +133,7 @@ Nossa missão é conectar estudantes, instrutores e instituições através de u
 1. Faça fork e crie uma branch (`feat/minha-feature`).
 2. Siga as convenções de código do projeto.
 3. Atualize a documentação se alterar modelo, API ou fluxo.
-4. Rode `npm run build` e `npm test` antes do PR.
+4. Rode `npm run build` e `npm run test` antes do PR.
 5. Descreva migrations SQL necessárias na descrição do PR.
 
 ---
@@ -222,7 +222,7 @@ Our mission is to connect students, instructors, and institutions through an imm
 1. Fork and branch from `main`.
 2. Follow the project's code conventions.
 3. Update docs when changing models, APIs or flows.
-4. Run `npm run build` and `npm test` before opening a PR.
+4. Run `npm run build` and `npm run test` before opening a PR.
 5. Describe required SQL migrations in the PR description.
 
 ---
