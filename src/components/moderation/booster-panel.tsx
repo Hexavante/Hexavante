@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { Rocket } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 
 import { Select, SelectItem } from "@/components/ui/select";
@@ -94,7 +96,14 @@ export function BoosterPanel() {
         </Select>
 
         <Button onClick={() => void activate()} disabled={loading}>
-          {loading ? "Ativando..." : "Ativar Booster Global 🚀"}
+          {loading ? (
+            "Ativando..."
+          ) : (
+            <>
+              <Rocket className="size-4" />
+              Ativar Booster Global
+            </>
+          )}
         </Button>
       </div>
 

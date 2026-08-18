@@ -98,6 +98,7 @@ export function NotificationBell() {
         }}
         className="hx-header-action relative"
         aria-label="Notificações"
+        aria-expanded={open}
       >
         <Bell className="h-4 w-4" />
         {unreadCount > 0 && (
