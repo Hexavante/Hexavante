@@ -8,7 +8,7 @@ import { getApiUrl } from "@/lib/auth-session";
 const WEB_ORIGIN =
   process.env.WEB_ORIGIN ||
   (process.env.NODE_ENV === "production"
-    ? "https://hexavante.com.br"
+    ? "https://app.hexavante.com.br"
     : "http://localhost:3000");
 
 export type ActionResult = {

@@ -86,8 +86,21 @@ async function getSessionUser(cookieHeader: string | null) {
 // do middleware e o processamento da rota. As rotas fazem validação própria
 // via requireBearerAuth, mitigando o problema.
 
+const APP_HOST = "app.hexavante.com.br";
+const LEGACY_HOSTS = new Set(["hexavante.com.br", "www.hexavante.com.br"]);
+
 export async function middleware(req: NextRequest) {
   const { pathname, origin } = req.nextUrl;
+
+  if (LEGACY_HOSTS.has(req.nextUrl.hostname)) {
+    const target = new URL(pathname + req.nextUrl.search, `https://${APP_HOST}`);
+    return NextResponse.redirect(target, 301);
+  }
+
+  if (pathname.startsWith("/api")) {
+    return nextWithPathname(req);
+  }
+
   const cookieHeader = req.headers.get("cookie");
   const user = await getSessionUser(cookieHeader);
   const isAuthenticated = Boolean(user?.id);
@@ -120,6 +133,6 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|brand|favicon.ico|limpar-sessao|.*\\.(?:png|jpe?g|gif|svg|webp|ico|css|js|txt|pdf|woff2?|mp[34]|webmanifest)$).*)",
+    "/((?!_next/static|_next/image|brand|favicon.ico|limpar-sessao|.*\\.(?:png|jpe?g|gif|svg|webp|ico|css|js|txt|pdf|woff2?|mp[34]|webmanifest)$).*)",
   ],
 };

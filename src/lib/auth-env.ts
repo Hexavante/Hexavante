@@ -1,6 +1,6 @@
 import { randomBytes } from "node:crypto";
 
-export const PRODUCTION_APP_URL = "https://hexavante.com.br";
+export const PRODUCTION_APP_URL = "https://app.hexavante.com.br";
 export const PRODUCTION_API_URL = "https://api.hexavante.com.br";
 
 const DEV_APP_URL = "http://localhost:3000";
