@@ -90,31 +90,54 @@ export async function registerAction(
   }
 
   try {
-    const res = await fetch(`${API_URL}/api/auth/sign-up/email`, {
+    const res = await fetch(`${API_URL}/api/v1/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Origin: WEB_ORIGIN,
       },
       body: JSON.stringify({
-        name: parsed.data.fullName,
+        fullName: parsed.data.fullName,
+        username: parsed.data.username,
         email: parsed.data.email,
         password: parsed.data.password,
-        username: parsed.data.username,
         birthDate: parsed.data.birthDate,
       }),
     });
 
     if (!res.ok) {
       const body = await res.json().catch(() => ({}));
-      return {
-        success: false,
-        error: (body as { message?: string }).message || "Erro ao cadastrar",
-      };
+      const message =
+        (body as { message?: string }).message ||
+        (body as { error?: string }).error ||
+        "Erro ao cadastrar";
+      if ((body as { fieldErrors?: Record<string, string> }).fieldErrors) {
+        return {
+          success: false,
+          error: "Corrija os campos destacados.",
+          fieldErrors: (body as { fieldErrors: Record<string, string> }).fieldErrors,
+        };
+      }
+      return { success: false, error: message };
     }
 
     await clearStaleSessionCookies();
-    await setSessionCookies(res);
+
+    const signIn = await fetch(`${API_URL}/api/auth/sign-in/email`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Origin: WEB_ORIGIN,
+      },
+      body: JSON.stringify({
+        email: parsed.data.email,
+        password: parsed.data.password,
+      }),
+    });
+
+    if (signIn.ok) {
+      await setSessionCookies(signIn);
+    }
 
     return { success: true, redirectTo: callbackUrl };
   } catch (error) {
