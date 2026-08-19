@@ -119,5 +119,7 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|limpar-sessao).*)"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|brand|favicon.ico|limpar-sessao|.*\\.(?:png|jpe?g|gif|svg|webp|ico|css|js|txt|pdf|woff2?|mp[34]|webmanifest)$).*)",
+  ],
 };
