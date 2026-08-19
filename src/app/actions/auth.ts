@@ -90,17 +90,17 @@ export async function registerAction(
   }
 
   try {
-    const res = await fetch(`${API_URL}/api/v1/auth/register`, {
+    const res = await fetch(`${API_URL}/api/auth/sign-up/email`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Origin: WEB_ORIGIN,
       },
       body: JSON.stringify({
-        fullName: parsed.data.fullName,
-        username: parsed.data.username,
+        name: parsed.data.fullName,
         email: parsed.data.email,
         password: parsed.data.password,
+        username: parsed.data.username,
         birthDate: parsed.data.birthDate,
       }),
     });
@@ -122,22 +122,7 @@ export async function registerAction(
     }
 
     await clearStaleSessionCookies();
-
-    const signIn = await fetch(`${API_URL}/api/auth/sign-in/email`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Origin: WEB_ORIGIN,
-      },
-      body: JSON.stringify({
-        email: parsed.data.email,
-        password: parsed.data.password,
-      }),
-    });
-
-    if (signIn.ok) {
-      await setSessionCookies(signIn);
-    }
+    await setSessionCookies(res);
 
     return { success: true, redirectTo: callbackUrl };
   } catch (error) {

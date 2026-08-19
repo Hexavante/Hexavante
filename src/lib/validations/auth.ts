@@ -15,6 +15,22 @@ export const registerSchema = z.object({
   birthDate: z.coerce.date({
     error: "Data de nascimento inválida",
   }),
+}).superRefine((data, ctx) => {
+  const today = new Date();
+  let age = today.getFullYear() - data.birthDate.getFullYear();
+  const monthDiff = today.getMonth() - data.birthDate.getMonth();
+
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < data.birthDate.getDate())) {
+    age--;
+  }
+
+  if (age < 13) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["birthDate"],
+      message: "É necessário ter no mínimo 13 anos para se cadastrar.",
+    });
+  }
 });
 
 // Schema de validação para login
