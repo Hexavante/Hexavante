@@ -89,11 +89,16 @@ async function getSessionUser(cookieHeader: string | null) {
 const APP_HOST = "app.hexavante.com.br";
 const LEGACY_HOSTS = new Set(["hexavante.com.br", "www.hexavante.com.br"]);
 
+function requestHost(req: NextRequest): string {
+  const host = (req.headers.get("host") || "").toLowerCase();
+  return host.startsWith("[") ? host.slice(1, host.indexOf("]")) : host.split(":")[0];
+}
+
 export async function middleware(req: NextRequest) {
   const { pathname, origin } = req.nextUrl;
-  console.log("[MW-DEBUG]", JSON.stringify({ hostname: req.nextUrl.hostname, host: req.headers.get("host"), pathname, legacy: LEGACY_HOSTS.has(req.nextUrl.hostname) }));
+  const hostname = requestHost(req);
 
-  if (LEGACY_HOSTS.has(req.nextUrl.hostname)) {
+  if (LEGACY_HOSTS.has(hostname)) {
     const target = new URL(pathname + req.nextUrl.search, `https://${APP_HOST}`);
     return NextResponse.redirect(target, 301);
   }
