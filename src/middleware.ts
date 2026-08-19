@@ -91,6 +91,7 @@ const LEGACY_HOSTS = new Set(["hexavante.com.br", "www.hexavante.com.br"]);
 
 export async function middleware(req: NextRequest) {
   const { pathname, origin } = req.nextUrl;
+  console.log("[MW-DEBUG]", JSON.stringify({ hostname: req.nextUrl.hostname, host: req.headers.get("host"), pathname, legacy: LEGACY_HOSTS.has(req.nextUrl.hostname) }));
 
   if (LEGACY_HOSTS.has(req.nextUrl.hostname)) {
     const target = new URL(pathname + req.nextUrl.search, `https://${APP_HOST}`);
