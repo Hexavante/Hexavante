@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useSyncExternalStore } from "react";
+import { useSyncExternalStore } from "react";
 import Link from "next/link";
 import { Capacitor } from "@capacitor/core";
 import { cn } from "@/lib/cn";
@@ -46,16 +46,6 @@ function notifyConsentChange() {
 export function CookieBanner() {
   const visible = useSyncExternalStore(subscribeConsent, getConsentVisible, () => false);
 
-  useEffect(() => {
-    if (!visible) {
-      document.body.classList.remove("hx-cookie-banner-visible");
-      return;
-    }
-
-    document.body.classList.add("hx-cookie-banner-visible");
-    return () => document.body.classList.remove("hx-cookie-banner-visible");
-  }, [visible]);
-
   if (!visible) return null;
 
   function handleAccept() {
@@ -75,6 +65,7 @@ export function CookieBanner() {
       aria-label="Aviso de cookies"
       className={cn(
         "hx-cookie-banner",
+        "hx-cookie-banner-visible",
         "border-t border-white/10 bg-zinc-900/98 shadow-2xl backdrop-blur-md",
       )}
     >
