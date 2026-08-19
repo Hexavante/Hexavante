@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, Sparkles, X } from "lucide-react";
 import { completeOnboardingTourAction } from "@/app/actions/onboarding";
@@ -394,7 +395,10 @@ export function OnboardingTour({ show }: Props) {
 
   return (
     <ClientOnly>
-      <OnboardingTourActive onDismiss={() => setDismissed(true)} />
+      {createPortal(
+        <OnboardingTourActive onDismiss={() => setDismissed(true)} />,
+        document.body,
+      )}
     </ClientOnly>
   );
 }
