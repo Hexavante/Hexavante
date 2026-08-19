@@ -48,18 +48,33 @@ async function setSessionCookies(response: Response) {
     const [name, ...rest] = parts[0].split("=");
     if (name && rest.length > 0) {
       const name_trimmed = name.trim();
-      const attrs: Record<string, string | boolean> = {
+      const attrs: Record<string, string | boolean | number | Date> = {
         httpOnly: true,
         sameSite: "lax",
         path: "/",
         secure: name_trimmed.startsWith("__Secure-") || process.env.NODE_ENV === "production",
       };
-      // Preserve SameSite from the original header
       for (let i = 1; i < parts.length; i++) {
         const part = parts[i].trim();
-        const lower = part.toLowerCase();
-        if (lower.startsWith("samesite=")) {
-          attrs.sameSite = part.split("=")[1].toLowerCase() as "lax" | "strict" | "none";
+        const separator = part.indexOf("=");
+        const key = (separator === -1 ? part : part.slice(0, separator)).trim().toLowerCase();
+        const value = separator === -1 ? "" : part.slice(separator + 1).trim();
+        if (key === "samesite") {
+          attrs.sameSite = value.toLowerCase() as "lax" | "strict" | "none";
+        } else if (key === "domain") {
+          attrs.domain = value;
+        } else if (key === "path") {
+          attrs.path = value || "/";
+        } else if (key === "max-age") {
+          const maxAge = Number(value);
+          if (Number.isFinite(maxAge)) attrs.maxAge = maxAge;
+        } else if (key === "expires") {
+          const expires = new Date(value);
+          if (!Number.isNaN(expires.getTime())) attrs.expires = expires;
+        } else if (key === "secure") {
+          attrs.secure = true;
+        } else if (key === "httponly") {
+          attrs.httpOnly = true;
         }
       }
       cookieStore.set(name_trimmed, decodeURIComponent(rest.join("=")), attrs);
