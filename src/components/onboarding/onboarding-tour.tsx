@@ -388,6 +388,10 @@ function OnboardingTourActive({ onDismiss }: { onDismiss: () => void }) {
   );
 }
 
+function TourPortal({ onDismiss }: { onDismiss: () => void }) {
+  return createPortal(<OnboardingTourActive onDismiss={onDismiss} />, document.body);
+}
+
 export function OnboardingTour({ show }: Props) {
   const [dismissed, setDismissed] = useState(false);
 
@@ -395,10 +399,7 @@ export function OnboardingTour({ show }: Props) {
 
   return (
     <ClientOnly>
-      {createPortal(
-        <OnboardingTourActive onDismiss={() => setDismissed(true)} />,
-        document.body,
-      )}
+      <TourPortal onDismiss={() => setDismissed(true)} />
     </ClientOnly>
   );
 }
