@@ -18,12 +18,12 @@ export function toNavSession(
   } | null,
   avatarUrl?: string | null,
 ): NavSession {
-  if (!session?.user?.id || !session.user.username) return null;
+  if (!session?.user?.id) return null;
 
   return {
     user: {
       id: session.user.id,
-      username: session.user.username,
+      username: session.user.username ?? null,
       roles: session.user.roles ?? [],
       image: avatarUrl ?? null,
     },

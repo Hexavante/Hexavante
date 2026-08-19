@@ -248,11 +248,11 @@ function SidebarUserFooter({ session }: { session: NavSession }) {
 
   return (
     <div className="space-y-2">
-      <Link href={`/perfil/${session.user.username}`} className="hx-sidebar-profile">
-        <Avatar src={session.user.image} alt={session.user.username ?? ""} size="sm" />
+      <Link href={session.user.username ? `/perfil/${session.user.username}` : "/perfil"} className="hx-sidebar-profile">
+        <Avatar src={session.user.image} alt={session.user.username ?? session.user.id} size="sm" />
         <span className="min-w-0 flex-1">
           <span className="block truncate text-sm font-semibold text-white">
-            @{session.user.username}
+            {session.user.username ? `@${session.user.username}` : "Meu perfil"}
           </span>
           <span className="block truncate text-xs text-slate-400">Ver perfil</span>
         </span>

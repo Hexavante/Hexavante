@@ -15,6 +15,10 @@ type Props = {
   session: NavSession;
 };
 
+function profileHref(username: string | null | undefined): string {
+  return username ? `/perfil/${username}` : "/perfil";
+}
+
 export function HeaderBar({ session }: Props) {
   return (
     <header className="hx-header-bar sticky top-0 z-20">
@@ -51,11 +55,11 @@ export function HeaderBar({ session }: Props) {
               </Suspense>
               <NotificationBell />
               <Link
-                href={`/perfil/${session.user.username}`}
+                href={profileHref(session.user.username)}
                 className="hidden rounded-full transition hover:ring-2 sm:inline-flex hx-header-avatar-ring"
-                aria-label={`Perfil de @${session.user.username}`}
+                aria-label={`Perfil de @${session.user.username ?? session.user.id}`}
               >
-                <Avatar src={session.user.image} alt={session.user.username ?? ""} size="sm" />
+                <Avatar src={session.user.image} alt={session.user.username ?? session.user.id} size="sm" />
               </Link>
               <HeaderSignOut />
             </>
