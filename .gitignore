@@ -45,3 +45,6 @@ ios/
 
 # Public uploads
 public/uploads/
+
+# Tauri
+src-tauri/target/

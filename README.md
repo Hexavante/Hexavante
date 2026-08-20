@@ -41,8 +41,10 @@ Nossa missão é conectar estudantes, instrutores e instituições através de u
 |---------|-----------|-----------------|
 | [**Hexavante Web**](https://github.com/Hexavante/Hexavante) | Plataforma educacional principal — cursos, simulados, comunidade, loja e mais | Next.js 16, React 19, Prisma 6, MariaDB |
 | [**Hexavante API**](https://github.com/Hexavante/Hexavante-Api) | Backend robusto e escalável que serve todos os clientes | Fastify 5, Prisma, Better Auth, Redis |
-| [**Hexavante Desktop**](https://github.com/Hexavante/Hexavante-Desktop) | Aplicação desktop nativa para Windows, macOS e Linux | Electron 33, React 18, Vite |
-| **Hexavante Mobile** | Aplicativo mobile (em desenvolvimento) | Capacitor, React |
+| **Hexavante Desktop** | Aplicação desktop nativa (Windows/Linux) — integrado neste repo via Tauri | Tauri 2, Rust, WebView |
+| **Hexavante Mobile** | Aplicativo mobile Android (integrado neste repo via Capacitor) | Capacitor 8, WebView |
+
+> **Nota:** Desktop e Mobile compartilham o mesmo código web. O repo [Hexavante-Desktop](https://github.com/Hexavante/Hexavante-Desktop) (Electron) e [Hexavante-Mobile](https://github.com/Hexavante/Hexavante-Mobile) (React Native) estão descontinuados.
 
 ---
 
@@ -169,8 +171,10 @@ Our mission is to connect students, instructors, and institutions through an imm
 |---------|-------------|------------|
 | [**Hexavante Web**](https://github.com/Hexavante/Hexavante) | Main educational platform — courses, exams, community, shop and more | Next.js 16, React 19, Prisma 6, MariaDB |
 | [**Hexavante API**](https://github.com/Hexavante/Hexavante-Api) | Robust, scalable backend serving all clients | Fastify 5, Prisma, Better Auth, Redis |
-| [**Hexavante Desktop**](https://github.com/Hexavante/Hexavante-Desktop) | Native desktop app for Windows, macOS and Linux | Electron 33, React 18, Vite |
-| **Hexavante Mobile** | Mobile app (in development) | Capacitor, React |
+| **Hexavante Desktop** | Native desktop app (Windows/Linux) — integrated in this repo via Tauri | Tauri 2, Rust, WebView |
+| **Hexavante Mobile** | Android mobile app — integrated in this repo via Capacitor | Capacitor 8, WebView |
+
+> **Note:** Desktop and Mobile share the same web codebase. The [Hexavante-Desktop](https://github.com/Hexavante/Hexavante-Desktop) (Electron) and [Hexavante-Mobile](https://github.com/Hexavante/Hexavante-Mobile) (React Native) repos are discontinued.
 
 ---
 

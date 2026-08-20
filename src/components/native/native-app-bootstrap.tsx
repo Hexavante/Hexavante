@@ -4,8 +4,9 @@ import { useEffect } from "react";
 import { Capacitor } from "@capacitor/core";
 import { StatusBar, Style } from "@capacitor/status-bar";
 import { SplashScreen } from "@capacitor/splash-screen";
+import { Keyboard, KeyboardResize } from "@capacitor/keyboard";
 
-/** Ajustes de status bar / splash no app Android (Capacitor). */
+/** Ajustes de status bar / splash / keyboard no app nativo (Capacitor). */
 export function NativeAppBootstrap() {
   useEffect(() => {
     if (!Capacitor.isNativePlatform()) return;
@@ -22,13 +23,24 @@ export function NativeAppBootstrap() {
 
     void (async () => {
       try {
-        // Evita overlay edge-to-edge que injeta style no <html> e quebra hidratação React.
         await StatusBar.setOverlaysWebView({ overlay: false });
         await StatusBar.setStyle({ style: Style.Dark });
         await StatusBar.setBackgroundColor({ color: "#0b1220" });
+      } catch {
+        // StatusBar opcional fora do dispositivo
+      }
+
+      try {
         await SplashScreen.hide();
       } catch {
-        // plugins opcionais fora do dispositivo
+        // SplashScreen opcional
+      }
+
+      try {
+        await Keyboard.setResizeMode({ mode: KeyboardResize.Native });
+        await Keyboard.setScroll({ isDisabled: false });
+      } catch {
+        // Keyboard opcional
       }
     })();
   }, []);

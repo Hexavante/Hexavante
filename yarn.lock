@@ -277,6 +277,21 @@
   dependencies:
     tslib "^2.1.0"
 
+"@capacitor/device@^8.0.3":
+  version "8.0.3"
+  resolved "https://registry.npmjs.org/@capacitor/device/-/device-8.0.3.tgz"
+  integrity sha512-rliPCCZwxtjU6200jJNDAsQhioyozV3fGgiP+NgRqtDOI7i+Jdz+DYNwEup+3MGZZ4NEmkuFaBeWLM3T01vJRg==
+
+"@capacitor/haptics@^8.0.2":
+  version "8.0.2"
+  resolved "https://registry.npmjs.org/@capacitor/haptics/-/haptics-8.0.2.tgz"
+  integrity sha512-c2hZzRR5Fk1tbTvhG1jhh2XBAf3EhnIerMIb2sl7Mt41Gxx1fhBJFDa0/BI1IbY4loVepyyuqNC9820/GZuoWQ==
+
+"@capacitor/keyboard@^8.0.5":
+  version "8.0.5"
+  resolved "https://registry.npmjs.org/@capacitor/keyboard/-/keyboard-8.0.5.tgz"
+  integrity sha512-oFXygC4eKYA5l2MdpTR06L2M/4x6e2SLD5yS1T9+UBDKTkzyvhWKEhbYLUaTIBPpLKqlfGudJw1X73S1H9eUzQ==
+
 "@capacitor/splash-screen@^8.0.1":
   version "8.0.1"
   resolved "https://registry.npmjs.org/@capacitor/splash-screen/-/splash-screen-8.0.1.tgz"
@@ -1038,6 +1053,11 @@
   dependencies:
     "@tanstack/query-core" "5.101.4"
 
+"@tauri-apps/api@^2.10.1", "@tauri-apps/api@^2.11.0", "@tauri-apps/api@^2.11.1":
+  version "2.11.1"
+  resolved "https://registry.npmjs.org/@tauri-apps/api/-/api-2.11.1.tgz"
+  integrity sha512-M2FPuYND2m+wh5hfW9ZpSdxMPdEJovPBWwoHJmwUpysTYNHaOkVFN419m/K0LIgjb/7KU2vBgsUepJWugQCvAA==
+
 "@tauri-apps/cli-linux-x64-gnu@2.11.3":
   version "2.11.3"
   resolved "https://registry.npmjs.org/@tauri-apps/cli-linux-x64-gnu/-/cli-linux-x64-gnu-2.11.3.tgz"
@@ -1059,6 +1079,27 @@
     "@tauri-apps/cli-win32-arm64-msvc" "2.11.3"
     "@tauri-apps/cli-win32-ia32-msvc" "2.11.3"
     "@tauri-apps/cli-win32-x64-msvc" "2.11.3"
+
+"@tauri-apps/plugin-http@^2.5.9":
+  version "2.5.9"
+  resolved "https://registry.npmjs.org/@tauri-apps/plugin-http/-/plugin-http-2.5.9.tgz"
+  integrity sha512-lCiY0+vs4HvIUSvZrBs8TC3TiCB0MOPRmiUjTq4prW7SlcJE2jdLeT6KBsJrT9Tlplufl7W1pY6SFAO3gCWxDA==
+  dependencies:
+    "@tauri-apps/api" "^2.11.0"
+
+"@tauri-apps/plugin-shell@^2.3.5":
+  version "2.3.5"
+  resolved "https://registry.npmjs.org/@tauri-apps/plugin-shell/-/plugin-shell-2.3.5.tgz"
+  integrity sha512-jewtULhiQ7lI7+owCKAjc8tYLJr92U16bPOeAa472LHJdgaibLP83NcfAF2e+wkEcA53FxKQAZ7byDzs2eeizg==
+  dependencies:
+    "@tauri-apps/api" "^2.10.1"
+
+"@tauri-apps/plugin-store@^2.4.4":
+  version "2.4.4"
+  resolved "https://registry.npmjs.org/@tauri-apps/plugin-store/-/plugin-store-2.4.4.tgz"
+  integrity sha512-oxSMaj/QpVfJcBMYX5aOQV94fWvga0MwQMfD6TLlbK2dh+ShPWAzefd8HWXhvOKjPRJdGVAkW7ZGO76JzzjaDA==
+  dependencies:
+    "@tauri-apps/api" "^2.11.0"
 
 "@testing-library/dom@^10.0.0":
   version "10.4.1"
