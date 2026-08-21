@@ -11,6 +11,23 @@ const WEB_ORIGIN =
     ? "https://app.hexavante.com.br"
     : "http://localhost:3000");
 
+const ALLOWED_REDIRECT_HOSTS = [
+  "hexavante.com.br",
+  "app.hexavante.com.br",
+  "www.hexavante.com.br",
+  "localhost",
+  "127.0.0.1",
+];
+
+function isSafeRedirect(url: string): boolean {
+  if (!url.startsWith("http")) return true;
+  try {
+    return ALLOWED_REDIRECT_HOSTS.includes(new URL(url).hostname);
+  } catch {
+    return false;
+  }
+}
+
 export type ActionResult = {
   success: boolean;
   error?: string;
@@ -94,6 +111,9 @@ export async function registerAction(
     birthDate: formData.get("birthDate"),
   };
   const callbackUrl = (formData.get("callbackUrl") as string) || "/";
+  if (!isSafeRedirect(callbackUrl)) {
+    return { success: false, error: "URL de redirecionamento inválida." };
+  }
 
   const parsed = registerSchema.safeParse(raw);
   if (!parsed.success) {
@@ -152,6 +172,9 @@ export async function loginAction(_prev: ActionResult, formData: FormData): Prom
   const email = formData.get("email");
   const password = formData.get("password");
   const callbackUrl = (formData.get("callbackUrl") as string) || "/";
+  if (!isSafeRedirect(callbackUrl)) {
+    return { success: false, error: "URL de redirecionamento inválida." };
+  }
 
   const parsed = loginSchema.safeParse({ email, password });
   if (!parsed.success) {

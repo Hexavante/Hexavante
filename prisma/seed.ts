@@ -719,7 +719,7 @@ async function main() {
 
   const superAdminRole = await prisma.role.findUnique({ where: { name: "SUPERADMIN" } });
   if (superAdminRole && userRole) {
-    const superPassword = await bcrypt.hash("Superadmin123!", 12);
+    const superPassword = await bcrypt.hash(process.env.SEED_SUPERADMIN_PASSWORD || "Superadmin123!", 12);
     await prisma.user.upsert({
       where: { email: "superadmin@hexavante.com" },
       update: {},
@@ -888,11 +888,8 @@ async function main() {
   console.log("Seed concluído:");
   console.log("- Roles:", roles.map((r) => r.name).join(", "));
   console.log("- Categorias:", categories.length);
-  console.log("- Instrutor demo: instrutor@hexavante.com / Instrutor123!");
-  console.log("- Moderador demo: moderador@hexavante.com / Moderador123!");
-  console.log("- Admin demo: admin@hexavante.com / Admin123!");
-  console.log("- Superadmin demo: superadmin@hexavante.com / Superadmin123!");
-  console.log("- Aluno demo: aluno@hexavante.com / Aluno123!");
+  console.log("- Superadmin demo: superadmin@hexavante.com");
+  console.log("  (Senha definida via variável de ambiente SEED_SUPERADMIN_PASSWORD)");
   console.log("- Simulado demo: /simulados/logica-programacao-basica");
   console.log("- Simulado Premium: /simulados/desafio-premium-logica-avancada");
   console.log("- Loja: /shop (aluno demo com 500 moedas)");
