@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { isInstructor } from "@/lib/permissions";
+import { rateLimitUpload, extractClientIp } from "@/lib/rate-limit";
 import {
   buildCourseCoverFilename,
   COURSE_COVER_MAX_BYTES,
@@ -15,6 +16,11 @@ export async function POST(request: Request) {
   const session = await auth();
   if (!session?.user?.id || !isInstructor(session.user.roles)) {
     return Response.json({ error: "Não autorizado." }, { status: 403 });
+  }
+
+  const ip = extractClientIp(request.headers.get("x-forwarded-for"), request.headers.get("x-real-ip"));
+  if (!rateLimitUpload(ip)) {
+    return Response.json({ error: "Limite de uploads atingido. Tente novamente mais tarde." }, { status: 429 });
   }
 
   const formData = await request.formData();

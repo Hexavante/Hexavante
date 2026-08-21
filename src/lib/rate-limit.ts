@@ -77,3 +77,8 @@ export function rateLimitSearch(ip: string): boolean {
 export function rateLimitByIp(ip: string, action = "default"): boolean {
   return rateLimit(`${action}:${ip}`, { maxRequests: 100, windowMs: 15 * 60_000 });
 }
+
+/** 10 uploads por 15 minutos por IP — uploads de imagem */
+export function rateLimitUpload(ip: string): boolean {
+  return rateLimit(`upload:${ip}`, { maxRequests: 10, windowMs: 15 * 60_000 });
+}

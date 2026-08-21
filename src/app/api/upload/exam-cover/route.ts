@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 
 import { canModerate } from "@/lib/permissions";
+import { rateLimitUpload, extractClientIp } from "@/lib/rate-limit";
 
 import {
   buildExamCoverFilename,
@@ -21,6 +22,11 @@ export async function POST(request: Request) {
 
   if (!session?.user?.id || !canModerate(session.user.roles)) {
     return Response.json({ error: "Não autorizado." }, { status: 403 });
+  }
+
+  const ip = extractClientIp(request.headers.get("x-forwarded-for"), request.headers.get("x-real-ip"));
+  if (!rateLimitUpload(ip)) {
+    return Response.json({ error: "Limite de uploads atingido. Tente novamente mais tarde." }, { status: 429 });
   }
 
   const formData = await request.formData();
