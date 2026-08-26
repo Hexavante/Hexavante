@@ -1,6 +1,9 @@
+"use client";
+
 import * as React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
+import { createRippleEffect } from "@/lib/animations";
 
 const variantClasses = {
   default: "hx-btn-primary",
@@ -20,14 +23,29 @@ const sizeClasses = {
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: keyof typeof variantClasses;
   size?: keyof typeof sizeClasses;
+  ripple?: boolean;
+  rippleColor?: string;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className = "", variant = "default", size = "default", ...props }, ref) => {
+  ({ className = "", variant = "default", size = "default", ripple = true, rippleColor, ...props }, ref) => {
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+      if (ripple && !props.disabled) {
+        createRippleEffect(event, rippleColor || "currentColor");
+      }
+      props.onClick?.(event);
+    };
+
     return (
       <button
-        className={cn(variantClasses[variant], sizeClasses[size], className)}
+        className={cn(
+          variantClasses[variant],
+          sizeClasses[size],
+          "transition-smooth btn-press focus-ring",
+          className,
+        )}
         ref={ref}
+        onClick={handleClick}
         {...props}
       />
     );

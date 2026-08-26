@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useId } from "react";
 import { useRouter } from "next/navigation";
 import { updateProfileAction, type ProfileActionResult } from "@/app/actions/profile";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,8 @@ import { NativeSelect } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/toast";
 import { cn } from "@/lib/cn";
+import { themeUi } from "@/lib/theme-ui";
+import { Loader2, Check, AlertCircle } from "lucide-react";
 
 type ProfileData = {
   fullName: string;
@@ -31,6 +33,14 @@ export function ProfileEditForm({ profile }: Props) {
   const [state, formAction, pending] = useActionState(updateProfileAction, initialState);
   const { toast } = useToast();
   const router = useRouter();
+  const fieldIds = {
+    fullName: useId(),
+    bio: useId(),
+    phone: useId(),
+    city: useId(),
+    state: useId(),
+    profileVisibility: useId(),
+  };
 
   useEffect(() => {
     if (state.success) {
@@ -41,96 +51,180 @@ export function ProfileEditForm({ profile }: Props) {
     }
   }, [state, toast, router]);
 
+  interface FieldConfig {
+  name: keyof ProfileData;
+  label: string;
+  type: "text" | "textarea" | "tel" | "select";
+  required: boolean;
+  placeholder?: string;
+  rows?: number;
+  maxLength?: number;
+  options?: { value: string; label: string }[];
+}
+
+const fieldConfigs: FieldConfig[] = [
+    {
+      name: "fullName",
+      label: "Nome completo",
+      type: "text",
+      required: true,
+      placeholder: "Seu nome completo",
+    },
+    {
+      name: "bio",
+      label: "Bio",
+      type: "textarea",
+      required: false,
+      placeholder: "Conte um pouco sobre você e seus objetivos de estudo...",
+      rows: 3,
+    },
+    {
+      name: "phone",
+      label: "Telefone",
+      type: "tel",
+      required: false,
+      placeholder: "(11) 99999-9999",
+    },
+    {
+      name: "city",
+      label: "Cidade",
+      type: "text",
+      required: false,
+      placeholder: "São Paulo",
+    },
+    {
+      name: "state",
+      label: "Estado (UF)",
+      type: "text",
+      required: false,
+      placeholder: "SP",
+      maxLength: 2,
+    },
+    {
+      name: "profileVisibility",
+      label: "Visibilidade do perfil",
+      type: "select",
+      required: false,
+      options: [
+        { value: "private", label: "Privado" },
+        { value: "public", label: "Público" },
+      ],
+    },
+  ];
+
   return (
-    <Card padding="lg">
+    <Card padding="lg" className={cn(themeUi.cardEntrance, themeUi.hoverLift)}>
       <h2 className="text-lg font-bold text-white">Dados pessoais</h2>
       <p className="mt-1 text-sm text-slate-400">
         Atualize suas informações públicas e de contato.
       </p>
 
-      <form action={formAction} className="mt-5 space-y-4">
-        <div>
-          <Label htmlFor="fullName">Nome completo</Label>
-          <Input
-            id="fullName"
-            name="fullName"
-            defaultValue={profile.fullName}
-            required
-            className={cn(state.fieldErrors?.fullName && "border-red-400/50")}
-          />
-          {state.fieldErrors?.fullName && (
-            <p className="mt-1 text-xs text-red-300">{state.fieldErrors.fullName}</p>
-          )}
-        </div>
+      <form action={formAction} className={cn("mt-5 space-y-5", themeUi.stagger)} noValidate>
+        {fieldConfigs.map((field) => {
+          const fieldName = field.name as keyof ProfileData;
+          const error = state.fieldErrors?.[fieldName];
+          const hasError = Boolean(error);
+          const fieldId = fieldIds[fieldName];
 
-        <div>
-          <Label htmlFor="bio">Bio</Label>
-          <Textarea
-            id="bio"
-            name="bio"
-            rows={3}
-            defaultValue={profile.bio ?? ""}
-            placeholder="Conte um pouco sobre você e seus objetivos de estudo..."
-            className={cn(state.fieldErrors?.bio && "border-red-400/50")}
-          />
-          {state.fieldErrors?.bio && (
-            <p className="mt-1 text-xs text-red-300">{state.fieldErrors.bio}</p>
-          )}
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <Label htmlFor="phone">Telefone</Label>
-            <Input
-              id="phone"
-              name="phone"
-              defaultValue={profile.phone ?? ""}
-              placeholder="(11) 99999-9999"
-              className={cn(state.fieldErrors?.phone && "border-red-400/50")}
-            />
-            {state.fieldErrors?.phone && (
-              <p className="mt-1 text-xs text-red-300">{state.fieldErrors.phone}</p>
-            )}
-          </div>
-          <div>
-            <Label htmlFor="city">Cidade</Label>
-            <Input
-              id="city"
-              name="city"
-              defaultValue={profile.city ?? ""}
-              className={cn(state.fieldErrors?.city && "border-red-400/50")}
-            />
-          </div>
-          <div>
-            <Label htmlFor="state">Estado (UF)</Label>
-            <Input
-              id="state"
-              name="state"
-              maxLength={2}
-              defaultValue={profile.state ?? ""}
-              placeholder="SP"
-              className={cn(state.fieldErrors?.state && "border-red-400/50")}
-            />
-            {state.fieldErrors?.state && (
-              <p className="mt-1 text-xs text-red-300">{state.fieldErrors.state}</p>
-            )}
-          </div>
-          <div>
-            <Label htmlFor="profileVisibility">Visibilidade do perfil</Label>
-            <NativeSelect
-              id="profileVisibility"
-              name="profileVisibility"
-              defaultValue={profile.profileVisibility}
+          return (
+            <div
+              key={fieldName}
+              className={cn("transition-all duration-300", hasError && "animate-shake")}
             >
-              <option value="private">Privado</option>
-              <option value="public">Público</option>
-            </NativeSelect>
-          </div>
-        </div>
+              <Label
+                htmlFor={fieldId}
+                className={cn("transition-colors", hasError && "text-red-300")}
+              >
+                {field.label}
+              </Label>
 
-        <Button type="submit" disabled={pending}>
-          {pending ? "Salvando..." : "Salvar alterações"}
-        </Button>
+              {field.type === "textarea" ? (
+                <Textarea
+                  id={fieldId}
+                  name={fieldName}
+                  rows={field.rows || 3}
+                  defaultValue={(profile[fieldName] as string) ?? ""}
+                  placeholder={field.placeholder}
+                  required={field.required}
+                  className={cn(
+                    themeUi.inputFocus,
+                    themeUi.transitionSmooth,
+                    hasError && "border-red-400/50 focus-visible:border-red-400/60",
+                  )}
+                  aria-invalid={hasError}
+                  aria-describedby={hasError ? `${fieldId}-error` : undefined}
+                />
+              ) : field.type === "select" ? (
+                <NativeSelect
+                  id={fieldId}
+                  name={fieldName}
+                  defaultValue={profile[fieldName] as string}
+                  className={cn(
+                    themeUi.inputFocus,
+                    themeUi.transitionSmooth,
+                    hasError && "border-red-400/50 focus-visible:border-red-400/60",
+                  )}
+                  aria-invalid={hasError}
+                  aria-describedby={hasError ? `${fieldId}-error` : undefined}
+                >
+                  {field.options?.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </NativeSelect>
+              ) : (
+                <Input
+                  id={fieldId}
+                  name={fieldName}
+                  type={field.type}
+                  defaultValue={(profile[fieldName] as string) ?? ""}
+                  placeholder={field.placeholder}
+                  required={field.required}
+                  maxLength={field.maxLength}
+                  className={cn(
+                    themeUi.inputFocus,
+                    themeUi.transitionSmooth,
+                    hasError && "border-red-400/50 focus-visible:border-red-400/60",
+                  )}
+                  aria-invalid={hasError}
+                  aria-describedby={hasError ? `${fieldId}-error` : undefined}
+                />
+              )}
+
+              {hasError && (
+                <p
+                  id={`${fieldId}-error`}
+                  className="mt-1.5 flex items-center gap-1.5 text-xs text-red-300 animate-fade-in"
+                  role="alert"
+                >
+                  <AlertCircle className="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
+                  {error}
+                </p>
+              )}
+            </div>
+          );
+        })}
+
+        <div className="pt-2">
+          <Button
+            type="submit"
+            disabled={pending}
+            className={cn("w-full", themeUi.btnPress, themeUi.transitionSpring)}
+          >
+            {pending ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin mr-2" aria-hidden="true" />
+                Salvando...
+              </>
+            ) : (
+              <>
+                <Check className="h-4 w-4 mr-2" aria-hidden="true" />
+                Salvar alterações
+              </>
+            )}
+          </Button>
+        </div>
       </form>
     </Card>
   );

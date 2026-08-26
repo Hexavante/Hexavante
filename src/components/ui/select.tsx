@@ -1,14 +1,27 @@
+"use client";
+
 import * as React from "react";
 import { cn } from "@/lib/cn";
+import { themeUi } from "@/lib/theme-ui";
 
 export type NativeSelectProps = React.SelectHTMLAttributes<HTMLSelectElement>;
 
 export const NativeSelect = React.forwardRef<HTMLSelectElement, NativeSelectProps>(
   ({ className = "", children, ...props }, ref) => {
     return (
-      <select ref={ref} className={cn("hx-select", className)} {...props}>
-        {children}
-      </select>
+      <div className={cn("relative w-full", themeUi.inputFocus)}>
+        <select
+          ref={ref}
+          className={cn(
+            "hx-select w-full appearance-none transition-smooth",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]",
+            className,
+          )}
+          {...props}
+        >
+          {children}
+        </select>
+      </div>
     );
   },
 );
@@ -23,8 +36,15 @@ export interface SelectProps {
 
 const Select = ({ value, onValueChange, children, className = "" }: SelectProps) => {
   return (
-    <div className={cn("relative", className)}>
-      <select value={value} onChange={(e) => onValueChange?.(e.target.value)} className="hx-select">
+    <div className={cn("relative w-full", themeUi.inputFocus, className)}>
+      <select
+        value={value}
+        onChange={(e) => onValueChange?.(e.target.value)}
+        className={cn(
+          "hx-select w-full appearance-none transition-smooth",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]",
+        )}
+      >
         {children}
       </select>
     </div>
@@ -33,13 +53,15 @@ const Select = ({ value, onValueChange, children, className = "" }: SelectProps)
 
 Select.displayName = "Select";
 
-export { Select };
-
 export const SelectTrigger = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className = "", children, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("hx-input flex items-center justify-between", className)}
+      className={cn(
+        "hx-input flex items-center justify-between transition-smooth",
+        "focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-[var(--background)]",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -63,7 +85,7 @@ export const SelectContent = React.forwardRef<HTMLDivElement, React.HTMLAttribut
     <div
       ref={ref}
       className={cn(
-        "relative z-50 min-w-[8rem] overflow-hidden rounded-lg border border-white/10 bg-slate-950 p-1 text-white shadow-md",
+        "relative z-50 min-w-[8rem] overflow-hidden rounded-lg border border-white/10 bg-slate-950 p-1 text-white shadow-md animate-fade-in-up",
         className,
       )}
       {...props}
@@ -81,10 +103,12 @@ export const SelectItem = React.forwardRef<
   <option
     ref={ref}
     value={value}
-    className={cn("rounded-sm px-2 py-1.5 text-sm", className)}
+    className={cn("rounded-sm px-2 py-1.5 text-sm hover:bg-primary/10 transition-colors", className)}
     {...props}
   >
     {children}
   </option>
 ));
 SelectItem.displayName = "SelectItem";
+
+export { Select };
