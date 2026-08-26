@@ -53,9 +53,9 @@ O presente trabalho apresenta o desenvolvimento do **Hexavante**, uma plataforma
 
 Para mitigar essas questões, o Hexavante foi concebido como um ecossistema integrado composto por **três aplicações** (Web, Desktop e API) que reúne cursos, simulados dinâmicos, aulas ao vivo, gamificação, comunidade social e gestão institucional (módulo **HexaSchool**) em uma única interface.
 
-A metodologia adotada combina abordagens quali-quantitativas, com desenvolvimento ágil utilizando **Scrum**, prototipação no **Figma** e implementação técnica baseada em **Next.js 16** (App Router), **TypeScript 6** e **Tailwind CSS 4** no frontend web; **Electron 33** com **React 18** e **React Router 6** no frontend desktop; e **Node.js 22** com **Fastify 5**, **Prisma 6** ORM, **Better Auth** e **Redis** no backend. O banco de dados é composto por **48 entidades** modeladas no Prisma, servidas por **MariaDB 10.6+**.
+A metodologia adotada combina abordagens quali-quantitativas, com desenvolvimento ágil utilizando **Scrum**, prototipação no **Figma** e implementação técnica baseada em **Next.js 16** (App Router), **TypeScript 6** e **Tailwind CSS 4** no frontend web; **Electron 33** com **React 18**, **React Router 6** e **Zustand 5** no frontend desktop; **Capacitor 8** para apps Android nativos; e **Node.js 22** com **Fastify 5**, **Prisma 6** ORM, **Better Auth** e **Redis** no backend. O banco de dados é composto por **57 entidades** e **22 enums** modeladas no Prisma, servidas por **MariaDB 10.6+**.
 
-Os testes de usabilidade, realizados com **20 estudantes** do Ensino Médio, revelaram uma taxa de retenção de **75%** ao longo de sete dias, tempo médio de conclusão de simulados de **25 minutos** e índice de satisfação geral de **4,5** em uma escala de 5 pontos, superando as metas estabelecidas. A suíte de testes automatizados contabiliza **48 testes** (38 no frontend web e 10 na API), todos passando com cobertura de **78%** nos componentes React.
+Os testes de usabilidade, realizados com **20 estudantes** do Ensino Médio, revelaram uma taxa de retenção de **75%** ao longo de sete dias, tempo médio de conclusão de simulados de **25 minutos** e índice de satisfação geral de **4,5** em uma escala de 5 pontos, superando as metas estabelecidas. A suíte de testes automatizados contabiliza **83+ testes** (38 no frontend web e 45+ na API), todos passando com cobertura de **78%** nos componentes React.
 
 O Hexavante distingue-se das soluções existentes ao integrar gamificação completa (sistema de XP, moedas, rankings e boosters), simulados com questões de múltipla escolha e dissertativas, módulo institucional, aplicativo desktop nativo para Windows/Linux e API REST documentada com **Swagger**, contribuindo para a literatura acadêmica sobre tecnologia educacional e design centrado no usuário.
 
@@ -71,9 +71,9 @@ This paper presents the development of **Hexavante**, a unified web platform des
 
 To mitigate these issues, Hexavante was conceived as an integrated ecosystem composed of **three applications** (Web, Desktop, and API) that brings together courses, dynamic mock exams, live classes, gamification, social community, and institutional management (**HexaSchool** module) within a single interface.
 
-The adopted methodology combines qualitative and quantitative approaches, with agile development using **Scrum**, prototyping in **Figma**, and technical implementation based on **Next.js 16** (App Router), **TypeScript 6**, and **Tailwind CSS 4** on the web frontend; **Electron 33** with **React 18** and **React Router 6** on the desktop frontend; and **Node.js 22** with **Fastify 5**, **Prisma 6** ORM, **Better Auth**, and **Redis** on the backend. The database consists of **48 entities** modeled in Prisma, served by **MariaDB 10.6+**.
+The adopted methodology combines qualitative and quantitative approaches, with agile development using **Scrum**, prototyping in **Figma**, and technical implementation based on **Next.js 16** (App Router), **TypeScript 6**, and **Tailwind CSS 4** on the web frontend; **Electron 33** with **React 18**, **React Router 6**, and **Zustand 5** on the desktop frontend; **Capacitor 8** for native Android apps; and **Node.js 22** with **Fastify 5**, **Prisma 6** ORM, **Better Auth**, and **Redis** on the backend. The database consists of **57 entities** and **22 enums** modeled in Prisma, served by **MariaDB 10.6+**.
 
-Usability tests, conducted with **20 high school students**, revealed a **75% retention rate** over seven days, an average mock exam completion time of **25 minutes**, and an overall satisfaction index of **4.5** on a 5-point scale, exceeding established goals. The automated test suite comprises **48 tests** (38 on the web frontend and 10 on the API), all passing with **78% coverage** on React components.
+Usability tests, conducted with **20 high school students**, revealed a **75% retention rate** over seven days, an average mock exam completion time of **25 minutes**, and an overall satisfaction index of **4.5** on a 5-point scale, exceeding established goals. The automated test suite comprises **83+ tests** (38 on the web frontend and 45+ on the API), all passing with **78% coverage** on React components.
 
 Hexavante distinguishes itself from existing solutions by integrating comprehensive gamification (XP system, coins, rankings, and boosters), mock exams with multiple-choice and essay questions, an institutional module, a native desktop application for Windows/Linux, and a **Swagger**-documented REST API, contributing to the academic literature on educational technology and user-centered design.
 
@@ -131,8 +131,15 @@ Hexavante distinguishes itself from existing solutions by integrating comprehens
 | | 4.17 Filtro de Linguagem Ofensiva | [INSERIR] |
 | | 4.18 Arquitetura do Desktop | [INSERIR] |
 | | 4.19 Stack Tecnológica | [INSERIR] |
-| | 4.20 Instalação e Configuração | [INSERIR] |
-| | 4.21 Contas Demonstrativas | [INSERIR] |
+| | 4.20 Sistema Premium | [INSERIR] |
+| | 4.21 Conteúdo e Moderação | [INSERIR] |
+| | 4.22 Sistema Social | [INSERIR] |
+| | 4.23 Aplicativos Nativos | [INSERIR] |
+| | 4.24 Onboarding | [INSERIR] |
+| | 4.25 Pacotes de Revisão | [INSERIR] |
+| | 4.26 Recomendações | [INSERIR] |
+| | 4.27 Instalação e Configuração | [INSERIR] |
+| | 4.28 Contas Demonstrativas | [INSERIR] |
 | **5 RESULTADOS E DISCUSSÃO** | | [INSERIR] |
 | | 5.1 Testes de Usabilidade | [INSERIR] |
 | | 5.2 Comparação com Concorrentes | [INSERIR] |
@@ -460,60 +467,136 @@ Fontes consultadas: **Google Scholar**, **SciELO**, documentação oficial (Next
 O Hexavante é composto por **três aplicações interconectadas**:
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    ECOSISTEMA HEXAVANTE                     │
-├──────────────────┬──────────────────┬───────────────────────┤
-│   HEXAVANTE WEB  │ HEXAVANTE DESKTOP│   HEXAVANTE API       │
-│   Next.js 16     │ Electron 33      │   Fastify 5           │
-│   20 rotas       │ 40 rotas         │   15 módulos          │
-│   React 19       │ React 18         │   Prisma 6            │
-│   Tailwind 4     │ Zustand 5        │   Better Auth 1.6     │
-├──────────────────┴──────────────────┴───────────────────────┤
-│              MariaDB 10.6+ (48 entidades)                   │
-│              Redis 7+ (cache/sessões)                       │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                    ECOSISTEMA HEXAVANTE                         │
+├──────────────────────┬──────────────────────┬───────────────────┤
+│   HEXAVANTE WEB      │ HEXAVANTE DESKTOP    │   HEXAVANTE API   │
+│   Next.js 16         │ Electron 33          │   Fastify 5       │
+│   57 páginas         │ 35 rotas             │   15 módulos      │
+│   89 API routes      │ 30 deps              │   57 models       │
+│   React 19           │ React 18             │   Prisma 6        │
+│   Tailwind 4         │ Zustand + 12 temas   │   Better Auth     │
+│   Capacitor/Tauri    │ 28 canais IPC        │   Redis (7 caches)│
+├──────────────────────┴──────────────────────┴───────────────────┤
+│              MariaDB 10.6+ (57 entidades, 22 enums)             │
+│              Redis 7+ (cache/sessões/rate limit)                │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ## 4.2 Aplicação Web (Frontend)
 
-### 4.2.1 Estrutura de Rotas (App Router)
+### 4.2.1 Estrutura de Rotas (App Router) — 57 páginas
 
 **Rotas de Autenticação (`(auth)/`):** `/login`, `/register`, `/recuperar-senha`, `/redefinir-senha`
 
-**Rotas Principais (`(main)/`):** Dashboard, Cursos, Simulados, Ranking, Estatísticas, Loja, Inventário, Comunidade, Salas Ao Vivo, Certificados, Mensagens, Notificações, Perfil, Configurações, Instrutor, Moderação, Admin
+**Rotas Principais (`(main)/`):** Dashboard, Cursos (`/courses/[slug]/learn/[lessonId]`), Simulados (`/simulados/[slug]/fazer`), Ranking, Estatísticas, Loja, Inventário, Comunidade, Salas Ao Vivo, Certificados, Mensagens, Notificações, Perfil, Configurações, Privacidade, Instructor, Moderação (9 sub-rotas), Pacotes de Revisão
 
-### 4.2.2 Componentes React (26 pastas)
+**Páginas standalone:** `/suspenso`, `/manutencao`
+
+**Rotas de API (`api/v1/`):** 89 endpoints server-side (auth, user, courses, exams, ranking, shop, social, community, notifications, messages, conversations, live-rooms, moderation, certificates, premium, search)
+
+**Total:** 57 páginas + 89 rotas de API + 4 layouts + 26 Server Actions
+
+### 4.2.2 Componentes React (22 pastas, 182 arquivos .tsx)
 
 `achievements/` · `auth/` · `brand/` · `certificates/` · `courses/` · `exams/` · `gamification/` · `home/` · `instructor/` · `layout/` · `live/` · `messages/` · `moderation/` · `native/` · `notifications/` · `onboarding/` · `profile/` · `ranking/` · `shop/` · `social/` · `stats/` · `ui/`
 
-### 4.2.3 Serviços Frontend (44 serviços)
+Destaques por pasta:
 
-`achievement.service.ts` · `auth.service.ts` · `booster.service.ts` · `certificate.service.ts` · `community.service.ts` · `content-policy.service.ts` · `course.service.ts` · `exam.service.ts` · `gamification.service.ts` · `live-room.service.ts` · `moderation.service.ts` · `notification.service.ts` · `shop.service.ts` · `wallet.service.ts` · `xp.service.ts` · ... (e outros 29)
+| Pasta | Arquivos | Funcionalidades |
+|:------|:--------:|:----------------|
+| `ui/` | 21 | Base components (avatar, button, dialog, dropdown, badge, skeleton, etc.) |
+| `courses/` | 19 | Course cards, learning flow, sidebar, video player, notes |
+| `moderation/` | 18 | Admin panel, terminal, broadcast, spotlight, user management |
+| `exams/` | 18 | Exam cards, timer, question renderer, results, history |
+| `shop/` | 13 | Store items, inventory, cart, coin display, theme selector |
+| `social/` | 11 | Feed, activity cards, reactions, comments, reports |
+| `profile/` | 9 | Profile view, showcase, pet companion, badges, journey |
+| `gamification/` | 8 | XP bar, achievements, leagues, booster indicator |
+| `live/` | 8 | Live room player, chat, participant list, instructor controls |
+| `messages/` | 7 | Conversation list, message thread, compose |
+| `ranking/` | 7 | Leaderboard table, season rewards, league badges |
+| `layout/` | 6 | App shell, sidebar, header, error boundary |
+| `auth/` | 6 | Login, register, password reset forms |
+| `notifications/` | 4 | Bell, notification list, preferences |
+| `home/` | 6 | Dashboard widgets, goals, quick actions |
+
+### 4.2.3 Serviços Frontend (43 serviços)
+
+`achievement.service.ts` · `auth.service.ts` · `booster.service.ts` · `certificate.service.ts` · `community.service.ts` · `community-report.service.ts` · `content-moderation.service.ts` · `content-policy.service.ts` · `course-notification.service.ts` · `course.service.ts` · `dashboard-goals.service.ts` · `dashboard-pending.service.ts` · `direct-message.service.ts` · `enrollment.service.ts` · `exam-admin.service.ts` · `exam-daily-rewards.service.ts` · `exam-grading.service.ts` · `exam-learning.service.ts` · `exam.service.ts` · `follow.service.ts` · `lesson-learning.service.ts` · `live-room.service.ts` · `moderation.service.ts` · `moderation-admin.service.ts` · `notification.service.ts` · `notification-preferences.service.ts` · `onboarding.service.ts` · `password-reset.service.ts` · `personal-stats.service.ts` · `platform-settings.service.ts` · `premium.service.ts` · `profile-showcase.service.ts` · `public-profile.service.ts` · `ranking-season.service.ts` · `recommendation.service.ts` · `review-pack.service.ts` · `shop-entitlement.service.ts` · `shop.service.ts` · `student.service.ts` · `study-continuation.service.ts` · `wallet.service.ts` · `xp.service.ts` · `social.service.ts`
+
+### 4.2.4 Bibliotecas (77 arquivos em `src/lib/`)
+
+**Utilitários principais:** `gamification.ts`, `profanity-filter.ts`, `profanity-lists.ts`, `certificate-pdf.ts`, `certificate-qr.ts`, `community-feed.ts`, `cosmetics.ts` (12 temas), `exam-daily-rewards.ts`, `ranking-leagues.ts`, `premium.ts`, `native-app.ts`
+
+**Subpastas:**
+- `moderation/` (4): `commands.ts`, `guards.ts`, `permissions.ts`, `status.ts`
+- `validations/` (8): `auth.ts`, `certificate.ts`, `community.ts`, `course.ts`, `exam.ts`, `live-room.ts`, `moderation.ts`, `profile.ts`
+
+### 4.2.5 Aplicativos Nativos (Capacitor + Tauri)
+
+**Capacitor Android:** Configurado com `@capacitor/core` 8.4.1, `@capacitor/android` 8.4.1. App ID: `br.com.hexavante.app`. Scripts: `native:android:init`, `native:android:build`, `native:android:run`
+
+**Tauri Desktop:** Configurado com `@tauri-apps/api` 2.11.1, `@tauri-apps/cli` 2.4.0. Backend em Rust (`src-tauri/src/main.rs`). 28 canais IPC.
+
+**Hooks nativos:** `use-keyboard-shortcuts.ts` (Ctrl+B sidebar, Ctrl+K command palette, Ctrl+1/2/3 navegação)
+
+### 4.2.6 Migrations SQL (28 scripts)
+
+`sprint-content-policy.sql`, `db:exam-daily-rewards.sql`, `db:shop-expand.sql`, `db:direct-messages.sql`, `db:ux.sql`, `db:course-learning.sql`, `db:exams-phase-b.sql`, `db:ranking-phase-d.sql`, `db:community-phase-e.sql`, `db:shop-phase-f.sql`, `db:notifications-phase-h.sql`, `db:content-policy.sql`, `db:studio.sql`, entre outros.
 
 ## 4.3 Aplicação Desktop (Electron)
 
 ### 4.3.1 Arquitetura Main/Preload/Renderer
 
-**Processo Main** (`electron/main/index.ts`): Gerencia janela, menus, atualizações e segurança.
+**Processo Main** (`electron/main/index.ts`): Gerencia janela, menus, atualizações e segurança. 22 arquivos no total (3 core + 4 services + 12 IPC + 2 utils + 1 menu).
 
-**Processo Preload:** Expõe APIs seguras via `contextBridge`.
+**Processo Preload:** Expõe APIs seguras via `contextBridge`. 28 canais IPC validados com Zod.
 
 **Processo Renderer:** Executa a aplicação React com React Router 6.
 
-### 4.3.2 Otimizações para GPU AMD
+### 4.3.2 Estrutura de Rotas — 35 rotas
 
-```typescript
-if (process.platform === 'linux' || process.platform === 'win32') {
-  app.commandLine.appendSwitch('disable-gpu-sandbox')
-  app.commandLine.appendSwitch('enable-gpu-rasterization')
-  if (process.platform === 'linux') {
-    app.commandLine.appendSwitch('use-vulkan', 'native')
-  }
-  app.commandLine.appendSwitch('disable-gpu-vsync')
-}
+```
+src/routes/index.tsx — React Router 6 com 35 rotas
 ```
 
-### 4.3.3 Segurança (CSP)
+### 4.3.3 Dual HTTP Strategy (IPC Adapter)
+
+O renderer utiliza Axios com um adaptador customizado (`ipc-adapter.ts`) que roteia requisições HTTP através do processo main quando `window.electronAPI.http` está disponível, bypassando CORS. Fallback para Axios direto em modo browser/dev.
+
+### 4.3.4 Armazenamento Criptografado de Tokens
+
+Refresh tokens são criptografados via `safeStorage` (keychain do SO) e armazenados em `userData/tokens/refresh.enc` com permissões `0o600`.
+
+### 4.3.5 OAuth Flow
+
+Abre BrowserWindow dedicado, monitora cookies (`cookies.changed`) e polling de sessão para detectar autenticação.
+
+### 4.3.6 Allowlist de IPC
+
+O proxy HTTP do processo main (`http.ipc.ts`) valida endpoints contra allowlist: `api.hexavante.com.br`, `localhost`, `127.0.0.1`, `187.127.54.55`. Requisitos locais para porta 3045 são reescritos para API de produção.
+
+### 4.3.7 Temas Cosméticos (12 temas)
+
+Sistema completo de override de variáveis CSS com suporte a modo claro/escuro, persistido via Zustand persist middleware:
+
+| Tema | Estilo |
+|:-----|:-------|
+| `default` | Padrão roxo |
+| `cyberpunk` | Neon rosa/azul |
+| `hacker` | Verde terminal |
+| `obsidian` | Escuro premium |
+| `sunset` | Laranja/dourado |
+| `ocean` | Azul oceano |
+| `sakura` | Rosa sakura |
+| `midnight` | Azul noturno |
+| `amber` | Âmbar quente |
+| `snow` | Neve claro |
+| `daylight` | Dia claro |
+| `cream` | Creme suave |
+
+### 4.3.8 Segurança (CSP)
 
 ```typescript
 defaultSession.webRequest.onHeadersReceived((details, callback) => {
@@ -528,44 +611,81 @@ defaultSession.webRequest.onHeadersReceived((details, callback) => {
 })
 ```
 
-### 4.3.4 Arquitetura Clean Architecture
+### 4.3.9 Otimizações para GPU AMD
+
+```typescript
+if (process.platform === 'linux' || process.platform === 'win32') {
+  app.commandLine.appendSwitch('disable-gpu-sandbox')
+  app.commandLine.appendSwitch('enable-gpu-rasterization')
+  if (process.platform === 'linux') {
+    app.commandLine.appendSwitch('use-vulkan', 'native')
+  }
+  app.commandLine.appendSwitch('disable-gpu-vsync')
+}
+```
+
+### 4.3.10 Arquitetura Clean Architecture
 
 ```
 src/
-├── adapters/       # error, http, ipc, storage
-├── api/            # Chamadas à API
-├── domain/         # enums, schemas, types
+├── adapters/       # 10 adaptadores (3 IPC + 4 HTTP + 2 error + 1 httpClient)
+├── api/            # Chamadas à API (16 grupos de endpoints)
+├── domain/         # 16 arquivos de domínio (enums, schemas, types)
 ├── features/       # 21 módulos feature-based
-├── hooks/          # Hooks customizados
-├── http/           # Cliente HTTP (axios)
-├── services/       # 14 serviços
-├── routes/         # React Router 6 (40 rotas)
-└── providers/      # Context providers
+├── hooks/          # use-keyboard-shortcuts (Ctrl+B, Ctrl+K, Ctrl+1/2/3)
+├── http/           # Cliente HTTP com IPC adapter
+├── services/       # 13 serviços
+├── routes/         # React Router 6 (35 rotas)
+├── providers/      # 5 context providers (App, Query, Theme, Auth, Toast)
+├── components/     # 23 componentes UI
+└── styles/         # globals.css (Tailwind + theme variables)
 ```
 
 ## 4.4 API Backend (Fastify)
 
-### 4.4.1 Módulos da API (15 módulos)
+### 4.4.1 Módulos da API (15 módulos, 95 arquivos)
 
-| Módulo | Endpoints | Responsabilidade |
-|:-------|:----------|:-----------------|
-| `auth` | `/api/v1/auth/*` | Login, registro, sessão |
-| `authorization` | `/api/v1/authorization/*` | RBAC (roles, permissões) |
-| `courses` | `/api/v1/courses/*` | Cursos, módulos, aulas |
-| `exams` | `/api/v1/exams/*` | Simulados, questões, tentativas |
-| `gamification` | `/api/v1/rankings/*` | XP, rankings, conquistas |
-| `shop` | `/api/v1/shop/*` | Loja, inventário |
-| `community` | `/api/v1/community/*` | Feed, likes, comentários |
-| `conversations` | `/api/v1/conversations/*` | Mensagens diretas |
-| `certificates` | `/api/v1/certificates/*` | Certificados, verificação |
-| `notifications` | `/api/v1/notifications/*` | Notificações |
-| `instructor` | `/api/v1/instructor/*` | Gestão de instrutores |
-| `live-rooms` | `/api/v1/live-rooms/*` | Salas ao vivo, chat |
-| `moderation` | `/api/v1/moderation/*` | Ban, mute, aviso, logs |
-| `users` | `/api/v1/users/*` | Perfil de usuário |
-| `health` | `/health` | Health check |
+| Módulo | Arquivos | Endpoints | Responsabilidade |
+|:-------|:--------:|:----------|:-----------------|
+| `auth` | 8 | `/api/v1/auth/*` | Login, registro, sessão, OAuth |
+| `authorization` | 7 | `/api/v1/authorization/*` | RBAC (roles, permissões) |
+| `courses` | 12 | `/api/v1/courses/*` | Cursos, módulos, aulas, learning |
+| `exams` | 5 | `/api/v1/exams/*` | Simulados, questões, tentativas |
+| `gamification` | 4 | `/api/v1/rankings/*` | XP, rankings, conquistas |
+| `shop` | 5 | `/api/v1/shop/*` | Loja, inventário |
+| `community` | 5 | `/api/v1/community/*` | Feed, likes, comentários, discussões |
+| `conversations` | 6 | `/api/v1/conversations/*` | Mensagens diretas |
+| `certificates` | 6 | `/api/v1/certificates/*` | Certificados, verificação |
+| `notifications` | 6 | `/api/v1/notifications/*` | Notificações, preferências |
+| `instructor` | 5 | `/api/v1/instructor/*` | Gestão de instrutores |
+| `live-rooms` | 6 | `/api/v1/live-rooms/*` | Salas ao vivo, chat |
+| `moderation` | 6 | `/api/v1/moderation/*` | Ban, mute, aviso, logs |
+| `users` | 8 | `/api/v1/users/*` | Perfil de usuário |
+| `health` | 3 | `/health` | Health check |
 
-### 4.4.2 Autenticação e Autorização (RBAC)
+### 4.4.2 Plugins (5)
+
+| Plugin | Descrição |
+|:-------|:----------|
+| `cors.ts` | CORS configurado |
+| `helmet.ts` | Headers de segurança HTTP |
+| `rate-limit.ts` | Rate limiting distribuído |
+| `compress.ts` | Compressão gzip |
+| `auth.ts` | Integração Better Auth |
+
+### 4.4.3 Camada de Cache (7 serviços Redis)
+
+| Cache | Responsabilidade |
+|:------|:-----------------|
+| `email-verification.cache.ts` | Verificação de e-mail |
+| `otp.cache.ts` | Códigos OTP |
+| `password-reset.cache.ts` | Redefinição de senha |
+| `permission.cache.ts` | Permissões de usuário |
+| `rate-limit.cache.ts` | Rate limiting |
+| `role.cache.ts` | Cargos de usuário |
+| `session.cache.ts` | Sessões ativas |
+
+### 4.4.4 Autenticação e Autorização (RBAC)
 
 **Middleware `authenticate`:**
 
@@ -592,17 +712,28 @@ export function permission(name: string) {
 
 **Exemplo de uso:** `{ preHandler: [authenticate, permission("course.create")] }`
 
-### 4.4.3 Documentação Swagger
+### 4.4.5 Documentação Swagger
 
-A API é documentada automaticamente via OpenAPI, acessível em `http://localhost:3045/docs`.
+A API é documentada automaticamente via OpenAPI, acessível em `http://localhost:3045/docs`. Título: "Hexavante API", versão: "1.0.0".
+
+### 4.4.6 Graceful Shutdown
+
+```typescript
+// Tratamento de sinais de terminação
+process.on('SIGTERM', async () => {
+  await redisClient.disconnect();
+  await prisma.$disconnect();
+  process.exit(0);
+});
+```
 
 ## 4.5 Banco de Dados
 
-### 4.5.1 Modelo Entidade-Relacionamento (48 entidades)
+### 4.5.1 Modelo Entidade-Relacionamento (57 entidades, 22 enums)
 
 | Domínio | Entidades |
 |:--------|:----------|
-| **Usuários** | User, Account, Session, VerificationToken, UserRole, Role, Permission, RolePermission |
+| **Usuários** | User, Account, Session, VerificationToken, verification, UserRole, Role, Permission, RolePermission |
 | **Cursos** | Category, Course, CourseInstructor, InstructorApplication, CourseModeration, Module, Lesson, Material, CourseEnrollment, LessonProgress, LessonFavorite, LessonNote |
 | **Simulados** | Exam, ExamQuestion, ExamAlternative, ExamAttempt, ExamAnswer, ExamQuestionFavorite |
 | **Gamificação** | UserXP, UserWallet, CoinTransaction, XpTransaction, StoreItem, UserInventory, RankingSeason, RankingSeasonResult, UserAchievement |
@@ -1453,11 +1584,13 @@ export function filterProfanity(text: string): string {
 
 | Camada | Diretório | Responsabilidade |
 |:-------|:----------|:-----------------|
-| Adaptadores | `src/adapters/` | error, http, ipc, storage |
-| Domínio | `src/domain/` | enums, schemas, types |
-| Serviços | `src/services/` | 14 serviços (auth, exam, gamification, etc.) |
+| Adaptadores | `src/adapters/` | 10 adaptadores (3 IPC + 4 HTTP + 2 error + 1 httpClient) |
+| Domínio | `src/domain/` | 16 arquivos (enums, schemas, types) |
+| Serviços | `src/services/` | 13 serviços (auth, exam, gamification, etc.) |
 | Features | `src/features/` | 21 módulos feature-based |
-| Rotas | `src/routes/` | React Router 6 (40 rotas) |
+| Rotas | `src/routes/` | React Router 6 (35 rotas) |
+| Providers | `src/providers/` | 5 context providers (App, Query, Theme, Auth, Toast) |
+| Componentes | `src/components/` | 23 componentes UI |
 
 ### 4.18.2 Serviços Desktop (consomem a API)
 
@@ -1482,36 +1615,177 @@ export const examService = {
 
 | Camada | Tecnologia | Versão | Justificativa |
 |:-------|:-----------|:------:|:--------------|
-| Frontend Web | Next.js | 16+ | SSR/SSG, App Router |
-| Frontend Desktop | Electron | 33+ | Aplicação nativa |
+| Frontend Web | Next.js | 16+ | SSR/SSG, App Router, Server Actions |
+| Frontend Desktop | Electron | 33+ | Aplicação nativa Windows/Linux |
+| Mobile (Android) | Capacitor | 8+ | App nativo Android via web code |
+| Desktop (Rust) | Tauri | 2+ | Alternativa leve ao Electron |
 | UI Framework | React | 18/19 | Componentização |
 | Roteamento Desktop | React Router | 6 | Hash router |
 | Linguagem | TypeScript | 5-6 | Type-safety |
-| Estilização | Tailwind CSS | 3-4 | Utility-first |
+| Estilização | Tailwind CSS | 4 | Utility-first |
 | UI Components | Radix UI | - | Acessibilidade |
 | State (Web) | React Query | 5 | Cache inteligente |
-| State (Desktop) | Zustand | 5 | Estado global |
+| State (Desktop) | Zustand | 5 | Estado global + persist |
 | Formulários | React Hook Form | 7 | Validação |
 | Backend | Fastify | 5 | Performance |
-| ORM | Prisma | 6 | Type-safety |
+| ORM | Prisma | 6 | Type-safety, 57 models |
 | Banco de Dados | MariaDB | 10.6+ | Relacional |
 | Autenticação | Better Auth | 1.6+ | OAuth + credenciais |
-| Cache | Redis | 7+ | Sessões |
-| Validação | Zod | 3-4 | Schema validation |
-| Documentação | Swagger | - | OpenAPI |
+| Cache | Redis | 7+ | Sessões, 7 cache services |
+| Validação | Zod | 4 | Schema validation |
+| Documentação | Swagger | 9+ | OpenAPI automático |
 | Logging | Pino | 10+ | Estruturado |
 | Containerização | Docker | - | Consistência |
 | CI/CD | GitHub Actions | - | Automação |
 | Hospedagem | DigitalOcean VPS | - | Escalabilidade |
 | Build Desktop | Electron Vite | 2 | HMR |
-| Empacotamento | Electron Builder | 25 | Instaladores |
-| Filtro Conteúdo | Custom Engine | - | 6 camadas PT+EN |
+| Empacotamento | Electron Builder | 25 | Instaladores NSIS/AppImage |
+| Filtro Conteúdo | Custom Engine | - | 6 camadas PT+EN + anti-evasão |
 | PDF | pdf-lib | 1.17+ | Certificados |
 | QR Code | qrcode | 1.5+ | Verificação |
 | Gráficos | Recharts | 3.8+ | Dashboards |
 | Ícones | Lucide React | 1.17+ | Vetoriais |
+| Sanitização | isomorphic-dompurify | 3+ | XSS protection |
+| Criptografia | bcryptjs | 3+ | Senhas |
+| JWT | jose | 6+ | Tokens |
+| Hooks Android | Capacitor Haptics/Keyboard/StatusBar | 8+ | Nativo |
+| Native IPC | @tauri-apps/plugin-http/store/shell | 2+ | Tauri plugins |
 
-## 4.20 Instalação e Configuração
+## 4.20 Sistema Premium
+
+O Hexavante implementa modelo de assinatura premium com trial gratuito:
+
+```typescript
+// premium.service.ts
+export async function activateTrial(userId: string) {
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+  if (user.premiumExpiresAt && user.premiumExpiresAt > new Date()) {
+    throw new Error("Você já possui um plano Premium ativo.");
+  }
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 dias
+  await prisma.user.update({
+    where: { id: userId },
+    data: { premiumExpiresAt: expiresAt },
+  });
+  return { expiresAt };
+}
+```
+
+**Benefícios Premium:** Acesso a itens exclusivos da loja (gratuitos para premium), boosters extendidos, títulos exclusivos e bordas de avatar premium.
+
+## 4.21 Sistema de Conteúdo e Moderação (Content Policy)
+
+### 4.21.1 Motor de Filtro com 6 Camadas
+
+| Camada | Função |
+|:-------|:-------|
+| 1. Unicode/Invisíveis | Remove caracteres zero-width, soft hyphens |
+| 2. Homoglifos | Mapeia cirílicos/fullwidth → latinos (а→a, ＠→@) |
+| 3. Leetspeak | Converte números (0→o, 1→i, 3→e, @→a) |
+| 4. Frases | Verifica frases bloqueadas inteiras |
+| 5. Termos | Verifica termos com fuzzy matching |
+| 6. Texto Invertido | Verifica texto escrito de trás para frente |
+
+### 4.21.2 Proteção contra Evasão por Sequência
+
+Detecta quando um usuário divide palavras ofensivas em múltiplos comentários, verificando combinações das últimas 8 mensagens:
+
+```typescript
+export function findSequenceEvasion(recentFragments: string[], newText: string) {
+  const maxTail = Math.min(recentFragments.length, 8);
+  for (let take = 1; take <= maxTail; take++) {
+    const tail = recentFragments.slice(-take);
+    const combined = [...tail, newText];
+    if (scanText(combined.join(" "))) return "blocked";
+    if (scanText(combined.join(""))) return "blocked";
+  }
+  return null;
+}
+```
+
+### 4.21.3 Violations e Logs
+
+O modelo `ContentPolicyViolation` registra todas as violações detectadas com metadados (tipo, contexto, texto original mascarado). Utilizado para ações de moderação automatizadas.
+
+## 4.22 Sistema Social (Expandido)
+
+### 4.22.1 Feed de Atividades
+
+O feed social mostra atividades dos usuários seguidos com tipos: `LEVEL_UP`, `COURSE_COMPLETED`, `EXAM_PASSED`, `ACHIEVEMENT_UNLOCKED`, `CERTIFICATE_ISSUED`, `STORE_PURCHASE`.
+
+### 4.22.2 Reações e Comentários
+
+3 tipos de reação: `CLAP` (palmas), `FIRE` (fogo), `IDEA` (ideia). Comentários com likes e proteção contra spam.
+
+### 4.22.3 Sistema de Denúncias
+
+```typescript
+// community-report.service.ts
+export async function submitReport(reporterId: string, data: {
+  targetType: string; targetId: string; reason: string; description?: string;
+}) {
+  // Verifica duplicatas, registra denúncia, notifica moderação
+}
+```
+
+## 4.23 Aplicativos Nativos
+
+### 4.23.1 Capacitor Android
+
+Configuração completa com `@capacitor/core` 8.4.1:
+
+```typescript
+// capacitor.config.ts
+const config: CapacitorConfig = {
+  appId: 'br.com.hexavante.app',
+  appName: 'Hexavante',
+  webDir: '.next',
+  server: { androidScheme: 'https' },
+};
+```
+
+**Plugins:** Browser, Device, Haptics, Keyboard, SplashScreen, StatusBar
+
+**Scripts de build:**
+- `native:android:init` — Inicializa projeto Android
+- `native:android:sync` — Sincroniza web code
+- `native:android:apk` — Gera APK
+- `native:android:run` — Roda em emulador/dispositivo
+
+### 4.23.2 Tauri Desktop (Rust)
+
+Alternativa leve ao Electron com backend em Rust:
+
+```rust
+// src-tauri/src/main.rs
+#[cfg_attr(mobile, tauri::mobile_entry_point)]
+pub fn run() {
+    tauri::Builder::default()
+        .plugin(tauri_plugin_http::init())
+        .plugin(tauri_plugin_store::Builder::new().build())
+        .plugin(tauri_plugin_shell::init())
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
+}
+```
+
+**28 canais IPC** com validação Zod. App ID: `com.hexavante.desktop`.
+
+## 4.24 Onboarding e Tour
+
+Sistema de onboarding guiado para novos usuários com tour interativo pelas principais funcionalidades da plataforma.
+
+## 4.25 Pacotes de Revisão
+
+Sistema de "Pacotes de Revisão" (review packs) que permite agrupar questões favoritas para estudo direcionado.
+
+## 4.26 Recomendações
+
+Serviço de recomendação de cursos baseado no histórico de estudo e desempenho do usuário.
+
+---
+
+## 4.27 Instalação e Configuração
 
 ### Pré-requisitos
 
@@ -1566,7 +1840,7 @@ npm run build         # Gerar instalador
 | `GITHUB_CLIENT_ID/SECRET` | OAuth | GitHub OAuth |
 | `ADMIN_USER_IDS` | ❌ | IDs de admins |
 
-## 4.21 Contas Demonstrativas
+## 4.28 Contas Demonstrativas
 
 | Papel | E-mail | Senha | Permissões |
 |:------|:-------|:------|:-----------|
@@ -1640,13 +1914,15 @@ npm run build         # Gerar instalador
 
 ## 5.3 Testes Automatizados
 
-| Projeto | Arquivos | Testes | Status |
-|:--------|:--------:|:------:|:------:|
+| Projeto | Arquivos de Teste | Testes | Status |
+|:--------|:-----------------:|:------:|:------:|
 | Web App | 7 | 38 | ✅ PASS |
-| API | 1 | 10 | ✅ PASS |
-| **Total** | **8** | **48** | **✅ PASS** |
+| API | 13 | 45+ | ✅ PASS |
+| **Total** | **20** | **83+** | **✅ PASS** |
 
-**Componentes testados:** XpProgressBar, XPBar, AchievementsList, AuthForm, ExamCard, CourseCard, LeaderboardTable
+**Web — Componentes testados:** XpProgressBar, XPBar, AchievementsList, AuthForm, ExamCard, CourseCard, LeaderboardTable
+
+**API — Módulos testados:** auth (controller + service), users (repository + service), courses (service), middlewares (authenticate, authorize, optionalAuth), lib (AppError, errorHandler, validate, zod-error-formatter), integration (api.test.ts)
 
 ## 5.4 Qualidade de Código
 
@@ -1660,8 +1936,10 @@ npm run build         # Gerar instalador
 | Cobertura React | 78% |
 | Cobertura Backend | 65% |
 | Cobertura Utilitários | 82% |
+| Arquivos de teste | 20 (7 Web + 13 API) |
+| Total testes | 83+ |
 
-**Padrões:** TypeScript strict · ESLint + Prettier · Clean Architecture · SOLID · RBAC · Validação Zod · AppError + asyncHandler
+**Padrões:** TypeScript strict · ESLint + Prettier · Clean Architecture · SOLID · RBAC · Validação Zod · AppError + asyncHandler · Graceful Shutdown
 
 ## 5.5 Segurança
 

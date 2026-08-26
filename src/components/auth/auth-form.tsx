@@ -1,12 +1,13 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
-import { Loader2, Lock, Mail } from "lucide-react";
+import { Loader2, Lock, Mail, Check } from "lucide-react";
 import type { ActionResult } from "@/app/actions/auth";
 import { AppLink } from "@/components/ui/app-link";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/cn";
@@ -62,8 +63,6 @@ export function AuthForm({
 
   useEffect(() => {
     if (state.success && state.redirectTo) {
-      // Navegação completa garante que o cookie JWT do login por credenciais
-      // esteja disponível antes do middleware avaliar a próxima rota.
       window.location.assign(state.redirectTo);
     }
   }, [state.success, state.redirectTo]);
@@ -135,6 +134,15 @@ export function AuthForm({
             </div>
           );
         })}
+
+        {formKind === "login" && (
+          <div className="flex items-center gap-2">
+            <Checkbox id="rememberMe" name="rememberMe" />
+            <Label htmlFor="rememberMe" className="text-sm font-normal text-slate-300 cursor-pointer">
+              Lembrar-me
+            </Label>
+          </div>
+        )}
 
         {state.error && (
           <Alert variant={Object.keys(fieldErrors).length ? "warning" : "danger"}>

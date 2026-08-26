@@ -171,6 +171,7 @@ export async function registerAction(
 export async function loginAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
   const email = formData.get("email");
   const password = formData.get("password");
+  const rememberMe = formData.get("rememberMe") !== "false";
   const callbackUrl = (formData.get("callbackUrl") as string) || "/";
   if (!isSafeRedirect(callbackUrl)) {
     return { success: false, error: "URL de redirecionamento inválida." };
@@ -188,7 +189,7 @@ export async function loginAction(_prev: ActionResult, formData: FormData): Prom
   await clearStaleSessionCookies();
 
   try {
-    const res = await fetch(`${API_URL}/api/auth/sign-in/email`, {
+    const res = await fetch(`${API_URL}/api/v1/auth/login-with-session`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -197,6 +198,7 @@ export async function loginAction(_prev: ActionResult, formData: FormData): Prom
       body: JSON.stringify({
         email: parsed.data.email,
         password: parsed.data.password,
+        rememberMe,
       }),
     });
 
