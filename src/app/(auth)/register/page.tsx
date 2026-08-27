@@ -1,10 +1,8 @@
 import { AppLink } from "@/components/ui/app-link";
 import { AuthForm } from "@/components/auth/auth-form";
 import { AuthPageShell } from "@/components/auth/auth-page-shell";
-import { OAuthButtons } from "@/components/auth/oauth-buttons";
 import { registerAction } from "@/app/actions/auth";
 import { getSafeCallbackUrl } from "@/lib/auth-routes";
-import { oauthProviders } from "@/lib/oauth";
 
 type Props = {
   searchParams: Promise<{ callbackUrl?: string }>;
@@ -16,9 +14,7 @@ export default async function RegisterPage({ searchParams }: Props) {
 
   return (
     <AuthPageShell>
-      <OAuthButtons callbackUrl={safeCallback} providers={oauthProviders} />
-
-      <div className="mt-6">
+      <div className="w-full">
         <AuthForm
           embedded
           title="Criar conta"

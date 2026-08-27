@@ -7,11 +7,11 @@ interface ApiSessionResponse {
     name: string;
     email: string;
     username: string | null;
+    avatarUrl: string | null;
     roles: string[];
   } | null;
   session?: {
-    impersonatedBy: string | null;
-    impersonator: { id: string; username: string | null } | null;
+    expiresAt: string;
   };
 }
 
@@ -25,8 +25,7 @@ export interface AuthSession {
     roles: string[];
   } | null;
   session?: {
-    impersonatedBy: string | null;
-    impersonator: { id: string; username: string | null } | null;
+    expiresAt: string;
   };
   expires: string;
 }

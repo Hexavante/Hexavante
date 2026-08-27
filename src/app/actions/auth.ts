@@ -46,27 +46,16 @@ function mapZodErrors(error: ZodError) {
 
 const API_URL = getApiUrl();
 
+const COOKIE_NAMES = [
+  "hexavante.session_token",
+  "__Secure-hexavante.session_token",
+];
+
 async function clearStaleSessionCookies() {
   const cookieStore = await cookies();
-  const sessionCookieNames = [
-    "hexavante.session_token",
-    "__Secure-hexavante.session_token",
-  ];
-  for (const name of sessionCookieNames) {
+  for (const name of COOKIE_NAMES) {
     cookieStore.delete(name);
   }
-}
-
-async function setSessionCookie(name: string, value: string, maxAge: number) {
-  const cookieStore = await cookies();
-  cookieStore.set(name, value, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "lax",
-    path: "/",
-    maxAge,
-    domain: ".hexavante.com.br",
-  });
 }
 
 export async function registerAction(
@@ -95,14 +84,14 @@ export async function registerAction(
   }
 
   try {
-    const res = await fetch(`${API_URL}/api/auth/sign-up/email`, {
+    const res = await fetch(`${API_URL}/api/v1/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Origin: WEB_ORIGIN,
       },
       body: JSON.stringify({
-        name: parsed.data.fullName,
+        fullName: parsed.data.fullName,
         email: parsed.data.email,
         password: parsed.data.password,
         username: parsed.data.username,
@@ -129,7 +118,7 @@ export async function registerAction(
     await clearStaleSessionCookies();
 
     // After registration, login to get the session cookie
-    const loginRes = await fetch(`${API_URL}/api/v1/auth/login-with-session`, {
+    const loginRes = await fetch(`${API_URL}/api/v1/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -138,16 +127,23 @@ export async function registerAction(
       body: JSON.stringify({
         email: parsed.data.email,
         password: parsed.data.password,
-        rememberMe: true,
       }),
     });
 
     if (loginRes.ok) {
       const loginData = await loginRes.json() as {
-        session?: { token: string; maxAge: number };
+        session?: { token: string; expiresAt: string };
       };
       if (loginData.session) {
-        await setSessionCookie("__Secure-hexavante.session_token", loginData.session.token, loginData.session.maxAge);
+        const cookieStore = await cookies();
+        cookieStore.set("__Secure-hexavante.session_token", loginData.session.token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          path: "/",
+          maxAge: 7 * 24 * 60 * 60, // 7 days
+          domain: process.env.NODE_ENV === "production" ? ".hexavante.com.br" : undefined,
+        });
       }
     }
 
@@ -163,7 +159,6 @@ export async function registerAction(
 export async function loginAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
   const email = formData.get("email");
   const password = formData.get("password");
-  const rememberMe = formData.get("rememberMe") !== "false";
   const callbackUrl = (formData.get("callbackUrl") as string) || "/";
   if (!isSafeRedirect(callbackUrl)) {
     return { success: false, error: "URL de redirecionamento inválida." };
@@ -181,7 +176,7 @@ export async function loginAction(_prev: ActionResult, formData: FormData): Prom
   await clearStaleSessionCookies();
 
   try {
-    const res = await fetch(`${API_URL}/api/v1/auth/login-with-session`, {
+    const res = await fetch(`${API_URL}/api/v1/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -190,7 +185,6 @@ export async function loginAction(_prev: ActionResult, formData: FormData): Prom
       body: JSON.stringify({
         email: parsed.data.email,
         password: parsed.data.password,
-        rememberMe,
       }),
     });
 
@@ -200,11 +194,19 @@ export async function loginAction(_prev: ActionResult, formData: FormData): Prom
 
     const data = await res.json() as {
       user: { id: string; name: string; email: string; username: string; roles: string[] };
-      session?: { token: string; maxAge: number };
+      session?: { token: string; expiresAt: string };
     };
 
     if (data.session) {
-      await setSessionCookie("__Secure-hexavante.session_token", data.session.token, data.session.maxAge);
+      const cookieStore = await cookies();
+      cookieStore.set("__Secure-hexavante.session_token", data.session.token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 7 * 24 * 60 * 60, // 7 days
+        domain: process.env.NODE_ENV === "production" ? ".hexavante.com.br" : undefined,
+      });
     }
 
     return { success: true, redirectTo: callbackUrl };
