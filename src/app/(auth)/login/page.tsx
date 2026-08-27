@@ -1,20 +1,35 @@
 import { AppLink } from "@/components/ui/app-link";
 import { AuthForm } from "@/components/auth/auth-form";
 import { AuthPageShell } from "@/components/auth/auth-page-shell";
+import { OAuthButtons } from "@/components/auth/oauth-buttons";
 import { loginAction } from "@/app/actions/auth";
 import { getSafeCallbackUrl } from "@/lib/auth-routes";
+import { oauthErrorMessages } from "@/lib/oauth";
+import { Alert } from "@/components/ui/alert";
 
 type Props = {
-  searchParams: Promise<{ callbackUrl?: string }>;
+  searchParams: Promise<{ callbackUrl?: string; error?: string }>;
 };
 
 export default async function LoginPage({ searchParams }: Props) {
-  const { callbackUrl } = await searchParams;
+  const { callbackUrl, error } = await searchParams;
   const safeCallback = getSafeCallbackUrl(callbackUrl);
+
+  const oauthError = error
+    ? oauthErrorMessages[error] ?? "Não foi possível entrar com a conta social."
+    : null;
 
   return (
     <AuthPageShell>
-      <div className="w-full">
+      <OAuthButtons callbackUrl={safeCallback} />
+
+      {oauthError && (
+        <Alert variant="danger" className="mt-4">
+          {oauthError}
+        </Alert>
+      )}
+
+      <div className="mt-6">
         <AuthForm
           embedded
           title="ENTRAR"

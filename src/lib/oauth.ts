@@ -1,18 +1,20 @@
 export const oauthProviders = {
   google: true,
   github: true,
+  // microsoft: true, // descomentar quando tiver credenciais
 } as const;
 
 export function hasOAuthProviders() {
-  return true;
+  return oauthProviders.google || oauthProviders.github;
 }
 
 export const oauthErrorMessages: Record<string, string> = {
-  OAuthAccountNotLinked:
-    "Não foi possível vincular esta conta social ao seu e-mail. Tente entrar com e-mail e senha.",
-  OAuthSignin: "Não foi possível iniciar o login social. Tente novamente.",
-  OAuthCallback: "Falha ao concluir o login social. Verifique as credenciais OAuth.",
-  AccessDenied:
-    "Não foi possível concluir o login social. Verifique se o provedor retornou seu e-mail ou use e-mail e senha.",
-  Configuration: "Login social não configurado corretamente no servidor.",
+  oauth_invalid_state: "Sessão OAuth expirada. Tente novamente.",
+  oauth_no_code: "Não foi possível autenticar. Tente novamente.",
+  oauth_token_exchange: "Falha ao autenticar com o provedor. Tente novamente.",
+  oauth_no_token: "Não foi possível obter credenciais do provedor.",
+  oauth_no_email: "O provedor não retornou seu e-mail. Use e-mail e senha.",
+  oauth_callback_error: "Erro ao processar autenticação. Tente novamente.",
+  oauth_provider_not_found: "Provedor não suportado.",
+  provider_not_found: "Provedor não suportado.",
 };
