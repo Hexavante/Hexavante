@@ -1,6 +1,6 @@
 export const oauthProviders = {
-  google: true,
-  github: true,
+  // google: true, // habilitar quando configurar Google Cloud Console
+  // github: true, // habilitar quando configurar GitHub OAuth App
   // microsoft: true, // descomentar quando tiver credenciais
 } as const;
 
