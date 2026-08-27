@@ -17,8 +17,7 @@ export interface SessionUser {
 export interface Session {
   user: SessionUser | null;
   session?: {
-    impersonatedBy: string | null;
-    impersonator: { id: string; username: string | null } | null;
+    expiresAt: string;
   };
 }
 
@@ -54,7 +53,7 @@ export function useSignOut() {
 
   return useMutation({
     mutationFn: async () => {
-      const res = await fetch(`${API_URL}/api/auth/sign-out`, {
+      const res = await fetch(`${API_URL}/api/v1/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
