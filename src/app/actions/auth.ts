@@ -57,46 +57,16 @@ async function clearStaleSessionCookies() {
   }
 }
 
-async function setSessionCookies(response: Response) {
-  const setCookieHeaders = response.headers.getSetCookie?.() ?? [];
+async function setSessionCookie(name: string, value: string, maxAge: number) {
   const cookieStore = await cookies();
-  for (const cookie of setCookieHeaders) {
-    const parts = cookie.split(";");
-    const [name, ...rest] = parts[0].split("=");
-    if (name && rest.length > 0) {
-      const name_trimmed = name.trim();
-      const attrs: Record<string, string | boolean | number | Date> = {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: name_trimmed.startsWith("__Secure-") || process.env.NODE_ENV === "production",
-      };
-      for (let i = 1; i < parts.length; i++) {
-        const part = parts[i].trim();
-        const separator = part.indexOf("=");
-        const key = (separator === -1 ? part : part.slice(0, separator)).trim().toLowerCase();
-        const value = separator === -1 ? "" : part.slice(separator + 1).trim();
-        if (key === "samesite") {
-          attrs.sameSite = value.toLowerCase() as "lax" | "strict" | "none";
-        } else if (key === "domain") {
-          attrs.domain = value;
-        } else if (key === "path") {
-          attrs.path = value || "/";
-        } else if (key === "max-age") {
-          const maxAge = Number(value);
-          if (Number.isFinite(maxAge)) attrs.maxAge = maxAge;
-        } else if (key === "expires") {
-          const expires = new Date(value);
-          if (!Number.isNaN(expires.getTime())) attrs.expires = expires;
-        } else if (key === "secure") {
-          attrs.secure = true;
-        } else if (key === "httponly") {
-          attrs.httpOnly = true;
-        }
-      }
-      cookieStore.set(name_trimmed, decodeURIComponent(rest.join("=")), attrs);
-    }
-  }
+  cookieStore.set(name, value, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    path: "/",
+    maxAge,
+    domain: ".hexavante.com.br",
+  });
 }
 
 export async function registerAction(
@@ -157,7 +127,29 @@ export async function registerAction(
     }
 
     await clearStaleSessionCookies();
-    await setSessionCookies(res);
+
+    // After registration, login to get the session cookie
+    const loginRes = await fetch(`${API_URL}/api/v1/auth/login-with-session`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Origin: WEB_ORIGIN,
+      },
+      body: JSON.stringify({
+        email: parsed.data.email,
+        password: parsed.data.password,
+        rememberMe: true,
+      }),
+    });
+
+    if (loginRes.ok) {
+      const loginData = await loginRes.json() as {
+        session?: { token: string; maxAge: number };
+      };
+      if (loginData.session) {
+        await setSessionCookie("__Secure-hexavante.session_token", loginData.session.token, loginData.session.maxAge);
+      }
+    }
 
     return { success: true, redirectTo: callbackUrl };
   } catch (error) {
@@ -206,7 +198,14 @@ export async function loginAction(_prev: ActionResult, formData: FormData): Prom
       return { success: false, error: "E-mail ou senha incorretos." };
     }
 
-    await setSessionCookies(res);
+    const data = await res.json() as {
+      user: { id: string; name: string; email: string; username: string; roles: string[] };
+      session?: { token: string; maxAge: number };
+    };
+
+    if (data.session) {
+      await setSessionCookie("__Secure-hexavante.session_token", data.session.token, data.session.maxAge);
+    }
 
     return { success: true, redirectTo: callbackUrl };
   } catch {
