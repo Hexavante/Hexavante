@@ -13,10 +13,8 @@ import {
   submitInstructorApplication,
 } from "@/services/moderation.service";
 import {
-  deleteCommunityPostByModerator,
   deleteCourseByModerator,
   deleteExamByModerator,
-  togglePinCommunityPost,
 } from "@/services/content-moderation.service";
 import { setExamPublished } from "@/services/exam-admin.service";
 import { revalidatePath } from "next/cache";
@@ -198,11 +196,6 @@ export async function resubmitCourseAction(courseId: string) {
   revalidatePath("/moderacao/cursos");
 }
 
-function revalidateCommunityPaths() {
-  revalidatePath("/social");
-  revalidatePath("/moderacao/conteudo");
-}
-
 function revalidateCoursePaths() {
   revalidatePath("/moderacao/conteudo");
   revalidatePath("/moderacao/cursos");
@@ -214,46 +207,6 @@ function revalidateExamPaths() {
   revalidatePath("/moderacao/conteudo");
   revalidatePath("/moderacao/simulados");
   revalidatePath("/simulados");
-}
-
-export async function deleteCommunityPostAction(activityId: string): Promise<ActionResult> {
-  try {
-    const moderator = await requireModerator();
-    await deleteCommunityPostByModerator(activityId, moderator.id);
-    revalidateCommunityPaths();
-    return { success: true, message: "Publicação removida." };
-  } catch (error) {
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : "Erro ao remover publicação.",
-    };
-  }
-}
-
-export async function togglePinCommunityPostAction(activityId: string): Promise<ActionResult & { isPinned?: boolean }> {
-  try {
-    const moderator = await requireModerator();
-    const result = await togglePinCommunityPost(activityId, moderator.id);
-    revalidateCommunityPaths();
-    return {
-      success: true,
-      isPinned: result.isPinned,
-      message: result.isPinned ? "Publicação fixada no topo." : "Publicação desfixada.",
-    };
-  } catch (error) {
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : "Erro ao fixar publicação.",
-    };
-  }
-}
-
-export async function deleteCommunityPostFormAction(activityId: string) {
-  const result = await deleteCommunityPostAction(activityId);
-  if (!result.success) {
-    throw new Error(result.error ?? "Erro ao remover publicação.");
-  }
-  redirect("/moderacao/conteudo");
 }
 
 export async function deleteCourseModeratorAction(courseId: string) {

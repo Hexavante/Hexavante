@@ -75,7 +75,7 @@ export function NotificationItem({ notification, compact = false, onRead, onNavi
   };
 
   if (notification.link) {
-    const href = resolveNotificationLink(notification.link) ?? "/social";
+    const href = resolveNotificationLink(notification.link) ?? "/";
     return (
       <Link href={href} onClick={handleActivate} className="block">
         {content}

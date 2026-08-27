@@ -76,11 +76,10 @@ const NAV_SECTIONS: NavSection[] = [
     ],
   },
   {
-    id: "community",
-    label: "Comunidade",
+    id: "social",
+    label: "Social",
     items: [
       { icon: Radio, label: "Ao vivo", href: "/live-rooms", requiresAuth: true },
-      { icon: Users, label: "Comunidade", href: "/social", requiresAuth: true },
       { icon: BarChart2, label: "Ranking", href: "/ranking" },
       { icon: Award, label: "Certificados", href: "/certificados", requiresAuth: true },
       {

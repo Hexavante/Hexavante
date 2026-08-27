@@ -147,7 +147,7 @@ export const NOTIFICATION_TYPE_META: Record<
 export function resolveNotificationLink(link: string | null): string | null {
   if (!link) return null;
   if (link === "/mensagens" || link.startsWith("/mensagens/")) {
-    return "/social";
+    return "/";
   }
   return link;
 }

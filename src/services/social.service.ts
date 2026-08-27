@@ -1,9 +1,7 @@
-import type { ActivityReactionType, Prisma, SocialActivityType } from "@prisma/client";
+import type { Prisma, SocialActivityType } from "@prisma/client";
 import type { FeedActivity, FeedEventMetadata } from "@/lib/social";
-import { parseTags } from "@/lib/community";
 import { filterProfanity } from "@/lib/profanity-filter";
 import { prisma } from "@/lib/prisma";
-import { getReactionSummary } from "@/services/community.service";
 
 function parseMetadata(value: Prisma.JsonValue): FeedEventMetadata {
   if (!value || typeof value !== "object" || Array.isArray(value)) return {};
@@ -13,6 +11,20 @@ function parseMetadata(value: Prisma.JsonValue): FeedEventMetadata {
     title: metadata.title ? filterProfanity(metadata.title) : metadata.title,
     body: metadata.body ? filterProfanity(metadata.body) : metadata.body,
   };
+}
+
+function parseTags(value: Prisma.JsonValue): string[] {
+  if (!value) return [];
+  if (Array.isArray(value)) return value.filter((t): t is string => typeof t === "string");
+  if (typeof value === "string") {
+    try {
+      const parsed = JSON.parse(value);
+      if (Array.isArray(parsed)) return parsed.filter((t: any): t is string => typeof t === "string");
+    } catch {
+      return value ? [value] : [];
+    }
+  }
+  return [];
 }
 
 export async function recordSocialActivity(
@@ -111,32 +123,25 @@ async function mapActivities(
     likes: Array<{ userId: string }>;
   }>,
   viewerId?: string,
-  reactionMap?: Map<
-    string,
-    { counts: Record<ActivityReactionType, number>; viewer: ActivityReactionType[] }
-  >,
 ): Promise<FeedActivity[]> {
-  return rows.map((row) => {
-    const reactions = reactionMap?.get(row.id);
-    return {
-      id: row.id,
-      type: row.type,
-      metadata: parseMetadata(row.metadata),
-      tags: parseTags(row.tags),
-      acceptedCommentId: row.acceptedCommentId,
-      isPinned: row.isPinned,
-      createdAt: row.createdAt,
-      likes: row._count.likes,
-      comments: row._count.comments,
-      likedByViewer: viewerId ? row.likes.some((like) => like.userId === viewerId) : false,
-      reactions: reactions?.counts ?? { CLAP: 0, FIRE: 0, IDEA: 0 },
-      viewerReactions: reactions?.viewer ?? [],
-      user: {
-        ...row.user,
-        fullName: filterProfanity(row.user.fullName),
-      },
-    };
-  });
+  return rows.map((row) => ({
+    id: row.id,
+    type: row.type,
+    metadata: parseMetadata(row.metadata),
+    tags: parseTags(row.tags),
+    acceptedCommentId: row.acceptedCommentId,
+    isPinned: row.isPinned,
+    createdAt: row.createdAt,
+    likes: row._count.likes,
+    comments: row._count.comments,
+    likedByViewer: viewerId ? row.likes.some((like) => like.userId === viewerId) : false,
+    reactions: { CLAP: 0, FIRE: 0, IDEA: 0 },
+    viewerReactions: [],
+    user: {
+      ...row.user,
+      fullName: filterProfanity(row.user.fullName),
+    },
+  }));
 }
 
 export async function getUserActivities(userId: string, viewerId?: string, limit = 20) {
@@ -157,15 +162,10 @@ export async function getUserActivities(userId: string, viewerId?: string, limit
     },
   });
 
-  const reactionMap = await getReactionSummary(
-    rows.map((row) => row.id),
-    viewerId,
-  );
-
-  return mapActivities(rows, viewerId, reactionMap);
+  return mapActivities(rows, viewerId);
 }
 
-export type SocialFeedMode = "explore" | "following" | "questions";
+export type SocialFeedMode = "explore" | "following";
 
 export type SocialFeedOptions = {
   mode: SocialFeedMode;
@@ -175,9 +175,7 @@ export type SocialFeedOptions = {
 };
 
 function buildFeedWhere(mode: SocialFeedMode, userIds?: string[]): Prisma.SocialActivityWhereInput {
-  const base: Prisma.SocialActivityWhereInput = {
-    ...(mode === "questions" ? { type: "DISCUSSION" } : {}),
-  };
+  const base: Prisma.SocialActivityWhereInput = {};
 
   if (userIds) {
     return { ...base, userId: { in: userIds } };
@@ -204,14 +202,12 @@ async function fetchFeedRows(where: Prisma.SocialActivityWhereInput, viewerId: s
 }
 
 export async function getSocialFeed(
-  modeOrLegacy: SocialFeedMode | "explore" | "following",
+  mode: SocialFeedMode,
   viewerId?: string,
   limit = 30,
   tag?: string,
 ) {
-  const mode = modeOrLegacy;
-  const options: SocialFeedOptions = { mode, viewerId, limit, tag };
-  return getSocialFeedAdvanced(options);
+  return getSocialFeedAdvanced({ mode, viewerId, limit, tag });
 }
 
 export async function getSocialFeedAdvanced({
@@ -237,11 +233,7 @@ export async function getSocialFeedAdvanced({
     const filtered = tag
       ? rows.filter((row) => parseTags(row.tags).includes(tag))
       : rows;
-    const reactionMap = await getReactionSummary(
-      filtered.map((row) => row.id),
-      viewerId,
-    );
-    return mapActivities(filtered, viewerId, reactionMap);
+    return mapActivities(filtered, viewerId);
   }
 
   const recentUsers = await prisma.socialActivity.findMany({
@@ -251,17 +243,11 @@ export async function getSocialFeedAdvanced({
     select: { userId: true },
   });
 
-  if (mode === "explore") {
-    await Promise.all(recentUsers.map((row) => syncUserActivitiesFromHistory(row.userId)));
-  }
+  await Promise.all(recentUsers.map((row) => syncUserActivitiesFromHistory(row.userId)));
 
   const rows = await fetchFeedRows(buildFeedWhere(mode), viewerId, tag ? limit * 3 : limit);
   const filtered = tag ? rows.filter((row) => parseTags(row.tags).includes(tag)).slice(0, limit) : rows;
-  const reactionMap = await getReactionSummary(
-    filtered.map((row) => row.id),
-    viewerId,
-  );
-  return mapActivities(filtered, viewerId, reactionMap);
+  return mapActivities(filtered, viewerId);
 }
 
 export async function toggleActivityLike(activityId: string, userId: string) {

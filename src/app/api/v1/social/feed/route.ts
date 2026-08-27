@@ -4,7 +4,7 @@ import { getOptionalBearerAuth } from "@/lib/api-auth";
 import { getSocialFeed, type SocialFeedMode } from "@/services/social.service";
 
 function parseMode(value: string | null): SocialFeedMode {
-  if (value === "following" || value === "questions" || value === "explore") return value;
+  if (value === "following" || value === "explore") return value;
   return "explore";
 }
 

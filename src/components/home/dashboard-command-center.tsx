@@ -49,11 +49,6 @@ const QUICK_ACTION_META: Record<
     tone: "hover:border-cyan-400/35 hover:bg-cyan-400/10",
     iconTone: "bg-cyan-400/15 text-cyan-300",
   },
-  "/social": {
-    icon: Users,
-    tone: "hover:border-violet-400/35 hover:bg-violet-400/10",
-    iconTone: "bg-violet-400/15 text-violet-300",
-  },
   "/ranking": {
     icon: BarChart2,
     tone: "hover:border-amber-400/35 hover:bg-amber-400/10",

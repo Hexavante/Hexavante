@@ -88,7 +88,6 @@ export const DASHBOARD_QUICK_ACTIONS: DashboardQuickAction[] = [
   { href: "/courses", label: "Cursos" },
   { href: "/simulados", label: "Simulados" },
   { href: "/estatisticas", label: "Estatísticas" },
-  { href: "/social", label: "Comunidade" },
   { href: "/ranking", label: "Ranking" },
   { href: "/certificados", label: "Certificados" },
   { href: "/live-rooms", label: "Ao vivo" },

@@ -63,10 +63,10 @@ export function MessagesShell({ conversations, currentUserId, activeConversation
               <strong className="font-medium text-slate-300">Mensagem</strong>.
             </p>
             <Link
-              href="/social"
+              href="/courses"
               className="mt-5 text-sm font-semibold text-sky-300 transition hover:text-sky-200"
             >
-              Explorar comunidade →
+              Explorar cursos →
             </Link>
           </div>
         )}
