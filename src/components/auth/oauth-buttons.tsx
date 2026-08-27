@@ -3,7 +3,7 @@ import { oauthProviders } from "@/lib/oauth";
 
 type Props = {
   callbackUrl: string;
-  providers?: { google: boolean; github: boolean };
+  providers?: { google?: boolean; github?: boolean };
 };
 
 export function OAuthButtons({ callbackUrl, providers = oauthProviders }: Props) {

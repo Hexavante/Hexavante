@@ -1,8 +1,8 @@
-export const oauthProviders = {
+export const oauthProviders: { google?: boolean; github?: boolean; microsoft?: boolean } = {
   // google: true, // habilitar quando configurar Google Cloud Console
   // github: true, // habilitar quando configurar GitHub OAuth App
   // microsoft: true, // descomentar quando tiver credenciais
-} as const;
+};
 
 export function hasOAuthProviders() {
   return oauthProviders.google || oauthProviders.github;
