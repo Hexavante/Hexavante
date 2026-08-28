@@ -581,4 +581,100 @@ export function resolveProfileIcon(iconId: string | null | undefined) {
   return PROFILE_ICONS[iconId] ?? null;
 }
 
+export type ProfileFrameDef = {
+  id: string;
+  label: string;
+  rarity: AvatarBorderRarity;
+  style: Record<string, string>;
+};
+
+export const PROFILE_FRAMES: Record<string, ProfileFrameDef> = {
+  "frame-neon": {
+    id: "frame-neon",
+    label: "Moldura Neon",
+    rarity: "rare",
+    style: {
+      border: "2px solid #22d3ee",
+      borderRadius: "1rem",
+      boxShadow: "0 0 14px rgba(34,211,238,0.45)",
+    },
+  },
+  "frame-geometria": {
+    id: "frame-geometria",
+    label: "Moldura Geometria",
+    rarity: "common",
+    style: {
+      border: "2px dashed rgba(148,163,184,0.6)",
+      borderRadius: "1rem",
+      outline: "2px dashed rgba(148,163,184,0.25)",
+      outlineOffset: "3px",
+    },
+  },
+  "frame-madeira": {
+    id: "frame-madeira",
+    label: "Moldura Madeira",
+    rarity: "common",
+    style: {
+      border: "3px solid #b45309",
+      borderRadius: "1rem",
+      boxShadow: "inset 0 0 0 1px rgba(251,191,36,0.35)",
+    },
+  },
+};
+
+export type ProfileBackgroundDef = {
+  id: string;
+  label: string;
+  rarity: AvatarBorderRarity;
+  style: Record<string, string>;
+};
+
+export const PROFILE_BACKGROUNDS: Record<string, ProfileBackgroundDef> = {
+  "bg-galaxy": {
+    id: "bg-galaxy",
+    label: "Fundo Galaxy",
+    rarity: "rare",
+    style: {
+      background:
+        "radial-gradient(120% 120% at 15% 10%, #312e81 0%, #1e1b4b 35%, #0b1020 70%)",
+    },
+  },
+  "bg-sunset-gradient": {
+    id: "bg-sunset-gradient",
+    label: "Fundo Sunset",
+    rarity: "common",
+    style: {
+      background: "linear-gradient(135deg, #f97316 0%, #db2777 55%, #7c3aed 100%)",
+    },
+  },
+  "bg-matrix": {
+    id: "bg-matrix",
+    label: "Fundo Matrix",
+    rarity: "rare",
+    style: {
+      background: "linear-gradient(160deg, #04140a 0%, #052e16 60%, #020617 100%)",
+    },
+  },
+};
+
+export function resolveProfileFrame(frameId: string | null | undefined) {
+  if (!frameId) return null;
+  return PROFILE_FRAMES[frameId] ?? null;
+}
+
+export function getProfileFrameStyle(frameId: string | null | undefined): Record<string, string> | null {
+  return resolveProfileFrame(frameId)?.style ?? null;
+}
+
+export function resolveProfileBackground(backgroundId: string | null | undefined) {
+  if (!backgroundId) return null;
+  return PROFILE_BACKGROUNDS[backgroundId] ?? null;
+}
+
+export function getProfileBackgroundStyle(
+  backgroundId: string | null | undefined,
+): Record<string, string> | null {
+  return resolveProfileBackground(backgroundId)?.style ?? null;
+}
+
 export { DEFAULT_SIDEBAR, DEFAULT_SURFACE };

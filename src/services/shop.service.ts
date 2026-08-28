@@ -381,6 +381,10 @@ export async function getProfileCosmetics(userId: string) {
   const border = equipped.find((e) => e.storeItem.category === "AVATAR_BORDER");
   const theme = equipped.find((e) => e.storeItem.category === "THEME");
   const cosmetic = equipped.find((e) => e.storeItem.category === "COSMETIC");
+  const badge = equipped.find((e) => e.storeItem.category === "BADGE");
+  const frame = equipped.find((e) => e.storeItem.category === "FRAME");
+  const background = equipped.find((e) => e.storeItem.category === "PROFILE_BACKGROUND");
+  const emojiPack = equipped.find((e) => e.storeItem.category === "EMOJI_PACK");
 
   const titleMeta = title?.storeItem.metadata as { titleText?: string } | null;
   const borderMeta = border?.storeItem.metadata as { borderId?: string; rarity?: string } | null;
@@ -389,6 +393,16 @@ export async function getProfileCosmetics(userId: string) {
     cosmeticType?: string;
     iconId?: string;
   } | null;
+  const badgeMeta = badge?.storeItem.metadata as { badgeId?: string; rarity?: string } | null;
+  const frameMeta = frame?.storeItem.metadata as { frameId?: string; rarity?: string } | null;
+  const backgroundMeta = background?.storeItem.metadata as {
+    backgroundId?: string;
+    rarity?: string;
+  } | null;
+  const emojiMeta = emojiPack?.storeItem.metadata as {
+    emojiPackId?: string;
+    emojis?: unknown;
+  } | null;
 
   const themeId = themeMeta?.themeId ?? null;
   const resolvedThemeId = themeId === "default" ? null : themeId;
@@ -396,6 +410,10 @@ export async function getProfileCosmetics(userId: string) {
   const profileIconId =
     cosmeticMeta?.cosmeticType === "profile_icon" ? (cosmeticMeta.iconId ?? null) : null;
   const appTheme = resolveAppTheme(resolvedThemeId);
+
+  const emojiList = Array.isArray(emojiMeta?.emojis)
+    ? (emojiMeta!.emojis as unknown[]).filter((e) => typeof e === "string").map(String)
+    : null;
 
   return {
     equippedTitle: titleMeta?.titleText ?? title?.storeItem.name ?? null,
@@ -410,5 +428,14 @@ export async function getProfileCosmetics(userId: string) {
     themeId: resolvedThemeId,
     themeClassName: appTheme.className,
     themeVars: appTheme.vars,
+    badgeId: badgeMeta?.badgeId ?? null,
+    badgeLabel: badge?.storeItem.name ?? null,
+    badgeRarity: badgeMeta?.rarity ?? null,
+    frameId: frameMeta?.frameId ?? null,
+    frameRarity: frameMeta?.rarity ?? null,
+    profileBackgroundId: backgroundMeta?.backgroundId ?? null,
+    profileBackgroundRarity: backgroundMeta?.rarity ?? null,
+    emojiPackId: emojiMeta?.emojiPackId ?? null,
+    emojiPackEmojis: emojiList,
   };
 }

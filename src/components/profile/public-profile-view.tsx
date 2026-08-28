@@ -1,10 +1,11 @@
 import { ProfileIconBadge } from "@/components/profile/profile-icon-badge";
 import { ProfileShowcase } from "@/components/profile/profile-showcase";
 import Link from "next/link";
-import { Pencil, Settings, Store } from "lucide-react";
+import { Award, Pencil, Settings, Store } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { FollowButton } from "@/components/social/follow-button";
 import { ProfileTabs } from "./profile-tabs";
+import { getProfileBackgroundStyle, getProfileFrameStyle } from "@/lib/cosmetics";
 import type { getPublicProfile } from "@/services/public-profile.service";
 
 type ProfileData = NonNullable<Awaited<ReturnType<typeof getPublicProfile>>>;
@@ -57,9 +58,13 @@ export function PublicProfileView({ profile, viewerId, viewerUsername }: Props) 
     );
   }
 
+  const frameStyle = cosmetics ? getProfileFrameStyle(cosmetics.frameId) : null;
+  const backgroundStyle = cosmetics ? getProfileBackgroundStyle(cosmetics.profileBackgroundId) : null;
+  const cardStyle = { ...(backgroundStyle ?? {}), ...(frameStyle ?? {}) };
+
   return (
     <>
-      <section className="hx-profile-card">
+      <section className="hx-profile-card" style={Object.keys(cardStyle).length ? cardStyle : undefined}>
         <div className="relative">
           <div
             className="hx-profile-banner"
@@ -98,10 +103,25 @@ export function PublicProfileView({ profile, viewerId, viewerUsername }: Props) 
                   {cosmetics?.profileIconId && (
                     <ProfileIconBadge iconId={cosmetics.profileIconId} />
                   )}
+                  {cosmetics?.badgeLabel && (
+                    <span className="inline-flex items-center gap-1 rounded-full border border-amber-400/40 bg-amber-400/10 px-2 py-0.5 text-xs font-semibold text-amber-200">
+                      <Award className="h-3.5 w-3.5" />
+                      {cosmetics.badgeLabel}
+                    </span>
+                  )}
                 </div>
                 <p className="mt-1 text-slate-400">@{user.username}</p>
                 {cosmetics?.equippedTitle && (
                   <p className="mt-2 text-sm font-semibold hx-accent-text">{cosmetics.equippedTitle}</p>
+                )}
+                {cosmetics?.emojiPackEmojis && cosmetics.emojiPackEmojis.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-1.5 text-lg leading-none">
+                    {cosmetics.emojiPackEmojis.map((emoji, index) => (
+                      <span key={index} aria-hidden>
+                        {emoji}
+                      </span>
+                    ))}
+                  </div>
                 )}
                 {user.bio && (
                   <p className="mt-3 max-w-xl text-sm leading-6 text-slate-300">{user.bio}</p>
