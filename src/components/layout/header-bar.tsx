@@ -5,6 +5,7 @@ import { HeaderGamificationHud } from "@/components/gamification/header-gamifica
 import { HeaderGamificationHudSkeleton } from "@/components/gamification/header-gamification-hud-skeleton";
 import { NotificationBell } from "@/components/notifications/notification-bell";
 import { Avatar } from "@/components/ui/avatar";
+import { Award } from "lucide-react";
 import type { NavSession } from "@/lib/nav-session";
 import { HeaderAuthActions } from "./header-auth-actions";
 import { HeaderSignOut } from "./header-sign-out";
@@ -56,10 +57,23 @@ export function HeaderBar({ session }: Props) {
               <NotificationBell />
               <Link
                 href={profileHref(session.user.username)}
-                className="hidden rounded-full transition hover:ring-2 sm:inline-flex hx-header-avatar-ring"
+                className="relative hidden rounded-full transition hover:ring-2 sm:inline-flex hx-header-avatar-ring"
                 aria-label={`Perfil de @${session.user.username ?? session.user.id}`}
               >
-                <Avatar src={session.user.image} alt={session.user.username ?? session.user.id} size="sm" />
+                <Avatar
+                  src={session.user.image}
+                  alt={session.user.username ?? session.user.id}
+                  size="sm"
+                  borderClassName={session.user.avatarBorderClassName}
+                />
+                {session.user.badgeLabel && (
+                  <span
+                    className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full border border-black/40 bg-amber-400 text-black"
+                    title={session.user.badgeLabel}
+                  >
+                    <Award className="h-2.5 w-2.5" />
+                  </span>
+                )}
               </Link>
               <HeaderSignOut />
             </>

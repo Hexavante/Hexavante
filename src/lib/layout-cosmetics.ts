@@ -7,6 +7,7 @@ const DEFAULT_COSMETICS = {
   avatarBorderClassName: null,
   borderId: null,
   equippedTitle: null,
+  badgeLabel: null,
 };
 
 export async function getLayoutSessionAndCosmetics() {

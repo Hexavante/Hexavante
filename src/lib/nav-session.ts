@@ -4,6 +4,8 @@ export type NavSession = {
     username: string | null;
     roles: string[];
     image?: string | null;
+    avatarBorderClassName?: string | null;
+    badgeLabel?: string | null;
   };
 } | null;
 
@@ -17,6 +19,10 @@ export function toNavSession(
     } | null;
   } | null,
   avatarUrl?: string | null,
+  extras?: {
+    avatarBorderClassName?: string | null;
+    badgeLabel?: string | null;
+  },
 ): NavSession {
   if (!session?.user?.id) return null;
 
@@ -26,6 +32,8 @@ export function toNavSession(
       username: session.user.username ?? null,
       roles: session.user.roles ?? [],
       image: avatarUrl ?? null,
+      avatarBorderClassName: extras?.avatarBorderClassName ?? null,
+      badgeLabel: extras?.badgeLabel ?? null,
     },
   };
 }

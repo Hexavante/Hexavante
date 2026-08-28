@@ -40,7 +40,10 @@ export default async function RootLayout({
 }>) {
   const { session, cosmetics } = await getLayoutSessionAndCosmetics();
   const avatarUrl = session?.user?.id ? await getNavAvatarUrl(session.user.id) : null;
-  const navSession = toNavSession(session, avatarUrl);
+  const navSession = toNavSession(session, avatarUrl, {
+    avatarBorderClassName: cosmetics.avatarBorderClassName,
+    badgeLabel: cosmetics.badgeLabel,
+  });
   const themeClass = cosmetics.themeClassName || "theme-default";
   const themeMode = getThemeMode(cosmetics.themeId);
 
