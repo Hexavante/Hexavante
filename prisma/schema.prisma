@@ -19,6 +19,7 @@ model User {
   provider          String    @default("local")
   providerId        String?   @map("provider_id")
   avatarUrl         String?   @map("avatar_url") @db.LongText
+  bannerUrl         String?   @map("banner_url") @db.LongText
   birthDate         String?   @map("birth_date")
   phone             String?
   city              String?

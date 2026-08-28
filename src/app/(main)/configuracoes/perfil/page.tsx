@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { auth } from "@/auth";
 import { ProfileEditForm } from "@/components/profile/profile-edit-form";
 import { ProfilePhotoUpload } from "@/components/profile/profile-photo-upload";
+import { ProfileBannerUpload } from "@/components/profile/profile-banner-upload";
 import { PageShell } from "@/components/ui/page-shell";
 import { getUserProfile } from "@/services/student.service";
 import { getProfileCosmetics } from "@/services/shop.service";
@@ -46,6 +47,16 @@ export default async function ConfiguracoesPerfilPage() {
           currentAvatar={profile.avatarUrl || undefined}
           borderClassName={cosmetics.avatarBorderClassName}
         />
+      </div>
+
+      <div className="mt-6">
+        <h2 className="text-lg font-bold text-white">Banner do perfil</h2>
+        <p className="mt-1 text-sm text-slate-400">
+          Uma imagem de capa exibida no topo do seu perfil.
+        </p>
+        <div className="mt-3">
+          <ProfileBannerUpload currentBanner={(profile as Record<string, unknown>).bannerUrl as string | null} />
+        </div>
       </div>
 
       <div className="mt-6">

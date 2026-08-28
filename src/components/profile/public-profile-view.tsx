@@ -60,7 +60,26 @@ export function PublicProfileView({ profile, viewerId, viewerUsername }: Props) 
   return (
     <>
       <section className="hx-profile-card">
-        <div className="hx-profile-banner" />
+        <div className="relative">
+          <div
+            className="hx-profile-banner"
+            style={user.bannerUrl ? {
+              backgroundImage: `url(${user.bannerUrl})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              minHeight: 180,
+            } : undefined}
+          />
+          {isOwner && (
+            <Link
+              href="/configuracoes/perfil"
+              className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm transition hover:bg-black/80"
+            >
+              <Pencil className="h-3 w-3" />
+              Banner
+            </Link>
+          )}
+        </div>
         <div className="grid gap-6 p-6 lg:grid-cols-[180px_minmax(0,1fr)]">
           <div className="-mt-16 flex flex-col items-center gap-3 lg:items-start">
             <Avatar

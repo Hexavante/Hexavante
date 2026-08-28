@@ -168,3 +168,78 @@ export async function updateProfilePhotoAction(formData: FormData): Promise<Prof
     };
   }
 }
+
+const MAX_BANNER_SIZE = 8 * 1024 * 1024;
+
+export async function updateProfileBannerAction(formData: FormData): Promise<ProfileActionResult> {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return { success: false, error: "Faça login para continuar." };
+  }
+
+  const file = formData.get("file");
+  if (!(file instanceof File) || file.size === 0) {
+    return { success: false, error: "Selecione uma imagem válida." };
+  }
+
+  const mimeType = resolveImageMimeType(file);
+  if (!mimeType) {
+    return { success: false, error: "Use uma imagem PNG, JPG, GIF ou WebP." };
+  }
+
+  if (file.size > MAX_BANNER_SIZE) {
+    return { success: false, error: "A imagem deve ter no máximo 8MB." };
+  }
+
+  try {
+    const bytes = await file.arrayBuffer();
+    const base64 = Buffer.from(bytes).toString("base64");
+    const bannerUrl = `data:${mimeType};base64,${base64}`;
+
+    await prisma.user.update({
+      where: { id: session.user.id },
+      data: { bannerUrl },
+    });
+
+    revalidatePath("/perfil");
+    revalidatePath(`/perfil/${session.user.username}`);
+    revalidatePath("/configuracoes/perfil");
+    revalidatePath("/");
+    return { success: true, avatarUrl: bannerUrl };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "";
+    const isColumnTooSmall =
+      message.includes("Data too long") ||
+      message.includes("value too long") ||
+      message.includes("1406");
+
+    return {
+      success: false,
+      error: isColumnTooSmall
+        ? "O banco precisa aceitar banners maiores."
+        : message || "Erro ao atualizar banner.",
+    };
+  }
+}
+
+export async function removeProfileBannerAction(): Promise<ProfileActionResult> {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return { success: false, error: "Faça login para continuar." };
+  }
+
+  try {
+    await prisma.user.update({
+      where: { id: session.user.id },
+      data: { bannerUrl: null },
+    });
+
+    revalidatePath("/perfil");
+    revalidatePath(`/perfil/${session.user.username}`);
+    revalidatePath("/configuracoes/perfil");
+    revalidatePath("/");
+    return { success: true };
+  } catch {
+    return { success: false, error: "Erro ao remover banner." };
+  }
+}

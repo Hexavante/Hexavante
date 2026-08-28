@@ -22,6 +22,7 @@ export async function getUserProfile(userId: string) {
       state: true,
       profileVisibility: true,
       avatarUrl: true,
+      bannerUrl: true,
     },
   });
 }
