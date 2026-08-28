@@ -97,6 +97,7 @@ export default async function EditCoursePage({ params }: Props) {
             categoryId: course.categoryId,
             shortDescription: course.shortDescription,
             description: course.description,
+            tags: course.courseTags.map((ct) => ct.tag.name).join(", "),
             coverImage: course.coverImage,
             thumbnailUrl: course.thumbnailUrl,
             level: course.level,

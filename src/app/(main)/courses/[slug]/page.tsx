@@ -42,6 +42,11 @@ export default async function CourseDetailPage({ params }: Props) {
             </Badge>
             <Badge variant="emerald">{COURSE_LEVEL_LABELS[course.level] ?? course.level}</Badge>
             <Badge>Gratuito</Badge>
+            {course.courseTags.map((ct) => (
+              <Badge key={ct.tag.id} variant="default">
+                #{ct.tag.name}
+              </Badge>
+            ))}
           </div>
           <h1 className="hx-page-title mt-3">{course.title}</h1>
           {course.shortDescription && (

@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { BookOpen, Crown, Palette, Sparkles, Tag, Ticket, Zap } from "lucide-react";
+import { Award, BookOpen, Crown, Frame, Image as ImageIcon, Palette, Smile, Sparkles, Tag, Ticket, Zap } from "lucide-react";
 import { equipItemAction, type ShopActionResult } from "@/app/actions/shop";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -36,6 +36,10 @@ const CATEGORY_ICONS: Record<StoreItemCategory, typeof Sparkles> = {
   REVIEW_PACK: BookOpen,
   PET: Sparkles,
   PET_COSMETIC: Sparkles,
+  BADGE: Award,
+  FRAME: Frame,
+  EMOJI_PACK: Smile,
+  PROFILE_BACKGROUND: ImageIcon,
 };
 
 const initial: ShopActionResult = { success: false };

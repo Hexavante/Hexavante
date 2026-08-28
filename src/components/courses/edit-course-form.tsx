@@ -11,6 +11,7 @@ type Props = {
     categoryId: string;
     shortDescription: string | null;
     description: string | null;
+    tags?: string;
     coverImage: string | null;
     thumbnailUrl: string | null;
     level: string;

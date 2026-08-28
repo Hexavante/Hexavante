@@ -1,7 +1,11 @@
 import {
+  Award,
   BookOpen,
   Crown,
+  Frame,
+  Image as ImageIcon,
   Palette,
+  Smile,
   Sparkles,
   Tag,
   Ticket,
@@ -21,6 +25,10 @@ export const SHOP_CATEGORY_ICONS: Record<StoreItemCategory, LucideIcon> = {
   REVIEW_PACK: BookOpen,
   PET: Sparkles,
   PET_COSMETIC: Sparkles,
+  BADGE: Award,
+  FRAME: Frame,
+  EMOJI_PACK: Smile,
+  PROFILE_BACKGROUND: ImageIcon,
 };
 
 export const PERSONALIZE_SECTIONS: {
@@ -48,6 +56,26 @@ export const PERSONALIZE_SECTIONS: {
     label: "Ícones e cosméticos",
     description: "Adesivos e ícones para personalizar o perfil.",
   },
+  {
+    category: "BADGE",
+    label: "Distintivos",
+    description: "Distintivos exibidos no seu perfil público.",
+  },
+  {
+    category: "FRAME",
+    label: "Molduras decorativas",
+    description: "Molduras decorativas para emoldurar o perfil.",
+  },
+  {
+    category: "EMOJI_PACK",
+    label: "Pacotes de emoji",
+    description: "Emojis exclusivos para comentários e mensagens.",
+  },
+  {
+    category: "PROFILE_BACKGROUND",
+    label: "Fundos de perfil",
+    description: "Fundos personalizados para a página de perfil.",
+  },
 ];
 
 export const INVENTORY_SECTION_ORDER: { key: StoreItemCategory; label: string }[] = [
@@ -55,6 +83,10 @@ export const INVENTORY_SECTION_ORDER: { key: StoreItemCategory; label: string }[
   { key: "AVATAR_BORDER", label: "Molduras de avatar" },
   { key: "TITLE", label: STORE_CATEGORY_LABELS.TITLE },
   { key: "COSMETIC", label: "Ícones e cosméticos" },
+  { key: "BADGE", label: STORE_CATEGORY_LABELS.BADGE },
+  { key: "FRAME", label: "Molduras decorativas" },
+  { key: "EMOJI_PACK", label: STORE_CATEGORY_LABELS.EMOJI_PACK },
+  { key: "PROFILE_BACKGROUND", label: STORE_CATEGORY_LABELS.PROFILE_BACKGROUND },
   { key: "BOOSTER", label: STORE_CATEGORY_LABELS.BOOSTER },
   { key: "PASS", label: STORE_CATEGORY_LABELS.PASS },
   { key: "REVIEW_PACK", label: STORE_CATEGORY_LABELS.REVIEW_PACK },
@@ -72,13 +104,34 @@ export const INVENTORY_TABS: {
     id: "all",
     label: "Todos",
     description: "Visão completa do inventário.",
-    categories: ["THEME", "AVATAR_BORDER", "TITLE", "COSMETIC", "BOOSTER", "PASS", "REVIEW_PACK"],
+    categories: [
+      "THEME",
+      "AVATAR_BORDER",
+      "TITLE",
+      "COSMETIC",
+      "BADGE",
+      "FRAME",
+      "EMOJI_PACK",
+      "PROFILE_BACKGROUND",
+      "BOOSTER",
+      "PASS",
+      "REVIEW_PACK",
+    ],
   },
   {
     id: "cosmetics",
     label: "Cosméticos",
-    description: "Temas, molduras, títulos e ícones equipáveis.",
-    categories: ["THEME", "AVATAR_BORDER", "TITLE", "COSMETIC"],
+    description: "Temas, molduras, títulos, distintivos e mais.",
+    categories: [
+      "THEME",
+      "AVATAR_BORDER",
+      "TITLE",
+      "COSMETIC",
+      "BADGE",
+      "FRAME",
+      "EMOJI_PACK",
+      "PROFILE_BACKGROUND",
+    ],
   },
   {
     id: "boosters",

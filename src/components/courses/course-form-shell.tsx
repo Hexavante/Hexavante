@@ -21,6 +21,7 @@ type Props = {
     categoryId?: string;
     shortDescription?: string | null;
     description?: string | null;
+    tags?: string;
     coverImage?: string | null;
     thumbnailUrl?: string | null;
     level?: string;
@@ -82,20 +83,33 @@ export function CourseFormShell({ categories, action, initial, submitLabel, canc
       </div>
       <div>
         <Label htmlFor="categoryId">Categoria</Label>
-        <NativeSelect
-          id="categoryId"
-          name="categoryId"
-          required
-          defaultValue={initial?.categoryId ?? ""}
-        >
-          <option value="">Selecione...</option>
-          {categories.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
-          ))}
-        </NativeSelect>
-      </div>
+          <NativeSelect
+            id="categoryId"
+            name="categoryId"
+            required
+            defaultValue={initial?.categoryId ?? ""}
+          >
+            <option value="">Selecione...</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </NativeSelect>
+          <p className="text-xs text-slate-500">
+            Não encontrou a categoria? Cadastre uma nova abaixo — ela passará por aprovação do
+            moderador antes de ficar disponível para todos.
+          </p>
+          <div>
+            <Label htmlFor="newCategory">Criar nova categoria (opcional)</Label>
+            <Input
+              id="newCategory"
+              name="newCategory"
+              placeholder="Ex: Inteligência Artificial"
+              defaultValue=""
+            />
+          </div>
+        </div>
       <div>
         <Label htmlFor="shortDescription">Descrição curta</Label>
         <Input
@@ -106,13 +120,25 @@ export function CourseFormShell({ categories, action, initial, submitLabel, canc
       </div>
       <div>
         <Label htmlFor="description">Descrição completa</Label>
-        <Textarea
-          id="description"
-          name="description"
-          rows={4}
-          defaultValue={initial?.description ?? ""}
-        />
-      </div>
+          <Textarea
+            id="description"
+            name="description"
+            rows={4}
+            defaultValue={initial?.description ?? ""}
+          />
+        </div>
+        <div>
+          <Label htmlFor="tags">Tags (separadas por vírgula)</Label>
+          <Input
+            id="tags"
+            name="tags"
+            placeholder="Ex: javascript, frontend, iniciante"
+            defaultValue={initial?.tags ?? ""}
+          />
+          <p className="mt-1 text-xs text-slate-500">
+            Ajudam a categorizar e recomendar seu curso.
+          </p>
+        </div>
       <div className="grid gap-4 sm:grid-cols-3">
         <div>
           <Label htmlFor="level">Nível</Label>

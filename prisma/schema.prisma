@@ -327,12 +327,33 @@ enum VideoProvider {
 }
 
 model Category {
-  id          String   @id @default(cuid())
-  name        String   @unique
-  description String?
-  courses     Course[]
+  id            String   @id @default(cuid())
+  name          String   @unique
+  description   String?
+  isApproved    Boolean  @default(true) @map("is_approved")
+  suggestedById String?  @map("suggested_by_id")
+  courses       Course[]
 
   @@map("categories")
+}
+
+model Tag {
+  id        String      @id @default(cuid())
+  name      String      @unique
+  courseTags CourseTag[]
+
+  @@map("tags")
+}
+
+model CourseTag {
+  courseId String @map("course_id")
+  tagId    String @map("tag_id")
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  tag      Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([courseId, tagId])
+  @@index([tagId])
+  @@map("course_tags")
 }
 
 model Course {
@@ -357,6 +378,7 @@ model Course {
   instructors  CourseInstructor[]
   modules      Module[]
   enrollments  CourseEnrollment[]
+  courseTags   CourseTag[]
   moderations  CourseModeration[]
   certificates Certificate[]
   liveRooms    LiveRoom[]
@@ -835,6 +857,10 @@ enum StoreItemCategory {
   REVIEW_PACK
   PET
   PET_COSMETIC
+  BADGE
+  FRAME
+  EMOJI_PACK
+  PROFILE_BACKGROUND
 }
 
 model StoreItem {

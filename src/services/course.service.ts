@@ -92,9 +92,67 @@ export async function searchApprovedCourses({
 }
 
 // Função para listar categorias de cursos
-// Retorna todas as categorias ordenadas por nome
+// Retorna apenas categorias aprovadas (para o seletor do formulário)
 export async function listCategories() {
-  return prisma.category.findMany({ orderBy: { name: "asc" } });
+  return prisma.category.findMany({ where: { isApproved: true }, orderBy: { name: "asc" } });
+}
+
+// Cria ou reutiliza uma categoria a partir do nome informado pelo instrutor.
+// Categorias novas ficam pendentes de aprovação do moderador (isApproved: false).
+export async function upsertCategoryByName(name: string, suggestedById?: string) {
+  const clean = name.trim();
+  if (!clean) throw new Error("Nome da categoria inválido.");
+
+  const existing = await prisma.category.findFirst({ where: { name: clean } });
+  if (existing) return existing;
+
+  try {
+    return await prisma.category.create({
+      data: { name: clean, isApproved: false, suggestedById },
+    });
+  } catch {
+    const retry = await prisma.category.findFirst({ where: { name: clean } });
+    if (retry) return retry;
+    throw new Error("Não foi possível criar a categoria.");
+  }
+}
+
+// Lista categorias pendentes de aprovação (moderação)
+export async function listPendingCategories() {
+  return prisma.category.findMany({
+    where: { isApproved: false },
+    orderBy: { name: "asc" },
+  });
+}
+
+export async function approveCategory(id: string) {
+  return prisma.category.update({ where: { id }, data: { isApproved: true } });
+}
+
+export async function rejectCategory(id: string) {
+  return prisma.category.delete({ where: { id } });
+}
+
+// Define as tags de um curso a partir de uma lista de nomes (cria as tags inexistentes).
+export async function setCourseTags(courseId: string, names: string[]) {
+  const clean = [...new Set(names.map((n) => n.trim()).filter(Boolean))].slice(0, 15);
+
+  const tags: { id: string }[] = [];
+  for (const name of clean) {
+    const tag = await prisma.tag.upsert({
+      where: { name },
+      update: {},
+      create: { name },
+    });
+    tags.push(tag);
+  }
+
+  await prisma.courseTag.deleteMany({ where: { courseId } });
+  if (tags.length > 0) {
+    await prisma.courseTag.createMany({
+      data: tags.map((t) => ({ courseId, tagId: t.id })),
+    });
+  }
 }
 
 // Função para obter curso aprovado pelo slug (páginas públicas)
@@ -115,6 +173,7 @@ export async function getApprovedCourseBySlug(slug: string) {
           materials: true,
         },
       },
+      courseTags: { include: { tag: true } },
     },
   });
 }
@@ -132,12 +191,13 @@ export async function getCourseBySlug(slug: string) {
         },
       },
       modules: {
-        orderBy: { orderNumber: "asc" }, // Ordena módulos por número
+        orderBy: { orderNumber: "asc" },
         include: {
-          lessons: { orderBy: { orderNumber: "asc" } }, // Ordena aulas por número
+          lessons: { orderBy: { orderNumber: "asc" } },
           materials: true,
         },
       },
+      courseTags: { include: { tag: true } },
     },
   });
 }
@@ -157,6 +217,7 @@ export async function getCourseById(id: string, userId?: string) {
           materials: true,
         },
       },
+      courseTags: { include: { tag: true } },
     },
   });
 

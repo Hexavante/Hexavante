@@ -36,6 +36,14 @@ export default async function ModerationDashboardPage() {
             <p className="mt-1 font-medium text-white">Terminal CLI</p>
             <p className="mt-1 text-sm text-slate-400">Comandos de moderação</p>
           </Link>
+          <Link
+            href="/moderacao/categorias"
+            className="hx-stat transition hover:border-amber-400/35 hover:bg-white/[0.06]"
+          >
+            <p className="text-3xl font-bold text-amber-300">🏷️</p>
+            <p className="mt-1 font-medium text-white">Categorias pendentes</p>
+            <p className="mt-1 text-sm text-slate-400">Aprovar sugestões de instrutores</p>
+          </Link>
         </div>
       </section>
     </div>
