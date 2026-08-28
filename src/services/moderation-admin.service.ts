@@ -906,8 +906,8 @@ function showHelp(roles: string[]): CommandResult {
     "/booster <2x|3x> <24h|7d> · /cursos list|publish|unpublish",
     "/simulado list|reset @u <id> · /clear",
   ];
-  if (!roles.includes("ADMIN")) {
-    lines.push("(Alguns comandos requerem cargo ADMIN)");
+  if (!roles.includes("ADMIN") && !roles.includes("SUPERADMIN")) {
+    lines.push("(Alguns comandos requerem cargo ADMIN ou superior)");
   }
   return { status: "info", message: lines.join("\n") };
 }
