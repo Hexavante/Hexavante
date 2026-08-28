@@ -17,6 +17,7 @@ import {
 } from "@/services/course.service";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { prisma } from "@/lib/prisma";
 
 export type ActionResult = { success: boolean; error?: string };
 
@@ -57,6 +58,7 @@ export async function createCourseAction(
     level: formData.get("level") || "BEGINNER",
     estimatedHours: formData.get("estimatedHours") || undefined,
     progressionType: formData.get("progressionType") || "FREE",
+    isPublished: formData.get("isPublished") || "false",
   });
 
   if (!parsed.success) {
@@ -91,10 +93,23 @@ export async function updateCourseAction(
       level: formData.get("level") || "BEGINNER",
       estimatedHours: formData.get("estimatedHours") || undefined,
       progressionType: formData.get("progressionType") || "FREE",
+      isPublished: formData.get("isPublished") || "false",
     });
 
     if (!parsed.success) {
       return { success: false, error: parsed.error.issues[0]?.message ?? "Dados inválidos" };
+    }
+
+    if (parsed.data.isPublished) {
+      const lessonCount = await prisma.lesson.count({
+        where: { module: { courseId } },
+      });
+      if (lessonCount === 0) {
+        return {
+          success: false,
+          error: "Adicione ao menos uma aula antes de publicar o curso.",
+        };
+      }
     }
 
     await updateCourse(courseId, user.id, {

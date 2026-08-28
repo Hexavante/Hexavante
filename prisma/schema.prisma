@@ -349,6 +349,7 @@ model Course {
   estimatedHours   Int?            @map("estimated_hours")
   progressionType  ProgressionType @default(FREE) @map("progression_type")
   status           CourseStatus    @default(PENDING_REVIEW)
+  isPublished       Boolean         @default(false) @map("is_published")
   createdAt        DateTime        @default(now()) @map("created_at")
   updatedAt        DateTime        @updatedAt @map("updated_at")
 

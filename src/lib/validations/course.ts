@@ -27,6 +27,10 @@ export const courseSchema = z.object({
   level: z.enum(["BEGINNER", "INTERMEDIATE", "ADVANCED"]).default("BEGINNER"),
   estimatedHours: z.coerce.number().int().min(1).max(500).optional(),
   progressionType: z.enum(["FREE", "PROGRESSIVE"]).default("FREE"),
+  isPublished: z
+    .enum(["true", "false"])
+    .optional()
+    .transform((v) => v === "true"),
 });
 
 // Schema de validação para módulo

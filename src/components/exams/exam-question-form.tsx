@@ -18,6 +18,7 @@ import {
   getAlternativeLetters,
   indexToAlternativeLetter,
 } from "@/lib/exam-alternatives";
+import { EXAM_DIFFICULTY_LABELS, EXAM_SUBJECTS } from "@/lib/validations/exam";
 import { Minus, Plus } from "lucide-react";
 
 type Props = {
@@ -161,6 +162,53 @@ export function ExamQuestionForm({ examId, nextOrder, action }: Props) {
             min={1}
             defaultValue={String(nextOrder)}
             required
+          />
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <Label htmlFor="subject">Matéria (opcional)</Label>
+            <NativeSelect id="subject" name="subject" defaultValue="">
+              <option value="">Geral</option>
+              {EXAM_SUBJECTS.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </NativeSelect>
+          </div>
+
+          <div>
+            <Label htmlFor="difficulty">Dificuldade</Label>
+            <NativeSelect id="difficulty" name="difficulty" defaultValue="2">
+              {Object.entries(EXAM_DIFFICULTY_LABELS).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </NativeSelect>
+          </div>
+
+          <div className="w-32">
+            <Label htmlFor="points">Pontos</Label>
+            <Input
+              id="points"
+              name="points"
+              type="number"
+              min={1}
+              max={20}
+              defaultValue="1"
+            />
+          </div>
+        </div>
+
+        <div>
+          <Label htmlFor="explanation">Explicação / comentário (opcional)</Label>
+          <Textarea
+            id="explanation"
+            name="explanation"
+            rows={3}
+            placeholder="Exibida após a correção para o aluno"
           />
         </div>
 

@@ -49,6 +49,7 @@ export async function createExam(data: ExamAdminInput) {
       coverImage: data.coverImage || null,
       timeLimit: data.timeLimit ?? null,
       isPublished: data.isPublished ?? false,
+      isPremiumOnly: data.isPremiumOnly ?? false,
     },
   });
 }
@@ -70,6 +71,7 @@ export async function updateExam(examId: string, data: Partial<ExamAdminInput>) 
       ...coverUpdate,
       ...(data.timeLimit !== undefined ? { timeLimit: data.timeLimit ?? null } : {}),
       ...(data.isPublished !== undefined ? { isPublished: data.isPublished } : {}),
+      ...(data.isPremiumOnly !== undefined ? { isPremiumOnly: data.isPremiumOnly } : {}),
     },
   });
 }
@@ -91,6 +93,10 @@ export async function addExamQuestion(examId: string, data: ExamQuestionInput) {
         orderNumber: data.orderNumber,
         type: "ESSAY",
         expectedAnswer: data.expectedAnswer,
+        subject: data.subject || null,
+        explanation: data.explanation || null,
+        points: data.points ?? 1,
+        difficulty: data.difficulty ?? 2,
       },
     });
   }
@@ -105,6 +111,10 @@ export async function addExamQuestion(examId: string, data: ExamQuestionInput) {
       imageDisplaySize: data.imageUrl ? (data.imageDisplaySize ?? "MEDIUM") : null,
       orderNumber: data.orderNumber,
       type: "MULTIPLE_CHOICE",
+      subject: data.subject || null,
+      explanation: data.explanation || null,
+      points: data.points ?? 1,
+      difficulty: data.difficulty ?? 2,
       alternatives: {
         create: data.alternatives.map((text, index) => ({
           text,

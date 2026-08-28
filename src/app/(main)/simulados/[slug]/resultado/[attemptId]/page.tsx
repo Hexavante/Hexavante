@@ -171,6 +171,14 @@ export default async function ExamResultPage({ params }: Props) {
                       Gabarito de referência: {answer.question.expectedAnswer}
                     </p>
                   )}
+                  {answer.question.explanation && (
+                    <div className="mt-3 rounded-lg border border-sky-400/20 bg-sky-400/5 p-3">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-sky-300">
+                        Explicação
+                      </p>
+                      <p className="mt-1 text-sm text-slate-200">{answer.question.explanation}</p>
+                    </div>
+                  )}
                   <p className="mt-2 text-sm font-medium text-amber-300">
                     {ESSAY_STATUS_LABELS[answer.essayStatus ?? "PENDING"]}
                   </p>

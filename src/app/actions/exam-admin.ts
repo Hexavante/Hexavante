@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { canModerate } from "@/lib/permissions";
 import { parseAlternativesFromFormData } from "@/lib/exam-alternatives";
 import { examAdminSchema, examQuestionSchema } from "@/lib/validations/exam";
+import { prisma } from "@/lib/prisma";
 import { deleteExamByModerator } from "@/services/content-moderation.service";
 import {
   addExamQuestion,
@@ -48,6 +49,7 @@ export async function createExamAction(
     removeCover: formData.get("removeCover") || "false",
     timeLimit: formData.get("timeLimit") || undefined,
     isPublished: formData.get("isPublished") || "false",
+    isPremiumOnly: formData.get("isPremiumOnly") || "false",
   });
 
   if (!parsed.success) {
@@ -78,10 +80,21 @@ export async function updateExamAction(
       removeCover: formData.get("removeCover") || "false",
       timeLimit: formData.get("timeLimit") || undefined,
       isPublished: formData.get("isPublished") || "false",
+      isPremiumOnly: formData.get("isPremiumOnly") || "false",
     });
 
     if (!parsed.success) {
       return { success: false, error: parsed.error.issues[0]?.message ?? "Dados inválidos" };
+    }
+
+    if (parsed.data.isPublished) {
+      const questionCount = await prisma.examQuestion.count({ where: { examId } });
+      if (questionCount === 0) {
+        return {
+          success: false,
+          error: "Adicione ao menos uma questão antes de publicar o simulado.",
+        };
+      }
     }
 
     await updateExam(examId, {
@@ -111,27 +124,35 @@ export async function addExamQuestionAction(
 
     const parsed = examQuestionSchema.safeParse(
       type === "ESSAY"
-        ? {
-            type: "ESSAY",
-            statement: formData.get("statement"),
-            imageUrl: formData.get("imageUrl") || undefined,
-            imageWidth: formData.get("imageWidth") || undefined,
-            imageHeight: formData.get("imageHeight") || undefined,
-            imageDisplaySize: formData.get("imageDisplaySize") || "MEDIUM",
-            orderNumber: formData.get("orderNumber"),
-            expectedAnswer: formData.get("expectedAnswer"),
-          }
-        : {
-            type: "MULTIPLE_CHOICE",
-            statement: formData.get("statement"),
-            imageUrl: formData.get("imageUrl") || undefined,
-            imageWidth: formData.get("imageWidth") || undefined,
-            imageHeight: formData.get("imageHeight") || undefined,
-            imageDisplaySize: formData.get("imageDisplaySize") || "MEDIUM",
-            orderNumber: formData.get("orderNumber"),
-            alternatives: parseAlternativesFromFormData(formData),
-            correctAlternative: formData.get("correctAlternative"),
-          },
+      ? {
+          type: "ESSAY",
+          statement: formData.get("statement"),
+          imageUrl: formData.get("imageUrl") || undefined,
+          imageWidth: formData.get("imageWidth") || undefined,
+          imageHeight: formData.get("imageHeight") || undefined,
+          imageDisplaySize: formData.get("imageDisplaySize") || "MEDIUM",
+          orderNumber: formData.get("orderNumber"),
+          expectedAnswer: formData.get("expectedAnswer"),
+          subject: formData.get("subject") || undefined,
+          explanation: formData.get("explanation") || undefined,
+          points: formData.get("points") || undefined,
+          difficulty: formData.get("difficulty") || undefined,
+        }
+      : {
+          type: "MULTIPLE_CHOICE",
+          statement: formData.get("statement"),
+          imageUrl: formData.get("imageUrl") || undefined,
+          imageWidth: formData.get("imageWidth") || undefined,
+          imageHeight: formData.get("imageHeight") || undefined,
+          imageDisplaySize: formData.get("imageDisplaySize") || "MEDIUM",
+          orderNumber: formData.get("orderNumber"),
+          alternatives: parseAlternativesFromFormData(formData),
+          correctAlternative: formData.get("correctAlternative"),
+          subject: formData.get("subject") || undefined,
+          explanation: formData.get("explanation") || undefined,
+          points: formData.get("points") || undefined,
+          difficulty: formData.get("difficulty") || undefined,
+        },
     );
 
     if (!parsed.success) {

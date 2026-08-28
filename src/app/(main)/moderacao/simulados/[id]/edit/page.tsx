@@ -14,7 +14,7 @@ import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
 import { PageShell } from "@/components/ui/page-shell";
 import { canModerate } from "@/lib/permissions";
-import { EXAM_QUESTION_TYPE_LABELS, EXAM_TYPE_LABELS } from "@/lib/validations/exam";
+import { EXAM_DIFFICULTY_LABELS, EXAM_QUESTION_TYPE_LABELS, EXAM_TYPE_LABELS } from "@/lib/validations/exam";
 import { getExamForAdmin } from "@/services/exam-admin.service";
 import { notFound, redirect } from "next/navigation";
 import { ClipboardList } from "lucide-react";
@@ -86,6 +86,9 @@ export default async function EditExamPage({ params }: Props) {
                     <Badge variant={isEssay ? "amber" : "teal"}>
                       {EXAM_QUESTION_TYPE_LABELS[question.type] ?? question.type}
                     </Badge>
+                    {question.subject && <Badge variant="default">{question.subject}</Badge>}
+                    <Badge variant="default">{question.points} ponto(s)</Badge>
+                    <Badge variant="default">{EXAM_DIFFICULTY_LABELS[question.difficulty] ?? question.difficulty}</Badge>
                   </div>
                   <ExamQuestionImage
                     url={question.imageUrl}
@@ -118,6 +121,12 @@ export default async function EditExamPage({ params }: Props) {
                         <p className="mt-2 text-xs text-slate-500">Gabarito: {correct.text}</p>
                       )}
                     </>
+                  )}
+                  {question.explanation && (
+                    <p className="mt-2 text-sm text-slate-400">
+                      <span className="font-medium text-slate-300">Explicação:</span>{" "}
+                      {question.explanation}
+                    </p>
                   )}
                 </div>
                 <DeleteContentButton

@@ -65,6 +65,7 @@ export async function searchApprovedCourses({
   return prisma.course.findMany({
     where: {
       status: "APPROVED",
+      isPublished: true,
       ...(categoryId ? { categoryId } : {}),
       ...(level ? { level } : {}),
       ...(query
@@ -207,6 +208,7 @@ export async function createCourse(userId: string, data: CourseInput) {
       estimatedHours: data.estimatedHours ?? null,
       progressionType: data.progressionType,
       status: "PENDING_REVIEW", // Curso começa pendente de aprovação
+      isPublished: false, // Inicia como rascunho; instrutor publica após adicionar aulas
       instructors: {
         create: { userId }, // Adiciona usuário como instrutor
       },
@@ -275,6 +277,7 @@ export async function updateCourse(courseId: string, userId: string, data: Parti
       ...(data.level ? { level: data.level } : {}),
       ...(data.estimatedHours !== undefined ? { estimatedHours: data.estimatedHours ?? null } : {}),
       ...(data.progressionType ? { progressionType: data.progressionType } : {}),
+      ...(data.isPublished !== undefined ? { isPublished: data.isPublished } : {}),
       ...(needsRemoderation ? { status: "PENDING_REVIEW" } : {}),
     },
   });

@@ -26,6 +26,7 @@ type Props = {
     level?: string;
     estimatedHours?: number | null;
     progressionType?: string;
+    isPublished?: boolean;
   };
   submitLabel: string;
   cancelHref: string;
@@ -142,6 +143,17 @@ export function CourseFormShell({ categories, action, initial, submitLabel, canc
           >
             <option value="FREE">Livre</option>
             <option value="PROGRESSIVE">Progressiva</option>
+          </NativeSelect>
+        </div>
+        <div>
+          <Label htmlFor="isPublished">Visibilidade</Label>
+          <NativeSelect
+            id="isPublished"
+            name="isPublished"
+            defaultValue={initial?.isPublished ? "true" : "false"}
+          >
+            <option value="false">Rascunho (oculto)</option>
+            <option value="true">Publicado</option>
           </NativeSelect>
         </div>
       </div>

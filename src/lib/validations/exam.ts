@@ -48,7 +48,36 @@ export const examAdminSchema = z.object({
     .enum(["true", "false"])
     .optional()
     .transform((v) => v === "true"),
+  isPremiumOnly: z
+    .enum(["true", "false"])
+    .optional()
+    .transform((v) => v === "true"),
 });
+
+export const EXAM_DIFFICULTY_LABELS: Record<string, string> = {
+  1: "Muito fácil",
+  2: "Fácil",
+  3: "Médio",
+  4: "Difícil",
+  5: "Muito difícil",
+};
+
+export const EXAM_SUBJECTS = [
+  "Matemática",
+  "Português",
+  "Física",
+  "Química",
+  "Biologia",
+  "História",
+  "Geografia",
+  "Filosofia",
+  "Sociologia",
+  "Inglês",
+  "Programação",
+  "Redes",
+  "Banco de Dados",
+  "Outros",
+] as const;
 
 export type ExamAdminInput = z.infer<typeof examAdminSchema>;
 
@@ -74,6 +103,19 @@ const questionImageMetaSchema = {
   imageDisplaySize: z.enum(EXAM_QUESTION_IMAGE_SIZES).default("MEDIUM"),
 };
 
+const questionBaseFields = {
+  subject: z.string().max(60).optional(),
+  explanation: z.string().max(2000).optional(),
+  points: z.preprocess(
+    (val) => (val === "" || val === null || val === undefined ? 1 : val),
+    z.coerce.number().int().min(1).max(20).default(1),
+  ),
+  difficulty: z.preprocess(
+    (val) => (val === "" || val === null || val === undefined ? 2 : val),
+    z.coerce.number().int().min(1).max(5).default(2),
+  ),
+};
+
 const multipleChoiceQuestionSchema = z
   .object({
     type: z.literal("MULTIPLE_CHOICE"),
@@ -85,6 +127,7 @@ const multipleChoiceQuestionSchema = z
       .min(EXAM_ALTERNATIVE_MIN, `Mínimo ${EXAM_ALTERNATIVE_MIN} alternativas`)
       .max(EXAM_ALTERNATIVE_MAX, `Máximo ${EXAM_ALTERNATIVE_MAX} alternativas`),
     correctAlternative: z.string().min(1, "Selecione o gabarito"),
+    ...questionBaseFields,
   })
   .superRefine((data, ctx) => {
     const letters = getAlternativeLetters(data.alternatives.length);
@@ -103,6 +146,7 @@ const essayQuestionSchema = z.object({
   ...questionImageMetaSchema,
   orderNumber: z.coerce.number().int().min(1),
   expectedAnswer: z.string().min(3, "Informe o gabarito de referência"),
+  ...questionBaseFields,
 });
 
 export const examQuestionSchema = z

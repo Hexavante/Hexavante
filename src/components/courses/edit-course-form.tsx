@@ -16,6 +16,7 @@ type Props = {
     level: string;
     estimatedHours: number | null;
     progressionType: string;
+    isPublished: boolean;
   };
 };
 

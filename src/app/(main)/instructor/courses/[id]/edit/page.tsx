@@ -102,6 +102,7 @@ export default async function EditCoursePage({ params }: Props) {
             level: course.level,
             estimatedHours: course.estimatedHours,
             progressionType: course.progressionType,
+            isPublished: course.isPublished,
           }}
         />
       </section>

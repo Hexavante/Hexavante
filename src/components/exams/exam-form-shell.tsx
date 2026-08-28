@@ -19,6 +19,7 @@ type Props = {
     coverImage?: string | null;
     timeLimit?: number | null;
     isPublished?: boolean;
+    isPremiumOnly?: boolean;
   };
   submitLabel: string;
   cancelHref: string;
@@ -115,6 +116,17 @@ export function ExamFormShell({ action, initial, submitLabel, cancelHref }: Prop
           >
             <option value="false">Rascunho</option>
             <option value="true">Publicado</option>
+          </NativeSelect>
+        </div>
+        <div>
+          <Label htmlFor="isPremiumOnly">Acesso</Label>
+          <NativeSelect
+            id="isPremiumOnly"
+            name="isPremiumOnly"
+            defaultValue={initial?.isPremiumOnly ? "true" : "false"}
+          >
+            <option value="false">Todos os alunos</option>
+            <option value="true">Somente Premium</option>
           </NativeSelect>
         </div>
       </div>
