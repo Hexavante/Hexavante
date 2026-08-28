@@ -462,7 +462,7 @@ async function main() {
       fullName: "Instrutor Demo",
       email: "instrutor@hexavante.com",
       passwordHash,
-      birthDate: new Date("1995-01-15"),
+      birthDate: "1995-01-15",
       roles: {
         create: [{ roleId: userRole.id }, { roleId: instructorRole.id }],
       },
@@ -687,7 +687,7 @@ async function main() {
         fullName: "Moderador Demo",
         email: "moderador@hexavante.com",
         passwordHash: modPassword,
-        birthDate: new Date("1990-05-20"),
+        birthDate: "1990-05-20",
         roles: {
           create: [{ roleId: userRole.id }, { roleId: moderatorRole.id }],
         },
@@ -707,7 +707,7 @@ async function main() {
         fullName: "Administrador Demo",
         email: "admin@hexavante.com",
         passwordHash: adminPassword,
-        birthDate: new Date("1988-01-01"),
+        birthDate: "1988-01-01",
         roles: {
           create: [{ roleId: userRole.id }, { roleId: adminRole.id }],
         },
@@ -728,7 +728,7 @@ async function main() {
         fullName: "Superadmin Demo",
         email: "superadmin@hexavante.com",
         passwordHash: superPassword,
-        birthDate: new Date("1985-03-10"),
+        birthDate: "1985-03-10",
         roles: {
           create: [{ roleId: userRole.id }, { roleId: superAdminRole.id }],
         },
@@ -753,7 +753,7 @@ async function main() {
         fullName: "Aluno Demo",
         email: "aluno@hexavante.com",
         passwordHash: alunoPassword,
-        birthDate: new Date("2006-08-15"),
+        birthDate: "2006-08-15",
         roles: { create: [{ roleId: userRole.id }] },
         xp: { create: {} },
         wallet: { create: {} },

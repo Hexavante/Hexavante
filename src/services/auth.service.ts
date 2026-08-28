@@ -75,7 +75,7 @@ export async function registerUser(data: RegisterInput) {
       fullName: data.fullName,
       email: data.email,
       passwordHash,
-      birthDate: data.birthDate,
+      birthDate: data.birthDate instanceof Date ? data.birthDate.toISOString().split("T")[0] : String(data.birthDate),
       roles: {
         create: { roleId: userRole.id },
       },
