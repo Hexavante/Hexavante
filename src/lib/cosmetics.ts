@@ -574,6 +574,36 @@ export const PROFILE_ICONS: Record<string, ProfileIconDef> = {
     lucideName: "Trophy",
     className: "text-amber-400",
   },
+  "icon-star": {
+    id: "icon-star",
+    label: "Estrela",
+    lucideName: "Star",
+    className: "text-yellow-400",
+  },
+  "icon-rocket": {
+    id: "icon-rocket",
+    label: "Foguete",
+    lucideName: "Rocket",
+    className: "text-cyan-400",
+  },
+  "icon-gem": {
+    id: "icon-gem",
+    label: "Gema",
+    lucideName: "Gem",
+    className: "text-pink-400",
+  },
+  "icon-shield": {
+    id: "icon-shield",
+    label: "Escudo",
+    lucideName: "Shield",
+    className: "text-emerald-400",
+  },
+  "icon-book": {
+    id: "icon-book",
+    label: "Livro",
+    lucideName: "BookOpen",
+    className: "text-blue-400",
+  },
 };
 
 export function resolveProfileIcon(iconId: string | null | undefined) {
@@ -640,6 +670,26 @@ export const PROFILE_FRAMES: Record<string, ProfileFrameDef> = {
   "frame-light": {
     id: "frame-light", label: "Moldura Luz", rarity: "common",
     style: { border: "2px solid #e2e8f0", borderRadius: "1rem", boxShadow: "0 0 14px rgba(226,232,240,0.3)" },
+  },
+  "frame-volcanic": {
+    id: "frame-volcanic", label: "Moldura Vulcânica", rarity: "rare",
+    style: { border: "2px solid #dc2626", borderRadius: "1rem", boxShadow: "0 0 16px rgba(220,38,38,0.5)" },
+  },
+  "frame-neon-purple": {
+    id: "frame-neon-purple", label: "Moldura Neon Roxo", rarity: "rare",
+    style: { border: "2px solid #a855f7", borderRadius: "1rem", boxShadow: "0 0 16px rgba(168,85,247,0.5)" },
+  },
+  "frame-electric-blue": {
+    id: "frame-electric-blue", label: "Moldura Elétrica Azul", rarity: "rare",
+    style: { border: "2px solid #3b82f6", borderRadius: "1rem", boxShadow: "0 0 16px rgba(59,130,246,0.5)" },
+  },
+  "frame-royal": {
+    id: "frame-royal", label: "Moldura Real", rarity: "legendary",
+    style: { border: "2px solid #d97706", borderRadius: "1rem", boxShadow: "0 0 20px rgba(217,119,6,0.5)" },
+  },
+  "frame-mint": {
+    id: "frame-mint", label: "Moldura Menta", rarity: "common",
+    style: { border: "2px solid #34d399", borderRadius: "1rem", boxShadow: "0 0 10px rgba(52,211,153,0.35)" },
   },
 };
 

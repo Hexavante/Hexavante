@@ -448,6 +448,30 @@ export const SHOP_CATALOG: ShopCatalogItem[] = [
   { slug: "bg-electric", name: "Fundo Elétrico", description: "Descargas e raios neon.", cost: 120, category: "PROFILE_BACKGROUND", metadata: { backgroundId: "bg-electric", rarity: "rare" } },
   { slug: "bg-desert", name: "Fundo Deserto", description: "Dunas douradas ao pôr do sol.", cost: 95, category: "PROFILE_BACKGROUND", metadata: { backgroundId: "bg-desert", rarity: "common" } },
   { slug: "bg-underwater", name: "Fundo Subaquático", description: "Oceano profundo e azul.", cost: 115, category: "PROFILE_BACKGROUND", metadata: { backgroundId: "bg-underwater", rarity: "rare" } },
+
+  // ── Molduras extras ──────────────────────────────────────────────────
+  { slug: "frame-volcanic", name: "Moldura Vulcânica", description: "Lava derretida ao redor do perfil.", cost: 130, category: "FRAME", metadata: { frameId: "frame-volcanic", rarity: "rare" } },
+  { slug: "frame-neon-purple", name: "Moldura Neon Roxo", description: "Brilho neon púrpura hipnótico.", cost: 115, category: "FRAME", metadata: { frameId: "frame-neon-purple", rarity: "rare" } },
+  { slug: "frame-electric-blue", name: "Moldura Elétrica Azul", description: "Descargas azuis eletrizantes.", cost: 120, category: "FRAME", metadata: { frameId: "frame-electric-blue", rarity: "rare" } },
+  { slug: "frame-royal", name: "Moldura Real", description: "Elegância real e imponente.", cost: 160, category: "FRAME", metadata: { frameId: "frame-royal", rarity: "legendary" } },
+  { slug: "frame-mint", name: "Moldura Menta", description: "Refrescante e clean.", cost: 80, category: "FRAME", metadata: { frameId: "frame-mint", rarity: "common" } },
+
+  // ── Ícones de perfil ──────────────────────────────────────────────────
+  { slug: "icon-star", name: "Ícone Estrela", description: "Brilhe como uma estrela.", cost: 60, category: "COSMETIC", metadata: { cosmeticType: "profile_icon", iconId: "icon-star" } },
+  { slug: "icon-rocket", name: "Ícone Foguete", description: "Dispare rumo ao sucesso.", cost: 70, category: "COSMETIC", metadata: { cosmeticType: "profile_icon", iconId: "icon-rocket" } },
+  { slug: "icon-gem", name: "Ícone Gema", description: "Raro e precioso.", cost: 80, category: "COSMETIC", metadata: { cosmeticType: "profile_icon", iconId: "icon-gem" } },
+  { slug: "icon-shield", name: "Ícone Escudo", description: "Proteção e coragem.", cost: 65, category: "COSMETIC", metadata: { cosmeticType: "profile_icon", iconId: "icon-shield" } },
+  { slug: "icon-book", name: "Ícone Livro", description: "O conhecimento é poder.", cost: 55, category: "COSMETIC", metadata: { cosmeticType: "profile_icon", iconId: "icon-book" } },
+
+  // ── Distintivos extras ───────────────────────────────────────────────
+  { slug: "badge-ouro", name: "Distintivo Ouro", description: "Símbolo de excelência dourada.", cost: 130, category: "BADGE", metadata: { badgeId: "badge-ouro", rarity: "rare" } },
+  { slug: "badge-diamante", name: "Distintivo Diamante", description: "Inquebrável e reluzente.", cost: 200, category: "BADGE", metadata: { badgeId: "badge-diamante", rarity: "legendary" } },
+  { slug: "badge-cientista", name: "Distintivo Cientista", description: "Paixão pela descoberta.", cost: 100, category: "BADGE", metadata: { badgeId: "badge-cientista", rarity: "rare" } },
+  { slug: "badge-artista", name: "Distintivo Artista", description: "Criatividade sem limites.", cost: 90, category: "BADGE", metadata: { badgeId: "badge-artista", rarity: "common" } },
+  { slug: "badge-lider", name: "Distintivo Líder", description: "Inspira e comanda com EXAMPLE.", cost: 140, category: "BADGE", metadata: { badgeId: "badge-lider", rarity: "rare" } },
+
+  // ── Pack de emojis extra ─────────────────────────────────────────────
+  { slug: "emoji-pack-esportes", name: "Pack Emojis Esportes", description: "Emojis de esportes e atividades físicas.", cost: 55, category: "EMOJI_PACK", metadata: { emojiPackId: "emoji-pack-esportes", emojis: ["⚽", "🏀", "🏈", "🎾", "🏊"] } },
 ];
 
 export const RETIRED_SHOP_CATEGORIES: StoreItemCategory[] = ["PET", "PET_COSMETIC"];
