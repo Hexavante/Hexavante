@@ -270,6 +270,10 @@ const EQUIPPABLE_CATEGORIES: StoreItemCategory[] = [
   "AVATAR_BORDER",
   "THEME",
   "COSMETIC",
+  "BADGE",
+  "FRAME",
+  "EMOJI_PACK",
+  "PROFILE_BACKGROUND",
 ];
 
 const DEFAULT_THEME_SLUG = "theme-hexavante";
@@ -330,6 +334,14 @@ function validateEquipMetadata(category: StoreItemCategory, metadata: unknown): 
       return meta.cosmeticType === "profile_icon"
         ? typeof meta.iconId === "string"
         : meta.cosmeticType === "sticker";
+    case "BADGE":
+      return typeof meta.badgeId === "string";
+    case "FRAME":
+      return typeof meta.frameId === "string";
+    case "EMOJI_PACK":
+      return typeof meta.emojiPackId === "string" && Array.isArray(meta.emojis);
+    case "PROFILE_BACKGROUND":
+      return typeof meta.backgroundId === "string";
     default:
       return false;
   }
