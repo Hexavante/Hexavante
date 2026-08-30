@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Sparkles } from "lucide-react";
+import { Award, Sparkles } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { LeagueBadge } from "@/components/ranking/league-badge";
@@ -37,6 +37,12 @@ export function RankingRow({
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <p className="truncate font-semibold text-white">{entry.user.fullName}</p>
+            {entry.badgeLabel && (
+              <span className="inline-flex items-center gap-1 rounded-full border border-amber-400/40 bg-amber-400/10 px-2 py-0.5 text-xs font-semibold text-amber-200">
+                <Award className="h-3 w-3" />
+                {entry.badgeLabel}
+              </span>
+            )}
             {isCurrentUser && <Badge variant="sky">Você</Badge>}
             {showLeague && entry.league && <LeagueBadge league={entry.league} />}
           </div>

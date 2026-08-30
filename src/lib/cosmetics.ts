@@ -590,35 +590,56 @@ export type ProfileFrameDef = {
 
 export const PROFILE_FRAMES: Record<string, ProfileFrameDef> = {
   "frame-neon": {
-    id: "frame-neon",
-    label: "Moldura Neon",
-    rarity: "rare",
-    style: {
-      border: "2px solid #22d3ee",
-      borderRadius: "1rem",
-      boxShadow: "0 0 14px rgba(34,211,238,0.45)",
-    },
+    id: "frame-neon", label: "Moldura Neon", rarity: "rare",
+    style: { border: "2px solid #22d3ee", borderRadius: "1rem", boxShadow: "0 0 14px rgba(34,211,238,0.45)" },
   },
   "frame-geometria": {
-    id: "frame-geometria",
-    label: "Moldura Geometria",
-    rarity: "common",
-    style: {
-      border: "2px dashed rgba(148,163,184,0.6)",
-      borderRadius: "1rem",
-      outline: "2px dashed rgba(148,163,184,0.25)",
-      outlineOffset: "3px",
-    },
+    id: "frame-geometria", label: "Moldura Geometria", rarity: "common",
+    style: { border: "2px dashed rgba(148,163,184,0.6)", borderRadius: "1rem", outline: "2px dashed rgba(148,163,184,0.25)", outlineOffset: "3px" },
   },
   "frame-madeira": {
-    id: "frame-madeira",
-    label: "Moldura Madeira",
-    rarity: "common",
-    style: {
-      border: "3px solid #b45309",
-      borderRadius: "1rem",
-      boxShadow: "inset 0 0 0 1px rgba(251,191,36,0.35)",
-    },
+    id: "frame-madeira", label: "Moldura Madeira", rarity: "common",
+    style: { border: "3px solid #b45309", borderRadius: "1rem", boxShadow: "inset 0 0 0 1px rgba(251,191,36,0.35)" },
+  },
+  "frame-fire": {
+    id: "frame-fire", label: "Moldura Fogo", rarity: "rare",
+    style: { border: "2px solid #f97316", borderRadius: "1rem", boxShadow: "0 0 16px rgba(249,115,22,0.5)" },
+  },
+  "frame-ice": {
+    id: "frame-ice", label: "Moldura Gelo", rarity: "rare",
+    style: { border: "2px solid #93c5fd", borderRadius: "1rem", boxShadow: "0 0 12px rgba(147,197,253,0.5)" },
+  },
+  "frame-cyber": {
+    id: "frame-cyber", label: "Moldura Cyber", rarity: "legendary",
+    style: { border: "2px solid #a855f7", borderRadius: "1rem", boxShadow: "0 0 18px rgba(168,85,247,0.55)" },
+  },
+  "frame-crystal": {
+    id: "frame-crystal", label: "Moldura Cristal", rarity: "rare",
+    style: { border: "2px solid rgba(255,255,255,0.4)", borderRadius: "1rem", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.2), 0 0 12px rgba(255,255,255,0.15)" },
+  },
+  "frame-flower": {
+    id: "frame-flower", label: "Moldura Flores", rarity: "common",
+    style: { border: "2px solid #f472b6", borderRadius: "1rem", boxShadow: "0 0 10px rgba(244,114,182,0.4)" },
+  },
+  "frame-shadow": {
+    id: "frame-shadow", label: "Moldura Sombra", rarity: "common",
+    style: { border: "2px solid #334155", borderRadius: "1rem", boxShadow: "inset 0 0 0 1px rgba(51,65,85,0.5), 0 0 14px rgba(0,0,0,0.6)" },
+  },
+  "frame-gold": {
+    id: "frame-gold", label: "Moldura Ouro", rarity: "legendary",
+    style: { border: "2px solid #eab308", borderRadius: "1rem", boxShadow: "0 0 18px rgba(234,179,8,0.5)" },
+  },
+  "frame-rainbow": {
+    id: "frame-rainbow", label: "Moldura Arco-Íris", rarity: "rare",
+    style: { border: "2px solid #a78bfa", borderRadius: "1rem", boxShadow: "0 0 12px rgba(167,139,250,0.4)" },
+  },
+  "frame-dark": {
+    id: "frame-dark", label: "Moldura Dark", rarity: "common",
+    style: { border: "2px solid #1e293b", borderRadius: "1rem", boxShadow: "inset 0 0 0 1px rgba(30,41,59,0.6)" },
+  },
+  "frame-light": {
+    id: "frame-light", label: "Moldura Luz", rarity: "common",
+    style: { border: "2px solid #e2e8f0", borderRadius: "1rem", boxShadow: "0 0 14px rgba(226,232,240,0.3)" },
   },
 };
 
@@ -631,29 +652,56 @@ export type ProfileBackgroundDef = {
 
 export const PROFILE_BACKGROUNDS: Record<string, ProfileBackgroundDef> = {
   "bg-galaxy": {
-    id: "bg-galaxy",
-    label: "Fundo Galaxy",
-    rarity: "rare",
-    style: {
-      background:
-        "radial-gradient(120% 120% at 15% 10%, #312e81 0%, #1e1b4b 35%, #0b1020 70%)",
-    },
+    id: "bg-galaxy", label: "Fundo Galaxy", rarity: "rare",
+    style: { background: "radial-gradient(120% 120% at 15% 10%, #312e81 0%, #1e1b4b 35%, #0b1020 70%)" },
   },
   "bg-sunset-gradient": {
-    id: "bg-sunset-gradient",
-    label: "Fundo Sunset",
-    rarity: "common",
-    style: {
-      background: "linear-gradient(135deg, #f97316 0%, #db2777 55%, #7c3aed 100%)",
-    },
+    id: "bg-sunset-gradient", label: "Fundo Sunset", rarity: "common",
+    style: { background: "linear-gradient(135deg, #f97316 0%, #db2777 55%, #7c3aed 100%)" },
   },
   "bg-matrix": {
-    id: "bg-matrix",
-    label: "Fundo Matrix",
-    rarity: "rare",
-    style: {
-      background: "linear-gradient(160deg, #04140a 0%, #052e16 60%, #020617 100%)",
-    },
+    id: "bg-matrix", label: "Fundo Matrix", rarity: "rare",
+    style: { background: "linear-gradient(160deg, #04140a 0%, #052e16 60%, #020617 100%)" },
+  },
+  "bg-aurora": {
+    id: "bg-aurora", label: "Fundo Aurora", rarity: "rare",
+    style: { background: "radial-gradient(ellipse at 20% 0%, #064e3b 0%, #065f46 30%, #0f172a 70%)" },
+  },
+  "bg-rain": {
+    id: "bg-rain", label: "Fundo Chuva", rarity: "common",
+    style: { background: "linear-gradient(180deg, #1e293b 0%, #334155 50%, #475569 100%)" },
+  },
+  "bg-beach": {
+    id: "bg-beach", label: "Fundo Praia", rarity: "common",
+    style: { background: "linear-gradient(135deg, #0ea5e9 0%, #fbbf24 60%, #f59e0b 100%)" },
+  },
+  "bg-mountain": {
+    id: "bg-mountain", label: "Fundo Montanha", rarity: "rare",
+    style: { background: "linear-gradient(160deg, #1e3a5f 0%, #94a3b8 50%, #f1f5f9 100%)" },
+  },
+  "bg-city": {
+    id: "bg-city", label: "Fundo Cidade", rarity: "common",
+    style: { background: "linear-gradient(180deg, #0f172a 0%, #1e293b 40%, #334155 100%)" },
+  },
+  "bg-forest": {
+    id: "bg-forest", label: "Fundo Floresta", rarity: "common",
+    style: { background: "radial-gradient(ellipse at 50% 0%, #14532d 0%, #166534 40%, #052e16 100%)" },
+  },
+  "bg-space": {
+    id: "bg-space", label: "Fundo Espaço", rarity: "rare",
+    style: { background: "radial-gradient(ellipse at 30% 20%, #4c1d95 0%, #2e1065 30%, #020617 70%)" },
+  },
+  "bg-electric": {
+    id: "bg-electric", label: "Fundo Elétrico", rarity: "rare",
+    style: { background: "linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #4f46e5 100%)" },
+  },
+  "bg-desert": {
+    id: "bg-desert", label: "Fundo Deserto", rarity: "common",
+    style: { background: "linear-gradient(135deg, #92400e 0%, #b45309 50%, #f59e0b 100%)" },
+  },
+  "bg-underwater": {
+    id: "bg-underwater", label: "Fundo Subaquático", rarity: "rare",
+    style: { background: "radial-gradient(ellipse at 50% 0%, #0e7490 0%, #083344 50%, #020617 100%)" },
   },
 };
 

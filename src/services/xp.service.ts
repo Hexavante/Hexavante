@@ -193,6 +193,7 @@ export type RankingEntry = {
   league?: import("@prisma/client").RankingLeague;
   periodXp: number;
   totalXp: number;
+  badgeLabel?: string | null;
   user: {
     id: string;
     username: string | null;
@@ -284,6 +285,23 @@ export async function getRanking(
       totalXp: profile.totalXp,
       user: profile.user,
     });
+  }
+
+  const rankUserIds = entries.map((e) => e.userId);
+  if (rankUserIds.length > 0) {
+    const badges = await prisma.userInventory.findMany({
+      where: {
+        userId: { in: rankUserIds },
+        storeItem: { category: "BADGE", isActive: true },
+        isEquipped: true,
+        OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
+      },
+      select: { userId: true, storeItem: { select: { name: true } } },
+    });
+    const badgeMap = new Map(badges.map((b) => [b.userId, b.storeItem.name]));
+    for (const entry of entries) {
+      entry.badgeLabel = badgeMap.get(entry.userId) ?? null;
+    }
   }
 
   return entries;
