@@ -703,55 +703,55 @@ export type ProfileBackgroundDef = {
 export const PROFILE_BACKGROUNDS: Record<string, ProfileBackgroundDef> = {
   "bg-galaxy": {
     id: "bg-galaxy", label: "Fundo Galaxy", rarity: "rare",
-    style: { background: "radial-gradient(120% 120% at 15% 10%, #312e81 0%, #1e1b4b 35%, #0b1020 70%)" },
+    style: { background: "radial-gradient(ellipse at 20% 0%, rgba(88,101,242,0.3) 0%, rgba(88,101,242,0.05) 50%, #1a1b1e 80%)" },
   },
   "bg-sunset-gradient": {
     id: "bg-sunset-gradient", label: "Fundo Sunset", rarity: "common",
-    style: { background: "linear-gradient(135deg, #f97316 0%, #db2777 55%, #7c3aed 100%)" },
+    style: { background: "radial-gradient(ellipse at 30% 10%, rgba(235,69,158,0.25) 0%, rgba(254,231,92,0.08) 50%, #1a1b1e 80%)" },
   },
   "bg-matrix": {
     id: "bg-matrix", label: "Fundo Matrix", rarity: "rare",
-    style: { background: "linear-gradient(160deg, #04140a 0%, #052e16 60%, #020617 100%)" },
+    style: { background: "radial-gradient(ellipse at 50% 0%, rgba(87,242,135,0.15) 0%, rgba(87,242,135,0.03) 50%, #1a1b1e 80%)" },
   },
   "bg-aurora": {
     id: "bg-aurora", label: "Fundo Aurora", rarity: "rare",
-    style: { background: "radial-gradient(ellipse at 20% 0%, #064e3b 0%, #065f46 30%, #0f172a 70%)" },
+    style: { background: "radial-gradient(ellipse at 25% 0%, rgba(87,242,135,0.2) 0%, rgba(88,101,242,0.15) 40%, #1a1b1e 75%)" },
   },
   "bg-rain": {
     id: "bg-rain", label: "Fundo Chuva", rarity: "common",
-    style: { background: "linear-gradient(180deg, #1e293b 0%, #334155 50%, #475569 100%)" },
+    style: { background: "radial-gradient(ellipse at 60% 10%, rgba(88,101,242,0.12) 0%, rgba(88,101,242,0.02) 60%, #1a1b1e 90%)" },
   },
   "bg-beach": {
     id: "bg-beach", label: "Fundo Praia", rarity: "common",
-    style: { background: "linear-gradient(135deg, #0ea5e9 0%, #fbbf24 60%, #f59e0b 100%)" },
+    style: { background: "radial-gradient(ellipse at 40% 0%, rgba(254,231,92,0.15) 0%, rgba(87,242,135,0.05) 50%, #1a1b1e 80%)" },
   },
   "bg-mountain": {
     id: "bg-mountain", label: "Fundo Montanha", rarity: "rare",
-    style: { background: "linear-gradient(160deg, #1e3a5f 0%, #94a3b8 50%, #f1f5f9 100%)" },
+    style: { background: "radial-gradient(ellipse at 50% 0%, rgba(139,145,160,0.2) 0%, rgba(88,101,242,0.08) 50%, #1a1b1e 80%)" },
   },
   "bg-city": {
     id: "bg-city", label: "Fundo Cidade", rarity: "common",
-    style: { background: "linear-gradient(180deg, #0f172a 0%, #1e293b 40%, #334155 100%)" },
+    style: { background: "radial-gradient(ellipse at 50% 100%, rgba(88,101,242,0.15) 0%, rgba(30,31,34,0.5) 50%, #1a1b1e 90%)" },
   },
   "bg-forest": {
     id: "bg-forest", label: "Fundo Floresta", rarity: "common",
-    style: { background: "radial-gradient(ellipse at 50% 0%, #14532d 0%, #166534 40%, #052e16 100%)" },
+    style: { background: "radial-gradient(ellipse at 30% 0%, rgba(87,242,135,0.15) 0%, rgba(34,197,94,0.05) 50%, #1a1b1e 80%)" },
   },
   "bg-space": {
     id: "bg-space", label: "Fundo Espaço", rarity: "rare",
-    style: { background: "radial-gradient(ellipse at 30% 20%, #4c1d95 0%, #2e1065 30%, #020617 70%)" },
+    style: { background: "radial-gradient(ellipse at 40% 20%, rgba(88,101,242,0.25) 0%, rgba(139,92,246,0.1) 40%, #1a1b1e 75%)" },
   },
   "bg-electric": {
     id: "bg-electric", label: "Fundo Elétrico", rarity: "rare",
-    style: { background: "linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #4f46e5 100%)" },
+    style: { background: "radial-gradient(ellipse at 35% 10%, rgba(88,101,242,0.3) 0%, rgba(59,130,246,0.08) 50%, #1a1b1e 80%)" },
   },
   "bg-desert": {
     id: "bg-desert", label: "Fundo Deserto", rarity: "common",
-    style: { background: "linear-gradient(135deg, #92400e 0%, #b45309 50%, #f59e0b 100%)" },
+    style: { background: "radial-gradient(ellipse at 50% 10%, rgba(254,231,92,0.12) 0%, rgba(245,158,11,0.05) 50%, #1a1b1e 80%)" },
   },
   "bg-underwater": {
     id: "bg-underwater", label: "Fundo Subaquático", rarity: "rare",
-    style: { background: "radial-gradient(ellipse at 50% 0%, #0e7490 0%, #083344 50%, #020617 100%)" },
+    style: { background: "radial-gradient(ellipse at 45% 0%, rgba(6,182,212,0.2) 0%, rgba(88,101,242,0.08) 50%, #1a1b1e 80%)" },
   },
 };
 
