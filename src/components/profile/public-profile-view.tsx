@@ -5,7 +5,7 @@ import { Award, Pencil, Settings, Store } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { FollowButton } from "@/components/social/follow-button";
 import { ProfileTabs } from "./profile-tabs";
-import { getProfileBackgroundStyle, getProfileFrameStyle } from "@/lib/cosmetics";
+import { resolveProfileBackground, resolveProfileFrame } from "@/lib/cosmetics";
 import type { getPublicProfile } from "@/services/public-profile.service";
 
 type ProfileData = NonNullable<Awaited<ReturnType<typeof getPublicProfile>>>;
@@ -58,13 +58,17 @@ export function PublicProfileView({ profile, viewerId, viewerUsername }: Props) 
     );
   }
 
-  const frameStyle = cosmetics ? getProfileFrameStyle(cosmetics.frameId) : null;
-  const backgroundStyle = cosmetics ? getProfileBackgroundStyle(cosmetics.profileBackgroundId) : null;
+  const frame = cosmetics ? resolveProfileFrame(cosmetics.frameId) : null;
+  const background = cosmetics ? resolveProfileBackground(cosmetics.profileBackgroundId) : null;
+  const frameStyle = frame?.style ?? null;
+  const backgroundStyle = background?.style ?? null;
   const cardStyle = { ...(backgroundStyle ?? {}), ...(frameStyle ?? {}) };
+  const bgAnimationClass = background?.animationClass ?? "";
+  const frameAnimationClass = frame?.animationClass ?? "";
 
   return (
     <>
-      <section className="hx-profile-card" style={Object.keys(cardStyle).length ? cardStyle : undefined}>
+      <section className={`hx-profile-card ${bgAnimationClass} ${frameAnimationClass}`} style={Object.keys(cardStyle).length ? cardStyle : undefined}>
         <div className="relative">
           <div
             className="hx-profile-banner"

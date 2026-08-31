@@ -3,7 +3,7 @@
 import { ProfileIconBadge } from "@/components/profile/profile-icon-badge";
 import { Avatar } from "@/components/ui/avatar";
 import { Award } from "lucide-react";
-import { getProfileBackgroundStyle, getProfileFrameStyle } from "@/lib/cosmetics";
+import { resolveProfileBackground, resolveProfileFrame } from "@/lib/cosmetics";
 
 type PreviewCosmetics = {
   equippedTitle: string | null;
@@ -23,13 +23,17 @@ type Props = {
 };
 
 export function ShopProfilePreview({ fullName, username, avatarUrl, cosmetics }: Props) {
-  const frameStyle = getProfileFrameStyle(cosmetics.frameId);
-  const backgroundStyle = getProfileBackgroundStyle(cosmetics.profileBackgroundId);
+  const frame = resolveProfileFrame(cosmetics.frameId);
+  const background = resolveProfileBackground(cosmetics.profileBackgroundId);
+  const frameStyle = frame?.style ?? null;
+  const backgroundStyle = background?.style ?? null;
   const cardStyle = { ...(backgroundStyle ?? {}), ...(frameStyle ?? {}) };
+  const bgAnimationClass = background?.animationClass ?? "";
+  const frameAnimationClass = frame?.animationClass ?? "";
 
   return (
     <section
-      className="hx-panel !p-4"
+      className={`hx-panel !p-4 ${bgAnimationClass} ${frameAnimationClass}`}
       style={Object.keys(cardStyle).length ? cardStyle : undefined}
     >
       <p className="text-sm font-semibold hx-text-body">Prévia do perfil</p>

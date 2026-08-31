@@ -616,12 +616,14 @@ export type ProfileFrameDef = {
   label: string;
   rarity: AvatarBorderRarity;
   style: Record<string, string>;
+  animationClass?: string;
 };
 
 export const PROFILE_FRAMES: Record<string, ProfileFrameDef> = {
   "frame-neon": {
     id: "frame-neon", label: "Moldura Neon", rarity: "rare",
-    style: { border: "2px solid #22d3ee", borderRadius: "1rem", boxShadow: "0 0 14px rgba(34,211,238,0.45)" },
+    style: { border: "2px solid #22d3ee", borderRadius: "1rem", boxShadow: "0 0 14px rgba(34,211,238,0.45)", "--frame-glow": "rgba(34,211,238,0.45)" } as Record<string, string>,
+    animationClass: "animate-frame-neon",
   },
   "frame-geometria": {
     id: "frame-geometria", label: "Moldura Geometria", rarity: "common",
@@ -633,19 +635,23 @@ export const PROFILE_FRAMES: Record<string, ProfileFrameDef> = {
   },
   "frame-fire": {
     id: "frame-fire", label: "Moldura Fogo", rarity: "rare",
-    style: { border: "2px solid #f97316", borderRadius: "1rem", boxShadow: "0 0 16px rgba(249,115,22,0.5)" },
+    style: { border: "2px solid #f97316", borderRadius: "1rem", boxShadow: "0 0 16px rgba(249,115,22,0.5)", "--frame-glow": "rgba(249,115,22,0.5)" } as Record<string, string>,
+    animationClass: "animate-frame-pulse",
   },
   "frame-ice": {
     id: "frame-ice", label: "Moldura Gelo", rarity: "rare",
-    style: { border: "2px solid #93c5fd", borderRadius: "1rem", boxShadow: "0 0 12px rgba(147,197,253,0.5)" },
+    style: { border: "2px solid #93c5fd", borderRadius: "1rem", boxShadow: "0 0 12px rgba(147,197,253,0.5)", "--frame-glow": "rgba(147,197,253,0.5)" } as Record<string, string>,
+    animationClass: "animate-frame-pulse",
   },
   "frame-cyber": {
     id: "frame-cyber", label: "Moldura Cyber", rarity: "legendary",
-    style: { border: "2px solid #a855f7", borderRadius: "1rem", boxShadow: "0 0 18px rgba(168,85,247,0.55)" },
+    style: { border: "2px solid #a855f7", borderRadius: "1rem", boxShadow: "0 0 18px rgba(168,85,247,0.55)", "--frame-glow": "rgba(168,85,247,0.55)" } as Record<string, string>,
+    animationClass: "animate-frame-neon",
   },
   "frame-crystal": {
     id: "frame-crystal", label: "Moldura Cristal", rarity: "rare",
-    style: { border: "2px solid rgba(255,255,255,0.4)", borderRadius: "1rem", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.2), 0 0 12px rgba(255,255,255,0.15)" },
+    style: { border: "2px solid rgba(255,255,255,0.4)", borderRadius: "1rem", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.2), 0 0 12px rgba(255,255,255,0.15)", "--frame-glow": "rgba(255,255,255,0.2)" } as Record<string, string>,
+    animationClass: "animate-frame-shimmer",
   },
   "frame-flower": {
     id: "frame-flower", label: "Moldura Flores", rarity: "common",
@@ -657,11 +663,13 @@ export const PROFILE_FRAMES: Record<string, ProfileFrameDef> = {
   },
   "frame-gold": {
     id: "frame-gold", label: "Moldura Ouro", rarity: "legendary",
-    style: { border: "2px solid #eab308", borderRadius: "1rem", boxShadow: "0 0 18px rgba(234,179,8,0.5)" },
+    style: { border: "2px solid #eab308", borderRadius: "1rem", boxShadow: "0 0 18px rgba(234,179,8,0.5)", "--frame-glow": "rgba(234,179,8,0.5)" } as Record<string, string>,
+    animationClass: "animate-frame-rotate",
   },
   "frame-rainbow": {
     id: "frame-rainbow", label: "Moldura Arco-Íris", rarity: "rare",
-    style: { border: "2px solid #a78bfa", borderRadius: "1rem", boxShadow: "0 0 12px rgba(167,139,250,0.4)" },
+    style: { border: "2px solid #a78bfa", borderRadius: "1rem", boxShadow: "0 0 12px rgba(167,139,250,0.4)", "--frame-glow": "rgba(167,139,250,0.4)" } as Record<string, string>,
+    animationClass: "animate-frame-shimmer",
   },
   "frame-dark": {
     id: "frame-dark", label: "Moldura Dark", rarity: "common",
@@ -673,19 +681,23 @@ export const PROFILE_FRAMES: Record<string, ProfileFrameDef> = {
   },
   "frame-volcanic": {
     id: "frame-volcanic", label: "Moldura Vulcânica", rarity: "rare",
-    style: { border: "2px solid #dc2626", borderRadius: "1rem", boxShadow: "0 0 16px rgba(220,38,38,0.5)" },
+    style: { border: "2px solid #dc2626", borderRadius: "1rem", boxShadow: "0 0 16px rgba(220,38,38,0.5)", "--frame-glow": "rgba(220,38,38,0.5)" } as Record<string, string>,
+    animationClass: "animate-frame-pulse",
   },
   "frame-neon-purple": {
     id: "frame-neon-purple", label: "Moldura Neon Roxo", rarity: "rare",
-    style: { border: "2px solid #a855f7", borderRadius: "1rem", boxShadow: "0 0 16px rgba(168,85,247,0.5)" },
+    style: { border: "2px solid #a855f7", borderRadius: "1rem", boxShadow: "0 0 16px rgba(168,85,247,0.5)", "--frame-glow": "rgba(168,85,247,0.5)" } as Record<string, string>,
+    animationClass: "animate-frame-neon",
   },
   "frame-electric-blue": {
     id: "frame-electric-blue", label: "Moldura Elétrica Azul", rarity: "rare",
-    style: { border: "2px solid #3b82f6", borderRadius: "1rem", boxShadow: "0 0 16px rgba(59,130,246,0.5)" },
+    style: { border: "2px solid #3b82f6", borderRadius: "1rem", boxShadow: "0 0 16px rgba(59,130,246,0.5)", "--frame-glow": "rgba(59,130,246,0.5)" } as Record<string, string>,
+    animationClass: "animate-frame-pulse",
   },
   "frame-royal": {
     id: "frame-royal", label: "Moldura Real", rarity: "legendary",
-    style: { border: "2px solid #d97706", borderRadius: "1rem", boxShadow: "0 0 20px rgba(217,119,6,0.5)" },
+    style: { border: "2px solid #d97706", borderRadius: "1rem", boxShadow: "0 0 20px rgba(217,119,6,0.5)", "--frame-glow": "rgba(217,119,6,0.5)" } as Record<string, string>,
+    animationClass: "animate-frame-rotate",
   },
   "frame-mint": {
     id: "frame-mint", label: "Moldura Menta", rarity: "common",
@@ -698,12 +710,14 @@ export type ProfileBackgroundDef = {
   label: string;
   rarity: AvatarBorderRarity;
   style: Record<string, string>;
+  animationClass?: string;
 };
 
 export const PROFILE_BACKGROUNDS: Record<string, ProfileBackgroundDef> = {
   "bg-galaxy": {
     id: "bg-galaxy", label: "Fundo Galaxy", rarity: "rare",
     style: { background: "radial-gradient(ellipse at 20% 0%, rgba(88,101,242,0.3) 0%, rgba(88,101,242,0.05) 50%, #1a1b1e 80%)" },
+    animationClass: "animate-bg-glow",
   },
   "bg-sunset-gradient": {
     id: "bg-sunset-gradient", label: "Fundo Sunset", rarity: "common",
@@ -712,10 +726,12 @@ export const PROFILE_BACKGROUNDS: Record<string, ProfileBackgroundDef> = {
   "bg-matrix": {
     id: "bg-matrix", label: "Fundo Matrix", rarity: "rare",
     style: { background: "radial-gradient(ellipse at 50% 0%, rgba(87,242,135,0.15) 0%, rgba(87,242,135,0.03) 50%, #1a1b1e 80%)" },
+    animationClass: "animate-bg-glow",
   },
   "bg-aurora": {
     id: "bg-aurora", label: "Fundo Aurora", rarity: "rare",
     style: { background: "radial-gradient(ellipse at 25% 0%, rgba(87,242,135,0.2) 0%, rgba(88,101,242,0.15) 40%, #1a1b1e 75%)" },
+    animationClass: "animate-bg-aurora",
   },
   "bg-rain": {
     id: "bg-rain", label: "Fundo Chuva", rarity: "common",
@@ -728,6 +744,7 @@ export const PROFILE_BACKGROUNDS: Record<string, ProfileBackgroundDef> = {
   "bg-mountain": {
     id: "bg-mountain", label: "Fundo Montanha", rarity: "rare",
     style: { background: "radial-gradient(ellipse at 50% 0%, rgba(139,145,160,0.2) 0%, rgba(88,101,242,0.08) 50%, #1a1b1e 80%)" },
+    animationClass: "animate-bg-breathe",
   },
   "bg-city": {
     id: "bg-city", label: "Fundo Cidade", rarity: "common",
@@ -740,10 +757,12 @@ export const PROFILE_BACKGROUNDS: Record<string, ProfileBackgroundDef> = {
   "bg-space": {
     id: "bg-space", label: "Fundo Espaço", rarity: "rare",
     style: { background: "radial-gradient(ellipse at 40% 20%, rgba(88,101,242,0.25) 0%, rgba(139,92,246,0.1) 40%, #1a1b1e 75%)" },
+    animationClass: "animate-bg-shift",
   },
   "bg-electric": {
     id: "bg-electric", label: "Fundo Elétrico", rarity: "rare",
     style: { background: "radial-gradient(ellipse at 35% 10%, rgba(88,101,242,0.3) 0%, rgba(59,130,246,0.08) 50%, #1a1b1e 80%)" },
+    animationClass: "animate-bg-glow",
   },
   "bg-desert": {
     id: "bg-desert", label: "Fundo Deserto", rarity: "common",
@@ -752,6 +771,7 @@ export const PROFILE_BACKGROUNDS: Record<string, ProfileBackgroundDef> = {
   "bg-underwater": {
     id: "bg-underwater", label: "Fundo Subaquático", rarity: "rare",
     style: { background: "radial-gradient(ellipse at 45% 0%, rgba(6,182,212,0.2) 0%, rgba(88,101,242,0.08) 50%, #1a1b1e 80%)" },
+    animationClass: "animate-bg-breathe",
   },
 };
 

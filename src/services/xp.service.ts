@@ -194,6 +194,8 @@ export type RankingEntry = {
   periodXp: number;
   totalXp: number;
   badgeLabel?: string | null;
+  frameId?: string | null;
+  borderId?: string | null;
   user: {
     id: string;
     username: string | null;
@@ -289,18 +291,47 @@ export async function getRanking(
 
   const rankUserIds = entries.map((e) => e.userId);
   if (rankUserIds.length > 0) {
+    const now = new Date();
+
     const badges = await prisma.userInventory.findMany({
       where: {
         userId: { in: rankUserIds },
         storeItem: { category: "BADGE", isActive: true },
         isEquipped: true,
-        OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
+        OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
       },
       select: { userId: true, storeItem: { select: { name: true } } },
     });
     const badgeMap = new Map(badges.map((b) => [b.userId, b.storeItem.name]));
+
+    const frames = await prisma.userInventory.findMany({
+      where: {
+        userId: { in: rankUserIds },
+        storeItem: { category: "FRAME", isActive: true },
+        isEquipped: true,
+        OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
+      },
+      select: { userId: true, storeItem: { select: { metadata: true } } },
+    });
+    const frameMap = new Map(frames.map((f) => [f.userId, f.storeItem.metadata as Record<string, unknown> | null]));
+
+    const borders = await prisma.userInventory.findMany({
+      where: {
+        userId: { in: rankUserIds },
+        storeItem: { category: "AVATAR_BORDER", isActive: true },
+        isEquipped: true,
+        OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
+      },
+      select: { userId: true, storeItem: { select: { metadata: true } } },
+    });
+    const borderMap = new Map(borders.map((b) => [b.userId, b.storeItem.metadata as Record<string, unknown> | null]));
+
     for (const entry of entries) {
       entry.badgeLabel = badgeMap.get(entry.userId) ?? null;
+      const frameMeta = frameMap.get(entry.userId);
+      entry.frameId = (frameMeta?.frameId as string) ?? null;
+      const borderMeta = borderMap.get(entry.userId);
+      entry.borderId = (borderMeta?.borderId as string) ?? null;
     }
   }
 

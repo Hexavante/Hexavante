@@ -420,3 +420,109 @@
     --anim-accent: var(--color-accent, #22d3ee);
   }
 }
+
+/* ═══ Profile Background Animations ═══════════════════════════════════ */
+
+@keyframes bg-shift {
+  0%   { background-position: 0% 0%; }
+  25%  { background-position: 100% 0%; }
+  50%  { background-position: 100% 100%; }
+  75%  { background-position: 0% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+@keyframes bg-breathe {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.7; }
+}
+
+@keyframes bg-aurora-flow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes bg-glow-pulse {
+  0%, 100% { filter: brightness(1) saturate(1); }
+  50%      { filter: brightness(1.15) saturate(1.2); }
+}
+
+/* ═══ Profile Frame Animations ════════════════════════════════════════ */
+
+@keyframes frame-neon-flicker {
+  0%, 100% { opacity: 1; box-shadow: 0 0 14px var(--frame-glow, rgba(34,211,238,0.45)); }
+  8%  { opacity: 0.85; }
+  16% { opacity: 1; }
+  24% { opacity: 0.9; }
+  50% { opacity: 1; box-shadow: 0 0 22px var(--frame-glow, rgba(34,211,238,0.6)); }
+}
+
+@keyframes frame-pulse {
+  0%, 100% { box-shadow: 0 0 8px var(--frame-glow, rgba(255,255,255,0.15)); }
+  50%      { box-shadow: 0 0 20px var(--frame-glow, rgba(255,255,255,0.35)); }
+}
+
+@keyframes frame-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes frame-rotate-glow {
+  0%   { box-shadow: 0 0 12px var(--frame-glow, rgba(255,255,255,0.2)); }
+  33%  { box-shadow: 4px 0 16px var(--frame-glow, rgba(255,255,255,0.25)); }
+  66%  { box-shadow: -4px 0 16px var(--frame-glow, rgba(255,255,255,0.25)); }
+  100% { box-shadow: 0 0 12px var(--frame-glow, rgba(255,255,255,0.2)); }
+}
+
+/* Animation utility classes for cosmetics */
+.animate-bg-shift {
+  animation: bg-shift 12s ease-in-out infinite;
+  background-size: 200% 200%;
+}
+
+.animate-bg-breathe {
+  animation: bg-breathe 4s ease-in-out infinite;
+}
+
+.animate-bg-aurora {
+  animation: bg-aurora-flow 8s ease-in-out infinite;
+  background-size: 200% 200%;
+}
+
+.animate-bg-glow {
+  animation: bg-glow-pulse 3s ease-in-out infinite;
+}
+
+.animate-frame-neon {
+  animation: frame-neon-flicker 3s ease-in-out infinite;
+}
+
+.animate-frame-pulse {
+  animation: frame-pulse 2.5s ease-in-out infinite;
+}
+
+.animate-frame-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.animate-frame-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.08) 40%,
+    rgba(255,255,255,0.15) 50%,
+    rgba(255,255,255,0.08) 60%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: frame-shimmer 3s linear infinite;
+  pointer-events: none;
+}
+
+.animate-frame-rotate {
+  animation: frame-rotate-glow 4s ease-in-out infinite;
+}

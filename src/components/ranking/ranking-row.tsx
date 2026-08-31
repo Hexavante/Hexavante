@@ -3,6 +3,7 @@ import { Award, Sparkles } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { LeagueBadge } from "@/components/ranking/league-badge";
+import { resolveProfileFrame, getAvatarBorderClassName } from "@/lib/cosmetics";
 import type { RankingEntry } from "@/services/xp.service";
 
 type Props = {
@@ -20,6 +21,9 @@ export function RankingRow({
   showTotalXp,
   showLeague = false,
 }: Props) {
+  const frame = resolveProfileFrame(entry.frameId);
+  const borderClassName = getAvatarBorderClassName(entry.borderId);
+
   return (
     <li>
       <Link
@@ -32,7 +36,17 @@ export function RankingRow({
           {position}
         </div>
 
-        <Avatar src={entry.user.avatarUrl} alt={entry.user.username ?? ""} size="sm" />
+        <div
+          className={`relative shrink-0 rounded-xl ${frame?.animationClass ?? ""}`}
+          style={frame?.style}
+        >
+          <Avatar
+            src={entry.user.avatarUrl}
+            alt={entry.user.username ?? ""}
+            size="sm"
+            borderClassName={borderClassName}
+          />
+        </div>
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
