@@ -97,10 +97,12 @@ function EquipRow({ item }: { item: InventoryItem }) {
 }
 
 export function CosmeticsInventoryPanel({ inventory }: Props) {
+  const EQUIPPABLE: StoreItemCategory[] = [
+    "TITLE", "AVATAR_BORDER", "THEME", "COSMETIC",
+    "BADGE", "FRAME", "EMOJI_PACK", "PROFILE_BACKGROUND",
+  ];
   const equippable = inventory.filter((entry) =>
-    (["TITLE", "AVATAR_BORDER", "THEME", "COSMETIC"] as StoreItemCategory[]).includes(
-      entry.storeItem.category,
-    ),
+    EQUIPPABLE.includes(entry.storeItem.category),
   );
 
   if (equippable.length === 0) {
@@ -108,7 +110,7 @@ export function CosmeticsInventoryPanel({ inventory }: Props) {
       <div className="rounded-xl border border-dashed border-white/15 bg-white/[0.03] p-8 text-center">
         <p className="font-semibold text-slate-200">Nenhum cosmético no inventário</p>
         <p className="mt-2 text-sm text-slate-500">
-          Visite a loja para comprar títulos, molduras, temas e ícones de perfil.
+          Visite a loja para comprar títulos, molduras, temas, ícones, distintivos, emojis e fundos.
         </p>
       </div>
     );
@@ -119,6 +121,10 @@ export function CosmeticsInventoryPanel({ inventory }: Props) {
     AVATAR_BORDER: equippable.filter((i) => i.storeItem.category === "AVATAR_BORDER"),
     TITLE: equippable.filter((i) => i.storeItem.category === "TITLE"),
     COSMETIC: equippable.filter((i) => i.storeItem.category === "COSMETIC"),
+    BADGE: equippable.filter((i) => i.storeItem.category === "BADGE"),
+    FRAME: equippable.filter((i) => i.storeItem.category === "FRAME"),
+    EMOJI_PACK: equippable.filter((i) => i.storeItem.category === "EMOJI_PACK"),
+    PROFILE_BACKGROUND: equippable.filter((i) => i.storeItem.category === "PROFILE_BACKGROUND"),
   };
 
   return (
@@ -129,6 +135,10 @@ export function CosmeticsInventoryPanel({ inventory }: Props) {
           ["AVATAR_BORDER", "Molduras de avatar"],
           ["TITLE", "Títulos"],
           ["COSMETIC", "Ícones e cosméticos"],
+          ["BADGE", "Distintivos"],
+          ["FRAME", "Molduras decorativas"],
+          ["PROFILE_BACKGROUND", "Fundos de perfil"],
+          ["EMOJI_PACK", "Pacotes de emoji"],
         ] as const
       ).map(([key, label]) =>
         grouped[key].length > 0 ? (
