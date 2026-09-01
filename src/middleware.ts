@@ -87,7 +87,6 @@ async function getSessionUser(cookieHeader: string | null) {
 // via requireBearerAuth, mitigando o problema.
 
 const APP_HOST = "app.hexavante.com.br";
-const LEGACY_HOSTS = new Set(["hexavante.com.br", "www.hexavante.com.br"]);
 
 function requestHost(req: NextRequest): string {
   const host = (req.headers.get("host") || "").toLowerCase();
@@ -98,13 +97,12 @@ export async function middleware(req: NextRequest) {
   const { pathname, origin } = req.nextUrl;
   const hostname = requestHost(req);
 
-  if (LEGACY_HOSTS.has(hostname)) {
-    const target = new URL(pathname + req.nextUrl.search, `https://${APP_HOST}`);
-    return NextResponse.redirect(target, 301);
-  }
-
   if (pathname.startsWith("/api")) {
     return nextWithPathname(req);
+  }
+
+  if (hostname === APP_HOST && pathname === "/") {
+    return NextResponse.redirect(new URL("/app", origin));
   }
 
   const cookieHeader = req.headers.get("cookie");
