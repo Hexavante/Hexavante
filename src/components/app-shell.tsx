@@ -16,6 +16,8 @@ const BARE_LAYOUT_PREFIXES = [
   "/ajuda",
 ];
 
+const BARE_LAYOUT_EXACT = ["/"];
+
 type Props = {
   session: NavSession;
   /** Server Component slot — must be passed from a Server Layout, not imported here. */
@@ -25,7 +27,9 @@ type Props = {
 
 export function AppShell({ session, header, children }: Props) {
   const pathname = usePathname();
-  const useBareLayout = BARE_LAYOUT_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+  const useBareLayout =
+    BARE_LAYOUT_EXACT.includes(pathname) ||
+    BARE_LAYOUT_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 
   if (useBareLayout) {
     return <>{children}</>;
