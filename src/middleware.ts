@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server";
 const MODERATOR_REQUIRED = /^\/moderacao(\/|$)/;
 
 const MAINTENANCE_EXEMPT =
-  /^\/(manutencao|suspenso|login|register|recuperar-senha|redefinir-senha)(\/|$)/;
+  /^\/(manutencao|suspenso|login|register|recuperar-senha|redefinir-senha|hexa|ajuda)(\/|$)/;
 
 const MAINTENANCE_CACHE_TTL_MS = 30_000;
 const MAINTENANCE_FETCH_TIMEOUT_MS = 2_000;
@@ -118,20 +118,20 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  const publicPaths = ["/login", "/register", "/recuperar-senha", "/redefinir-senha", "/manutencao", "/suspenso"];
+  const publicPaths = ["/", "/hexa", "/ajuda", "/login", "/register", "/recuperar-senha", "/redefinir-senha", "/manutencao", "/suspenso"];
 
-  if (!isAuthenticated && !publicPaths.some((p) => pathname.startsWith(p))) {
+  if (!isAuthenticated && !publicPaths.some((p) => pathname === p || pathname.startsWith(p + "/"))) {
     const login = new URL("/login", origin);
     login.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(login);
   }
 
   if (isAuthenticated && (pathname.startsWith("/login") || pathname.startsWith("/register"))) {
-    return NextResponse.redirect(new URL("/", origin));
+    return NextResponse.redirect(new URL("/app", origin));
   }
 
   if (MODERATOR_REQUIRED.test(pathname) && !user.roles?.some((r: string) => ["ADMIN", "MODERATOR", "SUPERADMIN"].includes(r))) {
-    return NextResponse.redirect(new URL("/", origin));
+    return NextResponse.redirect(new URL("/app", origin));
   }
 
   return nextWithPathname(req);

@@ -7,6 +7,8 @@ export const AUTH_PUBLIC_EXACT = new Set([
   "/manutencao",
   "/suspenso",
   "/privacidade",
+  "/hexa",
+  "/ajuda",
 ]);
 
 export const AUTH_PUBLIC_PREFIXES = [
@@ -21,7 +23,7 @@ export function isPublicAuthRoute(pathname: string): boolean {
   return AUTH_PUBLIC_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 }
 
-export function getSafeCallbackUrl(value: string | null | undefined, fallback = "/"): string {
+export function getSafeCallbackUrl(value: string | null | undefined, fallback = "/app"): string {
   if (!value || !value.startsWith("/") || value.startsWith("//")) return fallback;
   return value;
 }

@@ -12,6 +12,8 @@ const BARE_LAYOUT_PREFIXES = [
   "/suspenso",
   "/recuperar-senha",
   "/redefinir-senha",
+  "/hexa",
+  "/ajuda",
 ];
 
 type Props = {

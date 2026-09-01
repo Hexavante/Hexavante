@@ -62,7 +62,7 @@ const NAV_SECTIONS: NavSection[] = [
   {
     id: "home",
     label: "Início",
-    items: [{ icon: Compass, label: "Introdução", href: "/" }],
+    items: [{ icon: Compass, label: "Painel", href: "/app" }],
   },
   {
     id: "study",
@@ -116,13 +116,13 @@ function resolveNavHref(item: NavItem, session: NavSession): string {
 }
 
 function isActive(pathname: string, href: string): boolean {
-  if (href === "/") return pathname === "/";
+  if (href === "/app") return pathname === "/app" || pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
 function SidebarBrand() {
   return (
-    <Link href="/" className="hx-sidebar-brand group" aria-label="Hexavante - Página inicial">
+    <Link href="/app" className="hx-sidebar-brand group" aria-label="Hexavante - Página inicial">
       <span className="hx-sidebar-brand-mark">
         <Image
           src="/brand/hexavante-logo.png"

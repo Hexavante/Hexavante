@@ -28,7 +28,7 @@ export function HeaderBar({ session }: Props) {
 
         <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
           <Link
-            href="/"
+            href="/app"
             className="hx-header-brand group shrink-0"
             aria-label="Hexavante - Página inicial"
           >
