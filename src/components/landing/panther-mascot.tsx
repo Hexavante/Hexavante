@@ -3,202 +3,217 @@
 export function PantherMascot({ className = "" }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 500 400"
+      viewBox="0 0 500 420"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
-      {/* Glow beneath */}
-      <ellipse cx="250" cy="355" rx="140" ry="16" fill="url(#mascot-shadow)" opacity="0.3" />
-
-      {/* === BODY (side view - sleek panther) === */}
-      {/* Main torso */}
-      <path
-        d="M120 260 C120 210 150 175 200 165 L300 165 C340 175 360 210 360 260 L355 300 C350 315 340 322 330 322 L150 322 C140 322 130 315 125 300 Z"
-        fill="url(#body-grad)"
-        stroke="hsl(187, 85%, 53%)"
-        strokeWidth="1.2"
-        opacity="0.95"
-      />
-
-      {/* Belly highlight */}
-      <path
-        d="M155 280 Q240 295 330 280 Q320 310 240 318 Q160 310 155 280 Z"
-        fill="hsl(187, 85%, 53%)"
-        opacity="0.06"
-      />
-
-      {/* Shoulder muscle */}
-      <ellipse cx="160" cy="225" rx="30" ry="22" fill="url(#body-grad)" opacity="0.6" />
-      {/* Hip muscle */}
-      <ellipse cx="330" cy="230" rx="28" ry="20" fill="url(#body-grad)" opacity="0.5" />
-
-      {/* === HEAD (side view - facing left) === */}
-      <path
-        d="M60 160 C60 120 80 95 115 88 C145 82 160 90 165 105 L168 145 C170 160 165 175 155 182 L110 195 C85 200 65 190 60 170 Z"
-        fill="url(#head-grad)"
-        stroke="hsl(187, 85%, 53%)"
-        strokeWidth="1.2"
-      />
-
-      {/* Snout (side - protruding) */}
-      <path
-        d="M60 155 L42 162 C38 165 38 172 42 175 L60 180 L75 175 C70 170 65 162 60 155 Z"
-        fill="url(#snout-grad)"
-        stroke="hsl(187, 85%, 53%)"
-        strokeWidth="0.8"
-        opacity="0.8"
-      />
-
-      {/* Nose */}
-      <path d="M42 164 L36 169 L42 173 Z" fill="hsl(187, 85%, 53%)" opacity="0.9" />
-
-      {/* === EAR (side - one visible, pointed) === */}
-      <path d="M120 92 L105 42 L145 78 Z" fill="url(#ear-grad)" stroke="hsl(187, 85%, 53%)" strokeWidth="1.2" />
-      <path d="M123 88 L112 50 L140 78 Z" fill="hsl(187, 85%, 53%)" opacity="0.2" />
-
-      {/* === EYE (side view - one large, intense) === */}
-      <ellipse cx="105" cy="130" rx="16" ry="13" fill="#040810" />
-      <ellipse cx="103" cy="128" rx="9" ry="8" fill="hsl(187, 85%, 53%)" />
-      {/* Slit pupil */}
-      <ellipse cx="101" cy="128" rx="3" ry="7.5" fill="#040810" />
-      {/* Highlights */}
-      <circle cx="107" cy="124" r="3" fill="white" opacity="0.9" />
-      <circle cx="99" cy="131" r="1.5" fill="white" opacity="0.5" />
-      {/* Brow */}
-      <path d="M82 118 L105 112 L125 120" stroke="hsl(187, 85%, 53%)" strokeWidth="1.5" fill="none" opacity="0.4" />
-
-      {/* === MOUTH LINE === */}
-      <path d="M42 175 Q55 182 75 178" stroke="hsl(187, 85%, 53%)" strokeWidth="1" fill="none" opacity="0.4" />
-
-      {/* === GRADUATION CAP === */}
-      <rect x="88" y="72" width="65" height="8" rx="2" fill="#1e293b" stroke="hsl(187, 85%, 53%)" strokeWidth="1" />
-      <path d="M93 72 L120 55 L148 72 Z" fill="#1e293b" stroke="hsl(187, 85%, 53%)" strokeWidth="1" />
-      <line x1="145" y1="72" x2="158" y2="90" stroke="hsl(187, 85%, 53%)" strokeWidth="1.5" />
-      <circle cx="158" cy="92" r="3.5" fill="hsl(187, 85%, 53%)" />
-
-      {/* === FRONT LEGS (side view) === */}
-      {/* Near front leg */}
-      <path
-        d="M160 290 L155 318 C155 325 160 330 168 330 L178 330 C185 330 188 325 188 318 L185 290"
-        fill="url(#body-grad)"
-        stroke="hsl(187, 85%, 53%)"
-        strokeWidth="1"
-        opacity="0.9"
-      />
-      {/* Paw */}
-      <ellipse cx="170" cy="332" rx="16" ry="6" fill="url(#body-grad)" stroke="hsl(187, 85%, 53%)" strokeWidth="0.8" />
-      <circle cx="163" cy="330" r="2.5" fill="hsl(187, 85%, 53%)" opacity="0.15" />
-      <circle cx="170" cy="328" r="2.5" fill="hsl(187, 85%, 53%)" opacity="0.15" />
-      <circle cx="177" cy="330" r="2.5" fill="hsl(187, 85%, 53%)" opacity="0.15" />
-
-      {/* Far front leg (behind) */}
-      <path
-        d="M185 295 L182 318 C182 324 186 328 192 328 L200 328 C206 328 208 324 208 318 L205 295"
-        fill="url(#body-grad)"
-        stroke="hsl(187, 85%, 53%)"
-        strokeWidth="0.8"
-        opacity="0.6"
-      />
-      <ellipse cx="195" cy="330" rx="14" ry="5" fill="url(#body-grad)" stroke="hsl(187, 85%, 53%)" strokeWidth="0.6" opacity="0.6" />
-
-      {/* === HIND LEGS (side view) === */}
-      {/* Near hind leg - muscular thigh */}
-      <path
-        d="M310 280 L305 310 C303 320 308 330 318 330 L330 330 C340 330 343 320 340 310 L338 280"
-        fill="url(#body-grad)"
-        stroke="hsl(187, 85%, 53%)"
-        strokeWidth="1"
-        opacity="0.9"
-      />
-      <ellipse cx="322" cy="332" rx="16" ry="6" fill="url(#body-grad)" stroke="hsl(187, 85%, 53%)" strokeWidth="0.8" />
-      <circle cx="315" cy="330" r="2.5" fill="hsl(187, 85%, 53%)" opacity="0.15" />
-      <circle cx="322" cy="328" r="2.5" fill="hsl(187, 85%, 53%)" opacity="0.15" />
-      <circle cx="329" cy="330" r="2.5" fill="hsl(187, 85%, 53%)" opacity="0.15" />
-
-      {/* Far hind leg */}
-      <path
-        d="M280 290 L278 312 C276 322 280 328 288 328 L298 328 C306 328 308 322 306 312 L304 290"
-        fill="url(#body-grad)"
-        stroke="hsl(187, 85%, 53%)"
-        strokeWidth="0.8"
-        opacity="0.55"
-      />
-      <ellipse cx="292" cy="330" rx="14" ry="5" fill="url(#body-grad)" stroke="hsl(187, 85%, 53%)" strokeWidth="0.6" opacity="0.55" />
-
-      {/* === TAIL (long, elegant, curved upward) === */}
-      <path
-        d="M355 250 C380 240 400 220 410 195 C418 175 415 160 405 155 C398 152 392 158 395 168 C398 178 408 175 412 165"
-        stroke="url(#tail-grad)"
-        strokeWidth="5"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.8"
-      />
-      {/* Tail tip glow */}
-      <circle cx="412" cy="165" r="4" fill="hsl(187, 85%, 53%)" opacity="0.35">
-        <animate attributeName="opacity" values="0.35;0.7;0.35" dur="2s" repeatCount="indefinite" />
-      </circle>
-
-      {/* === BODY MUSCLE LINES === */}
-      <path d="M180 230 Q240 240 320 230" stroke="hsl(187, 85%, 53%)" strokeWidth="0.6" fill="none" opacity="0.12" />
-      <path d="M175 260 Q240 268 325 260" stroke="hsl(187, 85%, 53%)" strokeWidth="0.6" fill="none" opacity="0.1" />
-
-      {/* === FLOATING SPARKLES === */}
-      <circle cx="30" cy="130" r="3" fill="hsl(187, 85%, 53%)" opacity="0.6">
-        <animate attributeName="opacity" values="0.6;0.15;0.6" dur="3s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="440" cy="110" r="2.5" fill="hsl(187, 85%, 53%)" opacity="0.4">
-        <animate attributeName="opacity" values="0.4;0.8;0.4" dur="2.5s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="25" cy="280" r="2" fill="#a78bfa" opacity="0.5">
-        <animate attributeName="opacity" values="0.5;0.1;0.5" dur="4s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="450" cy="270" r="3" fill="hsl(187, 85%, 53%)" opacity="0.3">
-        <animate attributeName="opacity" values="0.3;0.7;0.3" dur="3.5s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="70" cy="200" r="1.5" fill="white" opacity="0.3">
-        <animate attributeName="opacity" values="0.3;0.7;0.3" dur="2s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="420" cy="200" r="2" fill="white" opacity="0.25">
-        <animate attributeName="opacity" values="0.25;0.6;0.25" dur="3.2s" repeatCount="indefinite" />
-      </circle>
-
-      {/* Star shapes */}
-      <path d="M20 180 l4-8 4 8 -8-4 8 0z" fill="hsl(187, 85%, 53%)" opacity="0.5">
-        <animate attributeName="opacity" values="0.5;0.15;0.5" dur="3s" repeatCount="indefinite" />
-      </path>
-      <path d="M455 160 l3-6 3 6 -6-3 6 0z" fill="#a78bfa" opacity="0.4">
-        <animate attributeName="opacity" values="0.4;0.8;0.4" dur="2.8s" repeatCount="indefinite" />
-      </path>
-
-      {/* === GRADIENTS === */}
       <defs>
-        <linearGradient id="body-grad" x1="120" y1="165" x2="360" y2="320" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#164e63" />
-          <stop offset="1" stopColor="#0a1628" />
+        {/* Neon cyan glow filter */}
+        <filter id="neon-glow" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur1" />
+          <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur2" />
+          <feGaussianBlur in="SourceGraphic" stdDeviation="14" result="blur3" />
+          <feMerge>
+            <feMergeNode in="blur3" />
+            <feMergeNode in="blur2" />
+            <feMergeNode in="blur1" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+
+        {/* Subtle glow for smaller elements */}
+        <filter id="neon-glow-sm" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur1" />
+          <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur2" />
+          <feMerge>
+            <feMergeNode in="blur2" />
+            <feMergeNode in="blur1" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+
+        {/* Blade shape gradient */}
+        <linearGradient id="blade-grad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#22d3ee" stopOpacity="0.9" />
+          <stop offset="1" stopColor="#0891b2" stopOpacity="0.5" />
         </linearGradient>
-        <linearGradient id="head-grad" x1="60" y1="88" x2="168" y2="195" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#1a5c72" />
-          <stop offset="1" stopColor="#0c1a2a" />
-        </linearGradient>
-        <linearGradient id="snout-grad" x1="36" y1="155" x2="75" y2="180" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#1a5c72" />
-          <stop offset="1" stopColor="#0f172a" />
-        </linearGradient>
-        <linearGradient id="ear-grad" x1="105" y1="42" x2="145" y2="92" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#164e63" />
-          <stop offset="1" stopColor="#0c1a2a" />
-        </linearGradient>
-        <linearGradient id="tail-grad" x1="355" y1="250" x2="412" y2="165" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="hsl(187, 85%, 53%)" stopOpacity="0.6" />
-          <stop offset="1" stopColor="hsl(187, 85%, 53%)" stopOpacity="0.1" />
-        </linearGradient>
-        <radialGradient id="mascot-shadow" cx="50%" cy="50%" r="50%">
-          <stop offset="0" stopColor="hsl(187, 85%, 53%)" stopOpacity="0.25" />
-          <stop offset="1" stopColor="hsl(187, 85%, 53%)" stopOpacity="0" />
+
+        {/* Shadow glow beneath */}
+        <radialGradient id="ground-glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stopColor="#22d3ee" stopOpacity="0.15" />
+          <stop offset="1" stopColor="#22d3ee" stopOpacity="0" />
         </radialGradient>
       </defs>
+
+      {/* Ground glow */}
+      <ellipse cx="250" cy="390" rx="150" ry="18" fill="url(#ground-glow)" />
+
+      {/* ============================================ */}
+      {/* PANTHER — neon contour line art, profile,     */}
+      {/* roaring mouth, matching logo style            */}
+      {/* ============================================ */}
+      <g filter="url(#neon-glow)" stroke="#22d3ee" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+
+        {/* --- HEAD outline --- */}
+        {/* Skull top */}
+        <path d="M80 130 C80 85 110 55 155 48 C190 42 210 52 220 70" />
+        {/* Forehead to brow ridge */}
+        <path d="M80 130 L68 122 C62 118 60 112 64 106" />
+        {/* Brow ridge */}
+        <path d="M64 106 L85 100 L105 108" />
+
+        {/* --- SNOUT / MUZZLE --- */}
+        {/* Top of muzzle */}
+        <path d="M64 106 C50 108 38 115 32 125 C28 132 30 140 36 145" />
+        {/* Nose tip */}
+        <path d="M32 125 L24 128 L30 134" strokeWidth="2.5" />
+        {/* Upper lip line */}
+        <path d="M36 145 L55 148" />
+
+        {/* --- OPEN MOUTH / ROAR --- */}
+        {/* Lower jaw */}
+        <path d="M36 145 C40 160 50 172 65 178 L95 180" />
+        {/* Jaw hinge */}
+        <path d="M95 180 C108 178 115 170 118 160" />
+        {/* Upper jaw inner */}
+        <path d="M55 148 L60 155 L70 150 L80 158 L90 152 L100 160" strokeWidth="1.5" opacity="0.7" />
+        {/* Lower jaw inner */}
+        <path d="M55 165 L65 160 L75 168 L85 162 L95 170" strokeWidth="1.5" opacity="0.7" />
+        {/* Teeth - upper */}
+        <path d="M58 149 L60 157" strokeWidth="1.5" opacity="0.6" />
+        <path d="M72 150 L74 158" strokeWidth="1.5" opacity="0.6" />
+        <path d="M86 152 L88 160" strokeWidth="1.5" opacity="0.6" />
+        {/* Teeth - lower */}
+        <path d="M60 163 L62 156" strokeWidth="1.5" opacity="0.6" />
+        <path d="M74 165 L76 157" strokeWidth="1.5" opacity="0.6" />
+        <path d="M88 167 L90 159" strokeWidth="1.5" opacity="0.6" />
+
+        {/* --- EYE --- */}
+        <path d="M72 108 C78 100 95 98 102 104 C108 110 105 120 98 124 C90 128 76 126 72 118 C70 114 70 112 72 108 Z" strokeWidth="1.8" />
+        {/* Pupil slit */}
+        <ellipse cx="88" cy="113" rx="2.5" ry="6" fill="#22d3ee" opacity="0.8" strokeWidth="0" />
+        {/* Eye inner glow */}
+        <circle cx="92" cy="108" r="2" fill="white" opacity="0.8" strokeWidth="0" />
+
+        {/* --- EAR (pointed, tall) --- */}
+        <path d="M148 52 L130 8 L175 42" />
+        <path d="M135 18 L148 52" strokeWidth="1" opacity="0.5" />
+        <path d="M140 25 L155 48" strokeWidth="1" opacity="0.3" />
+
+        {/* --- NECK line --- */}
+        <path d="M220 70 C230 85 235 105 238 130" />
+        {/* Throat / chin line */}
+        <path d="M118 160 C135 175 155 190 180 200" />
+
+        {/* --- BACK / SPINE --- */}
+        <path d="M220 70 C260 60 310 58 350 65 C380 72 400 85 410 105" />
+
+        {/* --- BODY outline --- */}
+        {/* Back to hip */}
+        <path d="M410 105 C425 130 430 165 428 200" />
+        {/* Belly */}
+        <path d="M180 200 C220 230 300 240 380 230 C410 222 425 210 428 200" strokeWidth="1.5" opacity="0.6" />
+        {/* Chest to belly */}
+        <path d="M180 200 C175 220 178 245 185 265" strokeWidth="1.5" opacity="0.5" />
+
+        {/* --- FRONT LEGS --- */}
+        {/* Near leg */}
+        <path d="M195 250 L190 310 C190 325 195 335 205 338 L218 338 C228 335 230 325 228 310 L225 250" />
+        <path d="M190 338 L228 338" strokeWidth="1.5" />
+        {/* Paw toes */}
+        <path d="M195 338 L195 342" strokeWidth="1.2" opacity="0.5" />
+        <path d="M205 338 L205 343" strokeWidth="1.2" opacity="0.5" />
+        <path d="M215 338 L215 343" strokeWidth="1.2" opacity="0.5" />
+        <path d="M225 338 L225 342" strokeWidth="1.2" opacity="0.5" />
+
+        {/* Far leg */}
+        <path d="M170 260 L168 315 C168 328 172 335 180 338 L192 338 C198 336 200 328 198 315 L195 260" strokeWidth="1.2" opacity="0.5" />
+
+        {/* --- HIND LEGS --- */}
+        {/* Thigh */}
+        <path d="M428 200 C435 220 438 245 435 270" strokeWidth="1.5" opacity="0.5" />
+        {/* Near hind leg */}
+        <path d="M400 250 L395 310 C395 325 400 335 410 338 L425 338 C435 335 437 325 435 310 L430 250" />
+        <path d="M395 338 L435 338" strokeWidth="1.5" />
+        <path d="M400 338 L400 343" strokeWidth="1.2" opacity="0.5" />
+        <path d="M412 338 L412 343" strokeWidth="1.2" opacity="0.5" />
+        <path d="M425 338 L425 343" strokeWidth="1.2" opacity="0.5" />
+
+        {/* Far hind leg */}
+        <path d="M370 260 L368 315 C368 328 372 335 380 338 L392 338 C398 336 400 328 398 315 L395 260" strokeWidth="1.2" opacity="0.5" />
+
+        {/* --- TAIL (curled, signature style) --- */}
+        <path d="M428 200 C445 190 460 170 465 145 C470 120 462 100 448 95 C435 90 425 100 430 115 C435 128 448 125 455 115" strokeWidth="2.2" />
+        {/* Tail tip curl */}
+        <path d="M455 115 C460 108 458 98 450 95" strokeWidth="1.8" opacity="0.7" />
+
+      </g>
+
+      {/* ============================================ */}
+      {/* BLADE / FIN shape next to the head           */}
+      {/* ============================================ */}
+      <g filter="url(#neon-glow-sm)">
+        <path
+          d="M230 40 L248 20 L255 55 L245 85 L235 70 Z"
+          fill="url(#blade-grad)"
+          fillOpacity="0.15"
+          stroke="#22d3ee"
+          strokeWidth="1.8"
+          strokeLinejoin="round"
+        />
+        {/* Inner blade detail */}
+        <path
+          d="M238 48 L248 28 L252 55 L244 75"
+          stroke="#22d3ee"
+          strokeWidth="0.8"
+          fill="none"
+          opacity="0.4"
+        />
+      </g>
+
+      {/* ============================================ */}
+      {/* PARTICLE EFFECTS around the panther           */}
+      {/* ============================================ */}
+      <g filter="url(#neon-glow-sm)">
+        {/* Floating dots */}
+        <circle cx="20" cy="120" r="2" fill="#22d3ee" opacity="0.6">
+          <animate attributeName="opacity" values="0.6;0.15;0.6" dur="3s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="480" cy="90" r="2.5" fill="#22d3ee" opacity="0.4">
+          <animate attributeName="opacity" values="0.4;0.8;0.4" dur="2.5s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="15" cy="280" r="1.5" fill="#a78bfa" opacity="0.5">
+          <animate attributeName="opacity" values="0.5;0.1;0.5" dur="4s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="485" cy="250" r="2" fill="#22d3ee" opacity="0.3">
+          <animate attributeName="opacity" values="0.3;0.7;0.3" dur="3.5s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="50" cy="200" r="1.2" fill="white" opacity="0.3">
+          <animate attributeName="opacity" values="0.3;0.6;0.3" dur="2s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="460" cy="180" r="1.5" fill="white" opacity="0.25">
+          <animate attributeName="opacity" values="0.25;0.55;0.25" dur="3.2s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="100" cy="380" r="1.5" fill="#22d3ee" opacity="0.35">
+          <animate attributeName="opacity" values="0.35;0.65;0.35" dur="2.8s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="400" cy="380" r="1.8" fill="#22d3ee" opacity="0.3">
+          <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3.8s" repeatCount="indefinite" />
+        </circle>
+
+        {/* Sparkle stars */}
+        <path d="M10 160 l3-6 3 6 -6-3 6 0z" fill="#22d3ee" opacity="0.5">
+          <animate attributeName="opacity" values="0.5;0.15;0.5" dur="3s" repeatCount="indefinite" />
+        </path>
+        <path d="M490 150 l2.5-5 2.5 5 -5-2.5 5 0z" fill="#a78bfa" opacity="0.4">
+          <animate attributeName="opacity" values="0.4;0.8;0.4" dur="2.8s" repeatCount="indefinite" />
+        </path>
+        <path d="M60 350 l2-4 2 4 -4-2 4 0z" fill="#22d3ee" opacity="0.3">
+          <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3.5s" repeatCount="indefinite" />
+        </path>
+      </g>
+
     </svg>
   );
 }
