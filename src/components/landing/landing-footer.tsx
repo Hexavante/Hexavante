@@ -39,7 +39,7 @@ export function LandingFooter() {
                 size="md"
                 showWordmark={false}
                 className="gap-0"
-                imageClassName="hx-header-logo-glow h-8 w-8"
+                imageClassName="hx-header-logo-glow h-10 w-10"
               />
               <span className="text-sm font-extrabold tracking-tight hx-accent-text">
                 HEXAVANTE

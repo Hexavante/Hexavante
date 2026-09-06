@@ -40,7 +40,7 @@ export function LandingHeader({ user }: Props) {
             size="lg"
             showWordmark={false}
             className="gap-0"
-            imageClassName="hx-header-logo-glow h-9 w-9"
+            imageClassName="hx-header-logo-glow h-11 w-11"
           />
           <span className="text-lg font-extrabold tracking-tight hx-accent-text">
             HEXAVANTE
