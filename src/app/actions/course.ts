@@ -48,47 +48,54 @@ export async function createCourseAction(
     };
   }
 
-  const newCategory = formData.get("newCategory")?.toString().trim();
-  let finalCategoryId = formData.get("categoryId")?.toString().trim() || "";
+  try {
+    const newCategory = formData.get("newCategory")?.toString().trim();
+    let finalCategoryId = formData.get("categoryId")?.toString().trim() || "";
 
-  if (newCategory) {
-    const created = await upsertCategoryByName(newCategory, user.id);
-    finalCategoryId = created.id;
+    if (newCategory) {
+      const created = await upsertCategoryByName(newCategory, user.id);
+      finalCategoryId = created.id;
+    }
+
+    const parsed = courseSchema.safeParse({
+      title: formData.get("title"),
+      categoryId: finalCategoryId,
+      shortDescription: formData.get("shortDescription") || undefined,
+      description: formData.get("description") || undefined,
+      thumbnailUrl: formData.get("thumbnailUrl") || undefined,
+      coverImage: formData.get("coverImage") || undefined,
+      removeCover: formData.get("removeCover") || "false",
+      courseType: "FREE",
+      level: formData.get("level") || "BEGINNER",
+      estimatedHours: formData.get("estimatedHours") || undefined,
+      progressionType: formData.get("progressionType") || "FREE",
+      isPublished: formData.get("isPublished") || "false",
+    });
+
+    if (!parsed.success) {
+      return { success: false, error: parsed.error.issues[0]?.message ?? "Dados inválidos" };
+    }
+
+    const course = await createCourse(user.id, {
+      ...parsed.data,
+      coverImage: parsed.data.removeCover ? undefined : parsed.data.coverImage,
+    });
+
+    const tagNames = (formData.get("tags")?.toString() ?? "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    if (tagNames.length > 0) await setCourseTags(course.id, tagNames);
+
+    revalidatePath("/courses");
+    revalidatePath("/instructor/courses");
+    redirect(`/instructor/courses/${course.id}/edit`);
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Erro ao criar curso",
+    };
   }
-
-  const parsed = courseSchema.safeParse({
-    title: formData.get("title"),
-    categoryId: finalCategoryId,
-    shortDescription: formData.get("shortDescription") || undefined,
-    description: formData.get("description") || undefined,
-    thumbnailUrl: formData.get("thumbnailUrl") || undefined,
-    coverImage: formData.get("coverImage") || undefined,
-    removeCover: formData.get("removeCover") || "false",
-    courseType: "FREE",
-    level: formData.get("level") || "BEGINNER",
-    estimatedHours: formData.get("estimatedHours") || undefined,
-    progressionType: formData.get("progressionType") || "FREE",
-    isPublished: formData.get("isPublished") || "false",
-  });
-
-  if (!parsed.success) {
-    return { success: false, error: parsed.error.issues[0]?.message ?? "Dados inválidos" };
-  }
-
-  const course = await createCourse(user.id, {
-    ...parsed.data,
-    coverImage: parsed.data.removeCover ? undefined : parsed.data.coverImage,
-  });
-
-  const tagNames = (formData.get("tags")?.toString() ?? "")
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-  if (tagNames.length > 0) await setCourseTags(course.id, tagNames);
-
-  revalidatePath("/courses");
-  revalidatePath("/instructor/courses");
-  redirect(`/instructor/courses/${course.id}/edit`);
 }
 
 export async function updateCourseAction(
