@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import { LandingHeader } from "@/components/landing/landing-header";
 import { LandingFooter } from "@/components/landing/landing-footer";
-import { PantherMascot } from "@/components/landing/panther-mascot";
 import { FloatingDecor } from "@/components/landing/floating-decor";
 import { FeatureCards } from "@/components/landing/feature-cards";
 import { Badge } from "@/components/ui/badge";
@@ -101,7 +100,11 @@ export default async function LandingPage() {
             {/* Mascot */}
             <div className="relative hidden lg:block">
               <div className="absolute inset-0 rounded-full bg-[hsl(var(--sidebar-highlight))]/[0.06] blur-[3rem]" />
-              <PantherMascot className="relative h-[340px] w-[340px] xl:h-[420px] xl:w-[420px]" />
+              <img
+                src="/brand/mascote-hero.png"
+                alt="Hexavante mascot"
+                className="relative h-[340px] w-auto object-contain xl:h-[420px]"
+              />
             </div>
           </div>
 
