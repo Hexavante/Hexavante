@@ -166,7 +166,8 @@ export function LandingHeader({ user }: Props) {
         <div className="border-t border-white/[0.06] bg-[var(--background)]/95 backdrop-blur-xl md:hidden">
           <div className="space-y-1 px-4 py-4">
             {[
-              { href: "/courses", label: "Cursos" },
+            { href: "/courses", label: "Cursos" },
+            { href: "/tutorials", label: "Tutoriais" },
               { href: "/simulados", label: "Simulados" },
               { href: "/hexa", label: "Hexa" },
               { href: "/ajuda", label: "Ajuda" },

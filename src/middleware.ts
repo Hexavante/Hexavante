@@ -116,7 +116,7 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  const publicPaths = ["/", "/hexa", "/ajuda", "/login", "/register", "/recuperar-senha", "/redefinir-senha", "/manutencao", "/suspenso"];
+  const publicPaths = ["/", "/hexa", "/ajuda", "/login", "/register", "/recuperar-senha", "/redefinir-senha", "/manutencao", "/suspenso", "/tutorials"];
 
   if (!isAuthenticated && !publicPaths.some((p) => pathname === p || pathname.startsWith(p + "/"))) {
     const login = new URL("/login", origin);

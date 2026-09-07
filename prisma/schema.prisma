@@ -79,6 +79,7 @@ model User {
   activityComments       ActivityComment[]
   activityCommentLikes   ActivityCommentLike[]
   activityReactions      ActivityReaction[]
+  tutorials              Tutorial[]
   directConversationsA   DirectConversation[] @relation("ConversationParticipantA")
   directConversationsB   DirectConversation[] @relation("ConversationParticipantB")
   sentDirectMessages     DirectMessage[]      @relation("SentDirectMessages")
@@ -333,14 +334,16 @@ model Category {
   isApproved    Boolean  @default(true) @map("is_approved")
   suggestedById String?  @map("suggested_by_id")
   courses       Course[]
+  tutorials     Tutorial[]
 
   @@map("categories")
 }
 
 model Tag {
-  id        String      @id @default(cuid())
-  name      String      @unique
-  courseTags CourseTag[]
+  id           String         @id @default(cuid())
+  name         String         @unique
+  courseTags   CourseTag[]
+  tutorialTags TutorialTag[]
 
   @@map("tags")
 }
@@ -509,6 +512,41 @@ model Material {
 
   @@index([moduleId])
   @@map("materials")
+}
+
+model Tutorial {
+  id              String   @id @default(cuid())
+  authorId        String   @map("author_id")
+  categoryId      String?  @map("category_id")
+  title           String
+  slug            String   @unique
+  description     String?  @db.Text
+  videoUrl        String?  @map("video_url")
+  thumbnailUrl    String?  @map("thumbnail_url")
+  duration        Int?
+  isPublished     Boolean  @default(false) @map("is_published")
+  viewCount       Int      @default(0) @map("view_count")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  author   User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  category Category? @relation(fields: [categoryId], references: [id])
+  tags     TutorialTag[]
+
+  @@index([authorId])
+  @@index([categoryId])
+  @@map("tutorials")
+}
+
+model TutorialTag {
+  tutorialId String @map("tutorial_id")
+  tagId      String @map("tag_id")
+  tutorial   Tutorial @relation(fields: [tutorialId], references: [id], onDelete: Cascade)
+  tag        Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([tutorialId, tagId])
+  @@index([tagId])
+  @@map("tutorial_tags")
 }
 
 model CourseEnrollment {

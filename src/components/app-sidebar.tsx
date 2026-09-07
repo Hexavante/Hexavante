@@ -69,6 +69,7 @@ const NAV_SECTIONS: NavSection[] = [
     label: "Estudos",
     items: [
       { icon: BookOpen, label: "Cursos", href: "/courses" },
+      { icon: Video, label: "Tutoriais", href: "/tutorials" },
       { icon: Target, label: "Simulados", href: "/simulados" },
       { icon: BarChart3, label: "Estatísticas", href: "/estatisticas", requiresAuth: true },
       { icon: ShoppingBag, label: "Loja", href: "/shop", requiresAuth: true },
@@ -94,6 +95,7 @@ const NAV_SECTIONS: NavSection[] = [
 
 const ACCOUNT_ITEMS: NavItem[] = [
   { icon: GraduationCap, label: "Meus cursos", href: "/instructor/courses", requiresAuth: true },
+  { icon: Video, label: "Meus tutoriais", href: "/instructor/tutorials", requiresInstructor: true },
   { icon: Video, label: "Minhas salas", href: "/instructor/live-rooms", requiresInstructor: true },
   { icon: Shield, label: "Moderação", href: "/moderacao", requiresModerator: true },
 ];
