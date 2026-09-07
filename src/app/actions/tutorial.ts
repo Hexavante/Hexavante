@@ -62,13 +62,14 @@ export async function createTutorialAction(
 
     revalidatePath("/tutorials");
     revalidatePath("/instructor/tutorials");
-    redirect(`/instructor/tutorials/${tutorial.id}/edit`);
   } catch (error) {
     return {
       success: false,
       error: error instanceof Error ? error.message : "Erro ao criar tutorial",
     };
   }
+
+  redirect(`/instructor/tutorials`);
 }
 
 export async function updateTutorialAction(
