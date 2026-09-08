@@ -1,17 +1,18 @@
-// Função para extrair URL de embed do YouTube
-// Converte URL do YouTube para formato de embed
 export function getYoutubeEmbedUrl(url: string): string | null {
   try {
     const parsed = new URL(url);
-    // Trata URLs curtas do youtu.be
     if (parsed.hostname.includes("youtu.be")) {
-      const id = parsed.pathname.slice(1);
+      const id = parsed.pathname.slice(1).split("?")[0];
       return id ? `https://www.youtube.com/embed/${id}` : null;
     }
-    // Trata URLs normais do youtube.com
     if (parsed.hostname.includes("youtube.com")) {
       const id = parsed.searchParams.get("v");
-      return id ? `https://www.youtube.com/embed/${id}` : null;
+      if (id) return `https://www.youtube.com/embed/${id}`;
+      const pathMatch = parsed.pathname.match(/\/(embed|shorts|live)\/([^/?]+)/);
+      if (pathMatch) return `https://www.youtube.com/embed/${pathMatch[2]}`;
+    }
+    if (parsed.hostname.includes("youtube-nocookie.com")) {
+      return url;
     }
   } catch {
     return null;
@@ -19,8 +20,6 @@ export function getYoutubeEmbedUrl(url: string): string | null {
   return null;
 }
 
-// Função para extrair URL de embed do Vimeo
-// Converte URL do Vimeo para formato de embed
 export function getVimeoEmbedUrl(url: string): string | null {
   try {
     const parsed = new URL(url);
@@ -34,11 +33,16 @@ export function getVimeoEmbedUrl(url: string): string | null {
   return null;
 }
 
-// Função genérica para obter URL de embed
-// Tenta obter URL de embed baseado no provedor especificado
+export function isDirectVideoUrl(url: string): boolean {
+  return /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url);
+}
+
 export function getVideoEmbedUrl(url: string, provider?: string | null): string | null {
   if (provider === "vimeo") return getVimeoEmbedUrl(url);
-  if (provider === "youtube" || !provider) return getYoutubeEmbedUrl(url);
-  // Tenta YouTube primeiro, depois Vimeo
-  return getYoutubeEmbedUrl(url) ?? getVimeoEmbedUrl(url);
+  if (provider === "youtube") return getYoutubeEmbedUrl(url);
+  const yt = getYoutubeEmbedUrl(url);
+  if (yt) return yt;
+  const vimeo = getVimeoEmbedUrl(url);
+  if (vimeo) return vimeo;
+  return null;
 }

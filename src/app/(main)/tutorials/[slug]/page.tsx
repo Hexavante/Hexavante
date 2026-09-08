@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
-import { auth } from "@/auth";
 import { PageShell } from "@/components/ui/page-shell";
 import { getTutorial, incrementTutorialViews } from "@/services/tutorial.service";
 import { Avatar } from "@/components/ui/avatar";
+import { VideoPlayer } from "@/components/courses/video-player";
 import { Eye, Clock, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -35,27 +35,7 @@ export default async function TutorialDetailPage({ params }: Props) {
 
       <div className="overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.02]">
         {tutorial.videoUrl ? (
-          <div className="relative aspect-video w-full bg-black">
-            {tutorial.videoUrl.includes("youtube.com") || tutorial.videoUrl.includes("youtu.be") ? (
-              <iframe
-                src={`https://www.youtube.com/embed/${tutorial.videoUrl.includes("youtu.be") ? tutorial.videoUrl.split("/").pop() : new URL(tutorial.videoUrl).searchParams.get("v")}`}
-                className="absolute inset-0 h-full w-full"
-                allowFullScreen
-              />
-            ) : tutorial.videoUrl.includes("vimeo.com") ? (
-              <iframe
-                src={`https://player.vimeo.com/video/${tutorial.videoUrl.split("/").pop()}`}
-                className="absolute inset-0 h-full w-full"
-                allowFullScreen
-              />
-            ) : (
-              <video
-                src={tutorial.videoUrl}
-                controls
-                className="h-full w-full"
-              />
-            )}
-          </div>
+          <VideoPlayer url={tutorial.videoUrl} />
         ) : (
           <div className="flex aspect-video w-full items-center justify-center bg-slate-900">
             <div className="grid h-20 w-20 place-items-center rounded-full bg-cyan-500/10 text-cyan-400">
