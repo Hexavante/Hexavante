@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { Volume2, VolumeX } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Volume2, VolumeX, Music } from "lucide-react";
 
 const YOUTUBE_VIDEO_ID = "MX-iaTDEyGI";
 
@@ -10,98 +10,79 @@ function getStoredMuted(): boolean {
   return localStorage.getItem("hx_bg_muted") !== "false";
 }
 
-declare global {
-  interface Window {
-    YT?: { Player: new (el: HTMLIFrameElement, opts: unknown) => { playVideo(): void; pauseVideo(): void; mute(): void; unMute(): void } };
-    onYouTubeIframeAPIReady?: () => void;
-  }
-}
-
 export function BackgroundMusic() {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const playerRef = useRef<{ playVideo(): void; pauseVideo(): void; mute(): void; unMute(): void } | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [muted, setMuted] = useState(true);
-  const [ready, setReady] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+
+  const sendCommand = useCallback((command: string) => {
+    const iframe = containerRef.current?.querySelector("iframe");
+    if (!iframe?.contentWindow) return;
+    iframe.contentWindow.postMessage(JSON.stringify({ event: "command", func: command, args: [] }), "*");
+  }, []);
 
   useEffect(() => {
     const stored = getStoredMuted();
     setMuted(stored);
-
-    const tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    const firstScript = document.getElementsByTagName("script")[0];
-    firstScript.parentNode?.insertBefore(tag, firstScript);
-
-    window.onYouTubeIframeAPIReady = () => {
-      if (!iframeRef.current) return;
-      const player = new window.YT!.Player(iframeRef.current, {
-        videoId: YOUTUBE_VIDEO_ID,
-        playerVars: {
-          autoplay: 0,
-          controls: 0,
-          disablekb: 1,
-          fs: 0,
-          iv_load_policy: 3,
-          modestbranding: 1,
-          rel: 0,
-          loop: 1,
-          playlist: YOUTUBE_VIDEO_ID,
-          origin: window.location.origin,
-        },
-        events: {
-          onReady: () => {
-            playerRef.current = player;
-            setReady(true);
-            player.mute();
-            if (!stored) {
-              const tryPlay = () => {
-                player.playVideo();
-              };
-              document.addEventListener("click", tryPlay, { once: true });
-              document.addEventListener("keydown", tryPlay, { once: true });
-            }
-          },
-        },
-      });
-    };
-
-    return () => {
-      playerRef.current = null;
-      window.onYouTubeIframeAPIReady = undefined;
-    };
   }, []);
 
-  const toggle = () => {
-    const player = playerRef.current;
-    if (!player) return;
-    const next = !muted;
-    setMuted(next);
-    localStorage.setItem("hx_bg_muted", String(next));
-    if (next) {
-      player.mute();
-      player.pauseVideo();
+  const togglePlay = async () => {
+    if (!playing) {
+      setMuted(false);
+      setPlaying(true);
+      localStorage.setItem("hx_bg_muted", "false");
+      setTimeout(() => {
+        sendCommand("unMute");
+        sendCommand("playVideo");
+      }, 500);
     } else {
-      player.unMute();
-      player.playVideo();
+      const nextMuted = !muted;
+      setMuted(nextMuted);
+      localStorage.setItem("hx_bg_muted", String(nextMuted));
+      sendCommand(nextMuted ? "mute" : "unMute");
+      if (!nextMuted) sendCommand("playVideo");
+      else sendCommand("pauseVideo");
     }
   };
 
   return (
-    <>
-      <iframe
-        ref={iframeRef}
-        className="hidden"
-        title="background-music"
-        allow="autoplay"
-        sandbox="allow-scripts allow-same-origin"
-      />
-      <button
-        onClick={toggle}
-        title={muted ? "Ligar música de fundo" : "Desligar música"}
-        className="fixed bottom-5 right-5 z-[9999] grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-[hsl(var(--sidebar-background))]/80 text-slate-400 shadow-lg backdrop-blur transition hover:border-white/20 hover:text-white"
-      >
-        {muted ? <VolumeX className="h-4.5 w-4.5" /> : <Volume2 className="h-4.5 w-4.5" />}
-      </button>
-    </>
+    <div className="fixed bottom-5 right-5 z-[9999] flex items-center gap-2">
+      {expanded && (
+        <div
+          ref={containerRef}
+          className="overflow-hidden rounded-xl border border-white/10 bg-[hsl(var(--sidebar-background))]/90 shadow-xl backdrop-blur"
+        >
+          <iframe
+            width="320"
+            height="80"
+            src={`https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?enablejsapi=1&origin=${typeof window !== "undefined" ? window.location.origin : ""}&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=${YOUTUBE_VIDEO_ID}`}
+            title="Música de fundo"
+            allow="autoplay; encrypted-media"
+            className="pointer-events-none"
+            style={{ marginTop: "-14px", marginBottom: "-14px" }}
+          />
+        </div>
+      )}
+
+      <div className="flex flex-col gap-1.5">
+        {playing && (
+          <button
+            onClick={() => setExpanded(!expanded)}
+            title={expanded ? "Recolher" : "Expandir"}
+            className="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-[hsl(var(--sidebar-background))]/80 text-slate-400 shadow-lg backdrop-blur transition hover:border-white/20 hover:text-white"
+          >
+            <Music className="h-3.5 w-3.5" />
+          </button>
+        )}
+        <button
+          onClick={togglePlay}
+          title={!playing ? "Tocar música" : muted ? "Retomar música" : "Pausar música"}
+          className="grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-[hsl(var(--sidebar-background))]/80 text-slate-400 shadow-lg backdrop-blur transition hover:border-white/20 hover:text-white"
+        >
+          {!playing || muted ? <VolumeX className="h-4.5 w-4.5" /> : <Volume2 className="h-4.5 w-4.5" />}
+        </button>
+      </div>
+    </div>
   );
 }
