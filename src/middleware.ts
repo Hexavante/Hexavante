@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const MODERATOR_REQUIRED = /^\/moderacao(\/|$)/;
+const MODERATOR_REQUIRED = /^\/admin(\/|$)/;
 
 const MAINTENANCE_EXEMPT =
   /^\/(manutencao|suspenso|login|register|recuperar-senha|redefinir-senha|hexa|ajuda)(\/|$)/;

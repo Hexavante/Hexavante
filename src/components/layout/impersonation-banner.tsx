@@ -18,7 +18,7 @@ export function ImpersonationBanner({ username, impersonatorUsername }: Props) {
     try {
       await stopImpersonating();
       router.refresh();
-      router.push("/moderacao/usuarios");
+      router.push("/admin/usuarios");
     } finally {
       setLoading(false);
     }

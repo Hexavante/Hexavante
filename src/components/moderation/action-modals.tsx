@@ -5,6 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectItem } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  banUser,
+  unbanUser,
+  muteUser,
+  unmuteUser,
+  warnUser,
+  deleteUserByAdmin,
+  deleteProfileData,
+} from "@/app/actions/moderation-users";
 
 export type ModUser = {
   id: string;
@@ -20,11 +29,35 @@ export type ModUser = {
   warnings: number;
 };
 
+export type ModalType =
+  | "addxp"
+  | "cargo"
+  | "mute"
+  | "unmute"
+  | "ban"
+  | "unban"
+  | "warn"
+  | "deleteUser"
+  | "deleteProfile"
+  | null;
+
 type Props = {
   user: ModUser | null;
-  modal: "addxp" | "cargo" | "mute" | "ban" | null;
+  modal: ModalType;
   onClose: () => void;
   onSuccess: () => void;
+};
+
+const titles: Record<string, string> = {
+  addxp: "Adicionar XP",
+  cargo: "Alterar cargo",
+  mute: "Silenciar usuário",
+  unmute: "Remover silêncio",
+  ban: "Banir usuário",
+  unban: "Desbanir usuário",
+  warn: "Avisar usuário",
+  deleteUser: "Excluir conta",
+  deleteProfile: "Limpar perfil",
 };
 
 export function UserActionModals({ user, modal, onClose, onSuccess }: Props) {
@@ -37,7 +70,7 @@ export function UserActionModals({ user, modal, onClose, onSuccess }: Props) {
 
   if (!user || !modal) return null;
 
-  const runCommand = async (command: string) => {
+  const runTerminal = async (command: string) => {
     setLoading(true);
     setError("");
     try {
@@ -60,11 +93,18 @@ export function UserActionModals({ user, modal, onClose, onSuccess }: Props) {
     }
   };
 
-  const titles = {
-    addxp: "Adicionar XP",
-    cargo: "Alterar cargo",
-    mute: "Silenciar usuário",
-    ban: "Banir usuário",
+  const runServerAction = async (fn: () => Promise<{ success: boolean; error?: string; message?: string }>) => {
+    setLoading(true);
+    setError("");
+    const result = await fn();
+    if (!result.success) {
+      setError(result.error ?? "Erro desconhecido.");
+      setLoading(false);
+      return;
+    }
+    onSuccess();
+    onClose();
+    setLoading(false);
   };
 
   return (
@@ -74,6 +114,32 @@ export function UserActionModals({ user, modal, onClose, onSuccess }: Props) {
         <p className="mt-1 text-sm text-slate-400">
           @{user.username} · {user.fullName}
         </p>
+
+        {modal === "deleteUser" && (
+          <div className="mt-4 rounded-lg border border-red-500/30 bg-red-500/10 p-4">
+            <p className="text-sm text-red-300">
+              Esta ação irá <strong>excluir permanentemente</strong> a conta de <strong>@{user.username}</strong> e todos os dados associados. Esta ação é irreversível.
+            </p>
+          </div>
+        )}
+
+        {modal === "deleteProfile" && (
+          <div className="mt-4 rounded-lg border border-amber-500/30 bg-amber-500/10 p-4">
+            <p className="text-sm text-amber-300">
+              Esta ação irá <strong>remover o avatar, banner e bio</strong> de <strong>@{user.username}</strong>. A conta não será excluída.
+            </p>
+          </div>
+        )}
+
+        {(modal === "unban" || modal === "unmute") && (
+          <div className="mt-4 rounded-lg border border-sky-500/30 bg-sky-500/10 p-4">
+            <p className="text-sm text-sky-300">
+              {modal === "unban"
+                ? `Tem certeza que deseja desbanir @${user.username}?`
+                : `Tem certeza que deseja remover o silêncio de @${user.username}?`}
+            </p>
+          </div>
+        )}
 
         <div className="mt-4 space-y-3">
           {modal === "addxp" && (
@@ -103,10 +169,10 @@ export function UserActionModals({ user, modal, onClose, onSuccess }: Props) {
               <SelectItem value="30d">30 dias</SelectItem>
             </Select>
           )}
-          {(modal === "ban" || modal === "mute") && (
+          {(modal === "ban" || modal === "mute" || modal === "warn") && (
             <div>
               <label className="mb-1 block text-sm text-slate-400">
-                {modal === "ban" ? "Motivo (obrigatório)" : "Motivo"}
+                {modal === "warn" ? "Motivo do aviso (obrigatório)" : "Motivo"}
               </label>
               <Textarea value={reason} onChange={(e) => setReason(e.target.value)} required />
             </div>
@@ -120,21 +186,45 @@ export function UserActionModals({ user, modal, onClose, onSuccess }: Props) {
             Cancelar
           </Button>
           <Button
-            variant={modal === "ban" ? "danger" : "default"}
-            disabled={loading || ((modal === "ban" || modal === "mute") && !reason.trim())}
+            variant={modal === "ban" || modal === "deleteUser" ? "danger" : modal === "warn" ? "outline" : "default"}
+            disabled={
+              loading ||
+              (modal === "ban" && !reason.trim()) ||
+              (modal === "warn" && !reason.trim())
+            }
             onClick={() => {
               if (modal === "addxp") {
-                void runCommand(`/addxp @${user.username} ${amount}`);
+                void runTerminal(`/addxp @${user.username} ${amount}`);
               } else if (modal === "cargo") {
-                void runCommand(`/addcargo @${user.username} ${role}`);
+                void runTerminal(`/addcargo @${user.username} ${role}`);
               } else if (modal === "mute") {
-                void runCommand(`/mute @${user.username} ${duration} "${reason}"`);
+                void runServerAction(() => muteUser(user.id, reason, duration));
+              } else if (modal === "unmute") {
+                void runServerAction(() => unmuteUser(user.id));
               } else if (modal === "ban") {
-                void runCommand(`/ban @${user.username} "${reason}"`);
+                void runServerAction(() => banUser(user.id, reason));
+              } else if (modal === "unban") {
+                void runServerAction(() => unbanUser(user.id));
+              } else if (modal === "warn") {
+                void runServerAction(() => warnUser(user.id, reason));
+              } else if (modal === "deleteUser") {
+                void runServerAction(() => deleteUserByAdmin(user.id));
+              } else if (modal === "deleteProfile") {
+                void runServerAction(() => deleteProfileData(user.id));
               }
             }}
           >
-            {loading ? "Salvando..." : "Confirmar"}
+            {loading
+              ? "Salvando..."
+              : modal === "deleteUser"
+                ? "Excluir conta"
+                : modal === "deleteProfile"
+                  ? "Limpar perfil"
+                  : modal === "unban"
+                    ? "Desbanir"
+                    : modal === "unmute"
+                      ? "Remover silêncio"
+                      : "Confirmar"}
           </Button>
         </div>
       </div>

@@ -14,7 +14,7 @@ async function requireModerator() {
 export async function approveCategoryAction(categoryId: string) {
   await requireModerator();
   await approveCategory(categoryId);
-  revalidatePath("/moderacao/categorias");
+  revalidatePath("/admin/categorias");
   revalidatePath("/instructor/courses/new");
   revalidatePath("/instructor/courses");
 }
@@ -22,5 +22,5 @@ export async function approveCategoryAction(categoryId: string) {
 export async function rejectCategoryAction(categoryId: string) {
   await requireModerator();
   await rejectCategory(categoryId);
-  revalidatePath("/moderacao/categorias");
+  revalidatePath("/admin/categorias");
 }

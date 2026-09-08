@@ -28,7 +28,7 @@ export function EditExamForm({ examId, exam }: Props) {
       action={updateExamAction.bind(null, examId)}
       initial={exam}
       submitLabel="Salvar alterações"
-      cancelHref="/moderacao/simulados"
+      cancelHref="/admin/simulados"
     />
   );
 }

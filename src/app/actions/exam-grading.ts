@@ -24,7 +24,7 @@ export async function gradeEssayAction(
     }
 
     await gradeEssayAnswer(parsed.data, moderator.id);
-    revalidatePath("/moderacao/simulados/correcoes");
+    revalidatePath("/admin/simulados/correcoes");
     revalidatePath("/simulados");
     return { success: true };
   } catch (error) {

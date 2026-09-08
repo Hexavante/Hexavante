@@ -1,11 +1,23 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Ban, Eye, Plus, Shield, UserRound, VolumeX } from "lucide-react";
+import {
+  Ban,
+  CheckCircle,
+  Eye,
+  Plus,
+  Shield,
+  Trash2,
+  UserRound,
+  VolumeX,
+  Volume2,
+  AlertTriangle,
+  XCircle,
+} from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Select, SelectItem } from "@/components/ui/select";
-import { UserActionModals, type ModUser } from "./action-modals";
+import { UserActionModals, type ModUser, type ModalType } from "./action-modals";
 import { impersonateUser } from "@/app/actions/impersonate";
 
 export function UserTable() {
@@ -15,7 +27,7 @@ export function UserTable() {
   const [role, setRole] = useState("all");
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<ModUser | null>(null);
-  const [modal, setModal] = useState<"addxp" | "cargo" | "mute" | "ban" | null>(null);
+  const [modal, setModal] = useState<ModalType>(null);
   const [canImpersonate, setCanImpersonate] = useState(false);
 
   const load = useCallback(async () => {
@@ -51,7 +63,7 @@ export function UserTable() {
     }
   };
 
-  const openModal = (user: ModUser, type: typeof modal) => {
+  const openModal = (user: ModUser, type: ModalType) => {
     setSelected(user);
     setModal(type);
   };
@@ -81,7 +93,7 @@ export function UserTable() {
       </div>
 
       <div className="overflow-x-auto rounded-xl border border-white/10">
-        <table className="w-full min-w-[800px] text-left text-sm">
+        <table className="w-full min-w-[900px] text-left text-sm">
           <thead className="border-b border-white/10 bg-white/[0.04] text-slate-400">
             <tr>
               <th className="px-4 py-3">Usuário</th>
@@ -132,7 +144,7 @@ export function UserTable() {
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex gap-1">
+                    <div className="flex flex-wrap gap-1">
                       <ActionBtn
                         icon={Eye}
                         label="Perfil"
@@ -153,11 +165,50 @@ export function UserTable() {
                         onClick={() => openModal(user, "cargo")}
                       />
                       <ActionBtn
-                        icon={VolumeX}
-                        label="Mute"
-                        onClick={() => openModal(user, "mute")}
+                        icon={AlertTriangle}
+                        label="Aviso"
+                        onClick={() => openModal(user, "warn")}
                       />
-                      <ActionBtn icon={Ban} label="Ban" onClick={() => openModal(user, "ban")} />
+
+                      {user.isMuted ? (
+                        <ActionBtn
+                          icon={Volume2}
+                          label="Remover silêncio"
+                          onClick={() => openModal(user, "unmute")}
+                        />
+                      ) : (
+                        <ActionBtn
+                          icon={VolumeX}
+                          label="Silenciar"
+                          onClick={() => openModal(user, "mute")}
+                        />
+                      )}
+
+                      {user.isBanned ? (
+                        <ActionBtn
+                          icon={CheckCircle}
+                          label="Desbanir"
+                          onClick={() => openModal(user, "unban")}
+                        />
+                      ) : (
+                        <ActionBtn
+                          icon={Ban}
+                          label="Banir"
+                          onClick={() => openModal(user, "ban")}
+                        />
+                      )}
+
+                      <ActionBtn
+                        icon={Trash2}
+                        label="Limpar perfil"
+                        onClick={() => openModal(user, "deleteProfile")}
+                      />
+                      <ActionBtn
+                        icon={XCircle}
+                        label="Excluir conta"
+                        danger
+                        onClick={() => openModal(user, "deleteUser")}
+                      />
                     </div>
                   </td>
                 </tr>
@@ -184,17 +235,23 @@ function ActionBtn({
   icon: Icon,
   label,
   onClick,
+  danger,
 }: {
   icon: typeof Eye;
   label: string;
   onClick: () => void;
+  danger?: boolean;
 }) {
   return (
     <button
       type="button"
       title={label}
       onClick={onClick}
-      className="grid h-8 w-8 place-items-center rounded-lg border border-white/10 text-slate-400 transition hover:border-sky-400/30 hover:text-white"
+      className={`grid h-8 w-8 place-items-center rounded-lg border text-slate-400 transition ${
+        danger
+          ? "border-red-500/30 hover:border-red-500/60 hover:text-red-400"
+          : "border-white/10 hover:border-sky-400/30 hover:text-white"
+      }`}
     >
       <Icon className="h-4 w-4" />
     </button>

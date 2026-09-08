@@ -67,7 +67,7 @@ export async function approveInstructorAction(applicationId: string) {
   const moderator = await requireModerator();
   await reviewInstructorApplication(applicationId, moderator.id, true);
   revalidatePath("/moderacao");
-  revalidatePath("/moderacao/instrutores");
+  revalidatePath("/admin/instrutores");
 }
 
 export async function rejectInstructorAction(
@@ -81,7 +81,7 @@ export async function rejectInstructorAction(
     }
     await reviewInstructorApplication(applicationId, moderator.id, false, reviewNotes.trim());
     revalidatePath("/moderacao");
-    revalidatePath("/moderacao/instrutores");
+    revalidatePath("/admin/instrutores");
     return { success: true };
   } catch (error) {
     return {
@@ -122,8 +122,8 @@ export async function moderateCourseAction(
   }
 
   revalidatePath("/moderacao");
-  revalidatePath("/moderacao/cursos");
-  revalidatePath("/moderacao/conteudo");
+  revalidatePath("/admin/cursos");
+  revalidatePath("/admin/conteudo");
   revalidatePath("/courses");
 
   const returnTo = formData.get("returnTo");
@@ -131,7 +131,7 @@ export async function moderateCourseAction(
     redirect(returnTo);
   }
 
-  redirect(`/moderacao/cursos/${parsed.data.courseId}`);
+  redirect(`/admin/cursos/${parsed.data.courseId}`);
 }
 
 export async function toggleCoursePublishAction(courseId: string): Promise<ActionResult> {
@@ -146,8 +146,8 @@ export async function toggleCoursePublishAction(courseId: string): Promise<Actio
     const publish = course.status !== "APPROVED";
     await setCoursePublished(courseId, moderator.id, publish);
 
-    revalidatePath("/moderacao/conteudo");
-    revalidatePath("/moderacao/cursos");
+    revalidatePath("/admin/conteudo");
+    revalidatePath("/admin/cursos");
     revalidatePath("/courses");
     return { success: true, message: publish ? "Curso publicado." : "Curso despublicado." };
   } catch (error) {
@@ -169,8 +169,8 @@ export async function toggleExamPublishAction(examId: string): Promise<ActionRes
 
     await setExamPublished(examId, !exam.isPublished);
 
-    revalidatePath("/moderacao/conteudo");
-    revalidatePath("/moderacao/simulados");
+    revalidatePath("/admin/conteudo");
+    revalidatePath("/admin/simulados");
     revalidatePath("/simulados");
     return {
       success: true,
@@ -193,19 +193,19 @@ export async function resubmitCourseAction(courseId: string) {
   await submitCourseForReview(courseId, session.user.id);
   revalidatePath(`/instructor/courses/${courseId}/edit`);
   revalidatePath("/instructor/courses");
-  revalidatePath("/moderacao/cursos");
+  revalidatePath("/admin/cursos");
 }
 
 function revalidateCoursePaths() {
-  revalidatePath("/moderacao/conteudo");
-  revalidatePath("/moderacao/cursos");
+  revalidatePath("/admin/conteudo");
+  revalidatePath("/admin/cursos");
   revalidatePath("/courses");
   revalidatePath("/instructor/courses");
 }
 
 function revalidateExamPaths() {
-  revalidatePath("/moderacao/conteudo");
-  revalidatePath("/moderacao/simulados");
+  revalidatePath("/admin/conteudo");
+  revalidatePath("/admin/simulados");
   revalidatePath("/simulados");
 }
 
@@ -213,12 +213,12 @@ export async function deleteCourseModeratorAction(courseId: string) {
   const moderator = await requireModerator();
   await deleteCourseByModerator(courseId, moderator.id);
   revalidateCoursePaths();
-  redirect("/moderacao/conteudo");
+  redirect("/admin/conteudo");
 }
 
 export async function deleteExamModeratorAction(examId: string) {
   const moderator = await requireModerator();
   await deleteExamByModerator(examId, moderator.id);
   revalidateExamPaths();
-  redirect("/moderacao/simulados");
+  redirect("/admin/simulados");
 }

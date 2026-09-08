@@ -60,9 +60,9 @@ export async function createExamAction(
     ...parsed.data,
     coverImage: parsed.data.removeCover ? undefined : parsed.data.coverImage,
   });
-  revalidatePath("/moderacao/simulados");
+  revalidatePath("/admin/simulados");
   revalidatePath("/simulados");
-  redirect(`/moderacao/simulados/${exam.id}/edit`);
+  redirect(`/admin/simulados/${exam.id}/edit`);
 }
 
 export async function updateExamAction(
@@ -101,8 +101,8 @@ export async function updateExamAction(
       ...parsed.data,
       coverImage: parsed.data.removeCover ? undefined : parsed.data.coverImage,
     });
-    revalidatePath("/moderacao/simulados");
-    revalidatePath(`/moderacao/simulados/${examId}/edit`);
+    revalidatePath("/admin/simulados");
+    revalidatePath(`/admin/simulados/${examId}/edit`);
     revalidatePath("/simulados");
     return { success: true };
   } catch (error) {
@@ -160,7 +160,7 @@ export async function addExamQuestionAction(
     }
 
     await addExamQuestion(examId, parsed.data);
-    revalidatePath(`/moderacao/simulados/${examId}/edit`);
+    revalidatePath(`/admin/simulados/${examId}/edit`);
     revalidatePath("/simulados");
     return { success: true };
   } catch (error) {
@@ -174,15 +174,15 @@ export async function addExamQuestionAction(
 export async function deleteExamQuestionAction(examId: string, questionId: string) {
   await requireModerator();
   await deleteExamQuestion(questionId);
-  revalidatePath(`/moderacao/simulados/${examId}/edit`);
+  revalidatePath(`/admin/simulados/${examId}/edit`);
   revalidatePath("/simulados");
 }
 
 export async function deleteExamAction(examId: string) {
   const user = await requireModerator();
   await deleteExamByModerator(examId, user.id);
-  revalidatePath("/moderacao/simulados");
-  revalidatePath("/moderacao/conteudo");
+  revalidatePath("/admin/simulados");
+  revalidatePath("/admin/conteudo");
   revalidatePath("/simulados");
-  redirect("/moderacao/simulados");
+  redirect("/admin/simulados");
 }
