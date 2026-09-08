@@ -171,17 +171,19 @@ export function CourseFormShell({ categories, action, initial, submitLabel, canc
             <option value="PROGRESSIVE">Progressiva</option>
           </NativeSelect>
         </div>
-        <div>
-          <Label htmlFor="isPublished">Visibilidade</Label>
-          <NativeSelect
-            id="isPublished"
-            name="isPublished"
-            defaultValue={initial?.isPublished ? "true" : "false"}
-          >
-            <option value="false">Rascunho (oculto)</option>
-            <option value="true">Publicado</option>
-          </NativeSelect>
-        </div>
+        {initial && (
+          <div>
+            <Label htmlFor="isPublished">Visibilidade</Label>
+            <NativeSelect
+              id="isPublished"
+              name="isPublished"
+              defaultValue={initial?.isPublished ? "true" : "false"}
+            >
+              <option value="false">Rascunho (oculto)</option>
+              <option value="true">Publicado</option>
+            </NativeSelect>
+          </div>
+        )}
       </div>
       <p className="text-sm text-slate-500">
         Todos os cursos são gratuitos por enquanto. Pagamentos serão habilitados em versão futura.

@@ -48,6 +48,8 @@ export async function createCourseAction(
     };
   }
 
+  let courseId: string | null = null;
+
   try {
     const newCategory = formData.get("newCategory")?.toString().trim();
     let finalCategoryId = formData.get("categoryId")?.toString().trim() || "";
@@ -69,7 +71,6 @@ export async function createCourseAction(
       level: formData.get("level") || "BEGINNER",
       estimatedHours: formData.get("estimatedHours") || undefined,
       progressionType: formData.get("progressionType") || "FREE",
-      isPublished: formData.get("isPublished") || "false",
     });
 
     if (!parsed.success) {
@@ -87,15 +88,17 @@ export async function createCourseAction(
       .filter(Boolean);
     if (tagNames.length > 0) await setCourseTags(course.id, tagNames);
 
+    courseId = course.id;
     revalidatePath("/courses");
     revalidatePath("/instructor/courses");
-    redirect(`/instructor/courses/${course.id}/edit`);
   } catch (error) {
     return {
       success: false,
       error: error instanceof Error ? error.message : "Erro ao criar curso",
     };
   }
+
+  redirect(`/instructor/courses/${courseId}/edit`);
 }
 
 export async function updateCourseAction(
@@ -105,18 +108,18 @@ export async function updateCourseAction(
 ): Promise<ActionResult> {
   try {
     const user = await requireInstructor();
-  const newCategory = formData.get("newCategory")?.toString().trim();
-  let finalCategoryId = formData.get("categoryId")?.toString().trim() || "";
+    const newCategory = formData.get("newCategory")?.toString().trim();
+    let finalCategoryId = formData.get("categoryId")?.toString().trim() || "";
 
-  if (newCategory) {
-    const created = await upsertCategoryByName(newCategory, user.id);
-    finalCategoryId = created.id;
-  }
+    if (newCategory) {
+      const created = await upsertCategoryByName(newCategory, user.id);
+      finalCategoryId = created.id;
+    }
 
-  const parsed = courseSchema.safeParse({
-    title: formData.get("title"),
-    categoryId: finalCategoryId,
-    shortDescription: formData.get("shortDescription") || undefined,
+    const parsed = courseSchema.safeParse({
+      title: formData.get("title"),
+      categoryId: finalCategoryId,
+      shortDescription: formData.get("shortDescription") || undefined,
       description: formData.get("description") || undefined,
       thumbnailUrl: formData.get("thumbnailUrl") || undefined,
       coverImage: formData.get("coverImage") || undefined,
@@ -125,7 +128,6 @@ export async function updateCourseAction(
       level: formData.get("level") || "BEGINNER",
       estimatedHours: formData.get("estimatedHours") || undefined,
       progressionType: formData.get("progressionType") || "FREE",
-      isPublished: formData.get("isPublished") || "false",
     });
 
     if (!parsed.success) {

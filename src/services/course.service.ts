@@ -158,7 +158,7 @@ export async function setCourseTags(courseId: string, names: string[]) {
 // Função para obter curso aprovado pelo slug (páginas públicas)
 export async function getApprovedCourseBySlug(slug: string) {
   return prisma.course.findFirst({
-    where: { slug, status: "APPROVED" },
+    where: { slug, status: "APPROVED", isPublished: true },
     include: {
       category: true,
       instructors: {

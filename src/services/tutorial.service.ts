@@ -37,9 +37,12 @@ export async function listTutorials(params?: { categoryId?: string; publishedOnl
   });
 }
 
-export async function getTutorial(slug: string) {
-  return prisma.tutorial.findUnique({
-    where: { slug },
+export async function getTutorial(slug: string, publishedOnly = false) {
+  return prisma.tutorial.findFirst({
+    where: {
+      slug,
+      ...(publishedOnly ? { isPublished: true } : {}),
+    },
     include: {
       author: { select: { id: true, username: true, fullName: true, avatarUrl: true } },
       category: { select: { id: true, name: true } },

@@ -38,10 +38,18 @@ export async function createTutorialAction(
     };
   }
 
+  let tutorialId: string | null = null;
+
   try {
     const title = formData.get("title")?.toString().trim();
     if (!title || title.length < 3) {
-      return { success: false, error: "Título muito curto" };
+      return { success: false, error: "Título muito curto (mínimo 3 caracteres)" };
+    }
+
+    const durationRaw = formData.get("duration")?.toString().trim();
+    const duration = durationRaw ? Number(durationRaw) : undefined;
+    if (duration !== undefined && (isNaN(duration) || duration < 1)) {
+      return { success: false, error: "Duração inválida" };
     }
 
     const tutorial = await createTutorial(user.id, {
@@ -50,7 +58,7 @@ export async function createTutorialAction(
       description: formData.get("description")?.toString() || undefined,
       videoUrl: formData.get("videoUrl")?.toString() || undefined,
       thumbnailUrl: formData.get("thumbnailUrl")?.toString() || undefined,
-      duration: formData.get("duration") ? Number(formData.get("duration")) : undefined,
+      duration,
       isPublished: formData.get("isPublished") === "true",
     });
 
@@ -60,6 +68,7 @@ export async function createTutorialAction(
       .filter(Boolean);
     if (tagNames.length > 0) await setTutorialTags(tutorial.id, tagNames);
 
+    tutorialId = tutorial.id;
     revalidatePath("/tutorials");
     revalidatePath("/instructor/tutorials");
   } catch (error) {
@@ -88,13 +97,24 @@ export async function updateTutorialAction(
   }
 
   try {
+    const title = formData.get("title")?.toString().trim();
+    if (!title || title.length < 3) {
+      return { success: false, error: "Título muito curto (mínimo 3 caracteres)" };
+    }
+
+    const durationRaw = formData.get("duration")?.toString().trim();
+    const duration = durationRaw ? Number(durationRaw) : undefined;
+    if (duration !== undefined && (isNaN(duration) || duration < 1)) {
+      return { success: false, error: "Duração inválida" };
+    }
+
     await updateTutorial(tutorialId, user.id, {
-      title: formData.get("title")?.toString().trim() || undefined,
+      title,
       categoryId: formData.get("categoryId")?.toString().trim() || undefined,
       description: formData.get("description")?.toString() || undefined,
       videoUrl: formData.get("videoUrl")?.toString() || undefined,
       thumbnailUrl: formData.get("thumbnailUrl")?.toString() || undefined,
-      duration: formData.get("duration") ? Number(formData.get("duration")) : undefined,
+      duration,
       isPublished: formData.get("isPublished") === "true",
     });
 
@@ -117,8 +137,16 @@ export async function updateTutorialAction(
 }
 
 export async function deleteTutorialAction(tutorialId: string) {
-  const user = await requireInstructor();
-  await deleteTutorial(tutorialId, user.id);
-  revalidatePath("/tutorials");
-  revalidatePath("/instructor/tutorials");
+  try {
+    const user = await requireInstructor();
+    await deleteTutorial(tutorialId, user.id);
+    revalidatePath("/tutorials");
+    revalidatePath("/instructor/tutorials");
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Erro ao excluir tutorial",
+    };
+  }
 }

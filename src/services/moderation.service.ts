@@ -230,7 +230,7 @@ export async function moderateCourse(moderatorId: string, data: CourseModeration
       where: { id: data.courseId },
       data: {
         status: data.status,
-        ...(data.status === "APPROVED" ? { isPublished: true } : {}),
+        ...(data.status === "APPROVED" ? { isPublished: true } : { isPublished: false }),
       },
     }),
   ]);

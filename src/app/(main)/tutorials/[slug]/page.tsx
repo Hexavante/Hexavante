@@ -18,7 +18,7 @@ function formatDuration(seconds: number): string {
 
 export default async function TutorialDetailPage({ params }: Props) {
   const { slug } = await params;
-  const tutorial = await getTutorial(slug);
+  const tutorial = await getTutorial(slug, true);
   if (!tutorial) notFound();
 
   await incrementTutorialViews(tutorial.id);
