@@ -13,14 +13,25 @@ export async function getAdminSession() {
 
     const session = await prisma.adminSession.findUnique({
       where: { token },
-      include: { user: { select: { id: true, name: true, email: true, username: true, avatarUrl: true, role: true } } },
+      include: {
+        user: {
+          select: { id: true, name: true, email: true, username: true, avatarUrl: true },
+        },
+      },
     });
     if (!session) return null;
     if (session.expiresAt < new Date()) {
       await prisma.adminSession.delete({ where: { id: session.id } });
       return null;
     }
-    return { ...session.user, roles: [session.user.role] };
+
+    const userRoles = await prisma.userRole.findMany({
+      where: { userId: session.userId },
+      include: { role: { select: { name: true } } },
+    });
+    const roles = userRoles.map((r) => r.role.name);
+
+    return { ...session.user, roles };
   } catch {
     return null;
   }
