@@ -41,6 +41,7 @@ const SECURITY_HEADERS = [
       "connect-src 'self' https://api.hexavante.com.br wss://api.hexavante.com.br",
       "media-src 'self' blob:",
       "worker-src 'self' blob:",
+      "frame-src 'self' https://player.vimeo.com https://www.youtube.com https://www.youtube-nocookie.com https://w.soundcloud.com",
     ].join("; "),
   },
 ];
