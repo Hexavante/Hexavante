@@ -407,13 +407,21 @@ export async function addLesson(moduleId: string, userId: string, data: LessonIn
     { label: "descrição da aula", text: data.description },
   ]);
 
+  const detectedProvider = data.videoUrl
+    ? data.videoUrl.includes("vimeo.com")
+      ? "vimeo"
+      : data.videoUrl.includes("youtube.com") || data.videoUrl.includes("youtu.be")
+        ? "youtube"
+        : data.videoProvider || null
+    : null;
+
   const lesson = await prisma.lesson.create({
     data: {
       moduleId,
       title: data.title,
       description: data.description || null,
       videoUrl: data.videoUrl || null,
-      videoProvider: data.videoProvider || null,
+      videoProvider: detectedProvider,
       duration: data.duration ?? null,
       orderNumber: data.orderNumber,
     },
@@ -550,13 +558,23 @@ export async function deleteModule(moduleId: string, userId: string) {
 export async function updateLesson(lessonId: string, userId: string, data: Partial<LessonInput>) {
   await assertLessonInstructor(lessonId, userId);
 
+  const detectedProvider = data.videoUrl !== undefined
+    ? data.videoUrl
+      ? data.videoUrl.includes("vimeo.com")
+        ? "vimeo"
+        : data.videoUrl.includes("youtube.com") || data.videoUrl.includes("youtu.be")
+          ? "youtube"
+          : data.videoProvider || null
+      : null
+    : undefined;
+
   return prisma.lesson.update({
     where: { id: lessonId },
     data: {
       ...(data.title !== undefined ? { title: data.title } : {}),
       ...(data.description !== undefined ? { description: data.description || null } : {}),
       ...(data.videoUrl !== undefined ? { videoUrl: data.videoUrl || null } : {}),
-      ...(data.videoProvider !== undefined ? { videoProvider: data.videoProvider || null } : {}),
+      ...(detectedProvider !== undefined ? { videoProvider: detectedProvider } : {}),
       ...(data.duration !== undefined ? { duration: data.duration ?? null } : {}),
       ...(data.orderNumber !== undefined ? { orderNumber: data.orderNumber } : {}),
     },

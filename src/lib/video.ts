@@ -33,6 +33,15 @@ export function getVimeoEmbedUrl(url: string): string | null {
   return null;
 }
 
+export function isTeraBoxUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    return parsed.hostname.includes("terabox.com") || parsed.hostname.includes("1024terabox.com");
+  } catch {
+    return false;
+  }
+}
+
 export function isDirectVideoUrl(url: string): boolean {
   return /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url);
 }
@@ -40,6 +49,7 @@ export function isDirectVideoUrl(url: string): boolean {
 export function getVideoEmbedUrl(url: string, provider?: string | null): string | null {
   if (provider === "vimeo") return getVimeoEmbedUrl(url);
   if (provider === "youtube") return getYoutubeEmbedUrl(url);
+  if (isTeraBoxUrl(url)) return null;
   const yt = getYoutubeEmbedUrl(url);
   if (yt) return yt;
   const vimeo = getVimeoEmbedUrl(url);
