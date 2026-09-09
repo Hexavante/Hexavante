@@ -817,6 +817,16 @@ export const PROFILE_FRAMES: Record<string, ProfileFrameDef> = {
     id: "frame-mint", label: "Moldura Menta", rarity: "common",
     style: { border: "2px solid #34d399", borderRadius: "1rem", boxShadow: "0 0 10px rgba(52,211,153,0.35)" },
   },
+  "frame-rain": {
+    id: "frame-rain", label: "Moldura Chuva", rarity: "rare",
+    style: { border: "2px solid #60a5fa", borderRadius: "1rem", boxShadow: "0 0 14px rgba(96,165,250,0.4)", "--frame-glow": "rgba(96,165,250,0.4)" } as Record<string, string>,
+    animationClass: "animate-frame-rain",
+  },
+  "frame-forest": {
+    id: "frame-forest", label: "Moldura Floresta", rarity: "rare",
+    style: { border: "2px solid #22c55e", borderRadius: "1rem", boxShadow: "0 0 14px rgba(34,197,94,0.4)", "--frame-glow": "rgba(34,197,94,0.4)" } as Record<string, string>,
+    animationClass: "animate-frame-forest",
+  },
 };
 
 export type ProfileBackgroundDef = {

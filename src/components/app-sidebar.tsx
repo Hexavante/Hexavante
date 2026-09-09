@@ -94,6 +94,7 @@ const NAV_SECTIONS: NavSection[] = [
 ];
 
 const ACCOUNT_ITEMS: NavItem[] = [
+  { icon: Settings, label: "Gerenciar", href: "/instructor/gerenciar", requiresInstructor: true },
   { icon: GraduationCap, label: "Meus cursos", href: "/instructor/courses", requiresAuth: true },
   { icon: Video, label: "Meus tutoriais", href: "/instructor/tutorials", requiresInstructor: true },
   { icon: Video, label: "Minhas salas", href: "/instructor/live-rooms", requiresInstructor: true },

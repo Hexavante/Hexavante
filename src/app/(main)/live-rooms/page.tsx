@@ -8,6 +8,7 @@ import { LinkButton } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageHeader } from "@/components/ui/page-header";
 import { PageShell } from "@/components/ui/page-shell";
+import { ScrollReveal } from "@/components/landing/scroll-reveal";
 import { isInstructor } from "@/lib/permissions";
 import { listAvailableLiveRooms, type LiveRoomListFilter } from "@/services/live-room.service";
 
@@ -39,43 +40,48 @@ export default async function LiveRoomsPage({ searchParams }: Props) {
 
   return (
     <PageShell>
-      <PageHeader
-        badge="Ao vivo"
-        icon={Radio}
-        title="Salas ao vivo"
-        description="Participe de aulas ao vivo com instrutores da plataforma — chat em tempo real durante as transmissões."
-        action={
-          canCreate ? (
-            <LinkButton href="/instructor/live-rooms/new" aria-label="Criar nova sala ao vivo">
-              <Plus className="h-4 w-4" />
-              Criar sala
-            </LinkButton>
-          ) : undefined
-        }
-      />
-
-      {!error && rooms.length > 0 && <LiveRoomsStats rooms={rooms} />}
-
-      <LiveRoomFilters current={filter} />
-
-      {error ? (
-        <Alert variant="danger" className="p-10 text-center">
-          <p className="font-semibold">Erro ao carregar salas ao vivo.</p>
-          <p className="mt-2 opacity-80">{error}</p>
-        </Alert>
-      ) : rooms.length === 0 ? (
-        <EmptyState
+      <ScrollReveal delay={0}>
+        <PageHeader
+          badge="Ao vivo"
           icon={Radio}
-          title="Nenhuma sala encontrada com este filtro."
-          description={
-            canCreate
-              ? "Crie uma nova sala ou tente outro filtro."
-              : "Novas transmissões aparecerão aqui quando forem agendadas."
+          title="Salas ao vivo"
+          description="Participe de aulas ao vivo com instrutores da plataforma — chat em tempo real durante as transmissões."
+          action={
+            canCreate ? (
+              <LinkButton href="/instructor/live-rooms/new" aria-label="Criar nova sala ao vivo">
+                <Plus className="h-4 w-4" />
+                Criar sala
+              </LinkButton>
+            ) : undefined
           }
         />
-      ) : (
-        <LiveRoomsBoard rooms={rooms} filter={filter} />
-      )}
+      </ScrollReveal>
+
+      <ScrollReveal delay={100}>
+        {!error && rooms.length > 0 && <LiveRoomsStats rooms={rooms} />}
+        <LiveRoomFilters current={filter} />
+      </ScrollReveal>
+
+      <ScrollReveal delay={200}>
+        {error ? (
+          <Alert variant="danger" className="p-10 text-center">
+            <p className="font-semibold">Erro ao carregar salas ao vivo.</p>
+            <p className="mt-2 opacity-80">{error}</p>
+          </Alert>
+        ) : rooms.length === 0 ? (
+          <EmptyState
+            icon={Radio}
+            title="Nenhuma sala encontrada com este filtro."
+            description={
+              canCreate
+                ? "Crie uma nova sala ou tente outro filtro."
+                : "Novas transmissões aparecerão aqui quando forem agendadas."
+            }
+          />
+        ) : (
+          <LiveRoomsBoard rooms={rooms} filter={filter} />
+        )}
+      </ScrollReveal>
     </PageShell>
   );
 }

@@ -455,6 +455,8 @@ export const SHOP_CATALOG: ShopCatalogItem[] = [
   { slug: "frame-electric-blue", name: "Moldura Elétrica Azul", description: "Descargas azuis eletrizantes.", cost: 120, category: "FRAME", metadata: { frameId: "frame-electric-blue", rarity: "rare" } },
   { slug: "frame-royal", name: "Moldura Real", description: "Elegância real e imponente.", cost: 160, category: "FRAME", metadata: { frameId: "frame-royal", rarity: "legendary" } },
   { slug: "frame-mint", name: "Moldura Menta", description: "Refrescante e clean.", cost: 80, category: "FRAME", metadata: { frameId: "frame-mint", rarity: "common" } },
+  { slug: "frame-rain", name: "Moldura Chuva", description: "Gotas de chuva caindo suavemente.", cost: 115, category: "FRAME", metadata: { frameId: "frame-rain", rarity: "rare" } },
+  { slug: "frame-forest", name: "Moldura Floresta", description: "Folhas verdes flutuando na brisa.", cost: 115, category: "FRAME", metadata: { frameId: "frame-forest", rarity: "rare" } },
 
   // ── Ícones de perfil ──────────────────────────────────────────────────
   { slug: "icon-star", name: "Ícone Estrela", description: "Brilhe como uma estrela.", cost: 60, category: "COSMETIC", metadata: { cosmeticType: "profile_icon", iconId: "icon-star" } },
