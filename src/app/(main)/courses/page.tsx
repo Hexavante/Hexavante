@@ -36,50 +36,57 @@ export default async function CoursesPage({ searchParams }: Props) {
 
   return (
     <PageShell>
-      <PageHeader
-        badge="Catálogo"
-        icon={BookOpen}
-        title="Cursos"
-        description="Escolha uma trilha, acompanhe módulos e avance no seu ritmo."
-        action={
-          <Card padding="sm" className="text-sm text-slate-300">
-            <span className="font-semibold text-white">{courses.length}</span> cursos encontrados
-          </Card>
-        }
-      />
+      <div className="anim-enter anim-d1">
+        <PageHeader
+          badge="Catálogo"
+          icon={BookOpen}
+          title="Cursos"
+          description="Escolha uma trilha, acompanhe módulos e avance no seu ritmo."
+          action={
+            <Card padding="sm" className="text-sm text-slate-300">
+              <span className="font-semibold text-white">{courses.length}</span> cursos encontrados
+            </Card>
+          }
+        />
+      </div>
 
-      <CourseFilters
-        categories={categories}
-        current={{
-          category: params.category,
-          level: params.level,
-          q: params.q,
-          sort,
-        }}
-      />
+      <div className="anim-enter anim-d2">
+        <CourseFilters
+          categories={categories}
+          current={{
+            category: params.category,
+            level: params.level,
+            q: params.q,
+            sort,
+          }}
+        />
+      </div>
 
       {courses.length === 0 ? (
-        <EmptyState
-          icon={Search}
-          title="Nenhum curso encontrado."
-          description="Tente outros termos de busca ou remova alguns filtros."
-        />
+        <div className="anim-enter-fade anim-d3">
+          <EmptyState
+            icon={Search}
+            title="Nenhum curso encontrado."
+            description="Tente outros termos de busca ou remova alguns filtros."
+          />
+        </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {courses.map((course) => (
-            <CourseCard
-              key={course.id}
-              slug={course.slug}
-              title={course.title}
-              shortDescription={course.shortDescription}
-              thumbnailUrl={course.thumbnailUrl}
-              coverImage={course.coverImage}
-              categoryName={course.category.name}
-              moduleCount={course._count.modules}
-              enrollmentCount={course._count.enrollments}
-              level={course.level}
-              estimatedHours={course.estimatedHours}
-            />
+          {courses.map((course, i) => (
+            <div key={course.id} className="anim-enter-scale" style={{ animationDelay: `${0.1 + i * 0.06}s` }}>
+              <CourseCard
+                slug={course.slug}
+                title={course.title}
+                shortDescription={course.shortDescription}
+                thumbnailUrl={course.thumbnailUrl}
+                coverImage={course.coverImage}
+                categoryName={course.category.name}
+                moduleCount={course._count.modules}
+                enrollmentCount={course._count.enrollments}
+                level={course.level}
+                estimatedHours={course.estimatedHours}
+              />
+            </div>
           ))}
         </div>
       )}

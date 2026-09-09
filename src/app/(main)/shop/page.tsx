@@ -18,18 +18,20 @@ export default async function ShopPage() {
 
   return (
     <PageShell size="lg">
-      <PageHeader
-        badge="Personalização"
-        icon={Store}
-        title="Loja Hexavante"
-        description="Personalize seu perfil com títulos, molduras, temas e cosméticos — sem vantagem em provas."
-      />
+      <div className="anim-enter anim-d1">
+        <PageHeader
+          badge="Personalização"
+          icon={Store}
+          title="Loja Hexavante"
+          description="Personalize seu perfil com títulos, molduras, temas e cosméticos — sem vantagem em provas."
+        />
+      </div>
 
-      <div className="mt-4">
+      <div className="mt-4 anim-enter-fade anim-d2">
         <ShopFairPlayNotice />
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+      <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px] anim-enter anim-d3">
         <ShopTabs
           items={state.items}
           inventory={state.inventory}

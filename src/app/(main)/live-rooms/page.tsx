@@ -39,42 +39,48 @@ export default async function LiveRoomsPage({ searchParams }: Props) {
 
   return (
     <PageShell>
-      <PageHeader
-        badge="Ao vivo"
-        icon={Radio}
-        title="Salas ao vivo"
-        description="Participe de aulas ao vivo com instrutores da plataforma — chat em tempo real durante as transmissões."
-        action={
-          canCreate ? (
-            <LinkButton href="/instructor/live-rooms/new" aria-label="Criar nova sala ao vivo">
-              <Plus className="h-4 w-4" />
-              Criar sala
-            </LinkButton>
-          ) : undefined
-        }
-      />
-
-      {!error && rooms.length > 0 && <LiveRoomsStats rooms={rooms} />}
-      <LiveRoomFilters current={filter} />
-
-      {error ? (
-        <Alert variant="danger" className="p-10 text-center">
-          <p className="font-semibold">Erro ao carregar salas ao vivo.</p>
-          <p className="mt-2 opacity-80">{error}</p>
-        </Alert>
-      ) : rooms.length === 0 ? (
-        <EmptyState
+      <div className="anim-enter anim-d1">
+        <PageHeader
+          badge="Ao vivo"
           icon={Radio}
-          title="Nenhuma sala encontrada com este filtro."
-          description={
-            canCreate
-              ? "Crie uma nova sala ou tente outro filtro."
-              : "Novas transmissões aparecerão aqui quando forem agendadas."
+          title="Salas ao vivo"
+          description="Participe de aulas ao vivo com instrutores da plataforma — chat em tempo real durante as transmissões."
+          action={
+            canCreate ? (
+              <LinkButton href="/instructor/live-rooms/new" aria-label="Criar nova sala ao vivo">
+                <Plus className="h-4 w-4" />
+                Criar sala
+              </LinkButton>
+            ) : undefined
           }
         />
-      ) : (
-        <LiveRoomsBoard rooms={rooms} filter={filter} />
-      )}
+      </div>
+
+      <div className="anim-enter-fade anim-d2">
+        {!error && rooms.length > 0 && <LiveRoomsStats rooms={rooms} />}
+        <LiveRoomFilters current={filter} />
+      </div>
+
+      <div className="anim-enter anim-d3">
+        {error ? (
+          <Alert variant="danger" className="p-10 text-center">
+            <p className="font-semibold">Erro ao carregar salas ao vivo.</p>
+            <p className="mt-2 opacity-80">{error}</p>
+          </Alert>
+        ) : rooms.length === 0 ? (
+          <EmptyState
+            icon={Radio}
+            title="Nenhuma sala encontrada com este filtro."
+            description={
+              canCreate
+                ? "Crie uma nova sala ou tente outro filtro."
+                : "Novas transmissões aparecerão aqui quando forem agendadas."
+            }
+          />
+        ) : (
+          <LiveRoomsBoard rooms={rooms} filter={filter} />
+        )}
+      </div>
     </PageShell>
   );
 }

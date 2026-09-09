@@ -603,3 +603,44 @@
   50%  { transform: translateY(6px) rotate(5deg); opacity: 0.4; }
   100% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
 }
+
+/* ═══ Page Entrance Animations ═════════════════════════════════════════ */
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.anim-enter {
+  opacity: 0;
+  animation: fade-in-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.anim-enter-fade {
+  opacity: 0;
+  animation: fade-in 0.5s ease forwards;
+}
+
+.anim-enter-scale {
+  opacity: 0;
+  animation: scale-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.anim-d1 { animation-delay: 0.05s; }
+.anim-d2 { animation-delay: 0.12s; }
+.anim-d3 { animation-delay: 0.2s; }
+.anim-d4 { animation-delay: 0.28s; }
+.anim-d5 { animation-delay: 0.36s; }
+.anim-d6 { animation-delay: 0.44s; }
+.anim-d7 { animation-delay: 0.52s; }
+.anim-d8 { animation-delay: 0.6s; }

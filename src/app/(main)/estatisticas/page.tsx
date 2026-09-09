@@ -14,14 +14,18 @@ export default async function StatisticsPage() {
 
   return (
     <PageShell>
-      <PageHeader
-        badge="Progresso"
-        icon={BarChart3}
-        title="Estatísticas"
-        description="Visão completa do seu desempenho: XP, cursos, simulados, sequência e conquistas."
-      />
+      <div className="anim-enter anim-d1">
+        <PageHeader
+          badge="Progresso"
+          icon={BarChart3}
+          title="Estatísticas"
+          description="Visão completa do seu desempenho: XP, cursos, simulados, sequência e conquistas."
+        />
+      </div>
 
-      <PersonalStatsView stats={stats} variant="full" showHeader={false} />
+      <div className="anim-enter anim-d2">
+        <PersonalStatsView stats={stats} variant="full" showHeader={false} />
+      </div>
     </PageShell>
   );
 }

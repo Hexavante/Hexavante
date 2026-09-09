@@ -83,67 +83,71 @@ export default async function RankingPage({ searchParams }: Props) {
 
   return (
     <PageShell size="md">
-      <AppLink href="/perfil" muted className="mb-4 inline-flex items-center gap-1">
+      <AppLink href="/perfil" muted className="mb-4 inline-flex items-center gap-1 anim-enter-fade anim-d1">
         ← Meu perfil
       </AppLink>
 
-      <PageHeader
-        badge="Ligas"
-        icon={Trophy}
-        title="Ranking por ligas"
-        description="Compita em temporadas mensais nas ligas Bronze, Prata e Ouro. Os melhores sobem e ganham moedas."
-      />
+      <div className="anim-enter anim-d1">
+        <PageHeader
+          badge="Ligas"
+          icon={Trophy}
+          title="Ranking por ligas"
+          description="Compita em temporadas mensais nas ligas Bronze, Prata e Ouro. Os melhores sobem e ganham moedas."
+        />
+      </div>
 
       {session?.user && standing && (
-        <div className="mt-4">
+        <div className="mt-4 anim-enter anim-d2">
           <RankingSeasonPanel standing={standing} pendingRewards={pendingRewards} />
         </div>
       )}
 
-      <div className="mt-6 space-y-3">
+      <div className="mt-6 space-y-3 anim-enter-fade anim-d2">
         <RankingFilters current={period} />
         {period === "month" && (
           <RankingLeagueFilters current={leagueFilter} period={period} />
         )}
       </div>
 
-      {error ? (
-        <Alert variant="danger" className="mt-6 p-6 text-center">
-          Erro ao carregar ranking. Tente novamente mais tarde.
-        </Alert>
-      ) : ranking.length === 0 ? (
-        <EmptyState
-          icon={Trophy}
-          title="Ninguém no ranking ainda."
-          description="Ganhe XP nesta temporada para aparecer na sua liga!"
-          className="mt-6"
-        />
-      ) : (
-        <>
-          {showPodium && (
-            <RankingPodium
-              entries={ranking}
-              currentUserId={session?.user?.id}
-              periodLabel={PERIOD_LABELS[period]}
-            />
-          )}
+      <div className="anim-enter anim-d3">
+        {error ? (
+          <Alert variant="danger" className="mt-6 p-6 text-center">
+            Erro ao carregar ranking. Tente novamente mais tarde.
+          </Alert>
+        ) : ranking.length === 0 ? (
+          <EmptyState
+            icon={Trophy}
+            title="Ninguém no ranking ainda."
+            description="Ganhe XP nesta temporada para aparecer na sua liga!"
+            className="mt-6"
+          />
+        ) : (
+          <>
+            {showPodium && (
+              <RankingPodium
+                entries={ranking}
+                currentUserId={session?.user?.id}
+                periodLabel={PERIOD_LABELS[period]}
+              />
+            )}
 
-          {rest.length > 0 && (
-            <ol className="mt-6 overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] shadow-xl shadow-black/20">
-              {rest.map((entry, index) => (
-                <RankingRow
-                  key={entry.id}
-                  entry={entry}
-                  position={listStartIndex + index + 1}
-                  isCurrentUser={session?.user?.id === entry.userId}
-                  showTotalXp={period !== "all"}
-                  showLeague={period !== "month"}
-                />
-              ))}
-            </ol>
-          )}
-        </>
-      )}
+            {rest.length > 0 && (
+              <ol className="mt-6 overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] shadow-xl shadow-black/20">
+                {rest.map((entry, index) => (
+                  <RankingRow
+                    key={entry.id}
+                    entry={entry}
+                    position={listStartIndex + index + 1}
+                    isCurrentUser={session?.user?.id === entry.userId}
+                    showTotalXp={period !== "all"}
+                    showLeague={period !== "month"}
+                  />
+                ))}
+              </ol>
+            )}
+          </>
+        )}
+      </div>
 
       {session?.user && <RankingSeasonHistory history={seasonHistory} />}
     </PageShell>

@@ -16,25 +16,29 @@ export default async function CertificatesPage() {
 
   return (
     <PageShell>
-      <PageHeader
-        badge="Conquistas"
-        icon={Award}
-        title="Meus certificados"
-        description="Compartilhe suas conquistas com orgulho — cada certificado tem página pública e QR Code."
-      />
-      <AppLink href="/certificados/verificar" className="mb-8 inline-block">
-        Verificar um certificado por código →
-      </AppLink>
-
-      {certificates.length === 0 ? (
-        <EmptyState
-          icon={FileBadge}
-          title="Você ainda não possui certificados."
-          description="Complete um curso para emitir o seu."
+      <div className="anim-enter anim-d1">
+        <PageHeader
+          badge="Conquistas"
+          icon={Award}
+          title="Meus certificados"
+          description="Compartilhe suas conquistas com orgulho — cada certificado tem página pública e QR Code."
         />
-      ) : (
-        <CertificateList certificates={certificates} />
-      )}
+        <AppLink href="/certificados/verificar" className="mb-8 inline-block">
+          Verificar um certificado por código →
+        </AppLink>
+      </div>
+
+      <div className="anim-enter anim-d2">
+        {certificates.length === 0 ? (
+          <EmptyState
+            icon={FileBadge}
+            title="Você ainda não possui certificados."
+            description="Complete um curso para emitir o seu."
+          />
+        ) : (
+          <CertificateList certificates={certificates} />
+        )}
+      </div>
     </PageShell>
   );
 }

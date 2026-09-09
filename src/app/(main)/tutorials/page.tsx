@@ -21,20 +21,22 @@ export default async function TutorialsPage({ searchParams }: Props) {
 
   return (
     <PageShell>
-      <PageHeader
-        badge="Aprenda"
-        icon={Video}
-        title="Tutoriais"
-        description="Vídeos curtos e diretos para aprender na prática."
-        action={
-          <Card padding="sm" className="text-sm text-slate-300">
-            <span className="font-semibold text-white">{tutorials.length}</span> tutoriais
-          </Card>
-        }
-      />
+      <div className="anim-enter anim-d1">
+        <PageHeader
+          badge="Aprenda"
+          icon={Video}
+          title="Tutoriais"
+          description="Vídeos curtos e diretos para aprender na prática."
+          action={
+            <Card padding="sm" className="text-sm text-slate-300">
+              <span className="font-semibold text-white">{tutorials.length}</span> tutoriais
+            </Card>
+          }
+        />
+      </div>
 
       {categories.length > 0 && (
-        <div className="mb-4 flex flex-wrap gap-2">
+        <div className="mb-4 flex flex-wrap gap-2 anim-enter-fade anim-d2">
           <a
             href="/tutorials"
             className={`rounded-full px-3 py-1.5 text-xs font-medium transition ${
@@ -62,26 +64,29 @@ export default async function TutorialsPage({ searchParams }: Props) {
       )}
 
       {tutorials.length === 0 ? (
-        <EmptyState
-          icon={Video}
-          title="Nenhum tutorial encontrado."
-          description="Em breve teremos tutoriais disponíveis."
-        />
+        <div className="anim-enter-fade anim-d3">
+          <EmptyState
+            icon={Video}
+            title="Nenhum tutorial encontrado."
+            description="Em breve teremos tutoriais disponíveis."
+          />
+        </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {tutorials.map((tutorial) => (
-            <TutorialCard
-              key={tutorial.id}
-              slug={tutorial.slug}
-              title={tutorial.title}
-              description={tutorial.description}
-              thumbnailUrl={tutorial.thumbnailUrl}
-              categoryName={tutorial.category?.name}
-              authorName={tutorial.author.fullName}
-              authorAvatar={tutorial.author.avatarUrl}
-              duration={tutorial.duration}
-              viewCount={tutorial.viewCount}
-            />
+          {tutorials.map((tutorial, i) => (
+            <div key={tutorial.id} className="anim-enter-scale" style={{ animationDelay: `${0.12 + i * 0.06}s` }}>
+              <TutorialCard
+                slug={tutorial.slug}
+                title={tutorial.title}
+                description={tutorial.description}
+                thumbnailUrl={tutorial.thumbnailUrl}
+                categoryName={tutorial.category?.name}
+                authorName={tutorial.author.fullName}
+                authorAvatar={tutorial.author.avatarUrl}
+                duration={tutorial.duration}
+                viewCount={tutorial.viewCount}
+              />
+            </div>
           ))}
         </div>
       )}
