@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { ArrowRight, Award, BarChart3, BookOpen, Radio, Target } from "lucide-react";
+import { ArrowRight, Award, BarChart3, BookOpen, Radio, Target, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { LinkButton } from "@/components/ui/button";
@@ -12,6 +12,8 @@ import { DashboardCommandCenter } from "@/components/home/dashboard-command-cent
 import { DashboardHighlightsPanel } from "@/components/home/dashboard-highlights-panel";
 import { OnboardingTour } from "@/components/onboarding/onboarding-tour";
 import { AchievementGrid } from "@/components/achievements/achievement-grid";
+import { ScrollReveal } from "@/components/landing/scroll-reveal";
+import { CertificateVortex } from "@/components/home/certificate-vortex";
 import { getStudentHomeData } from "@/services/student.service";
 import Link from "next/link";
 
@@ -53,130 +55,157 @@ export default async function HomePage() {
 
       {homeData && session?.user ? (
         <>
-          <section className="mb-8">
-            <Badge variant="sky">Seu espaço de estudos</Badge>
-            <h1 className="mt-3 text-3xl font-black tracking-tight hx-text-title sm:text-4xl">
-              Olá, {session.user.name?.split(" ")[0] ?? session.user.username}!
-            </h1>
-            <p className="mt-2 max-w-2xl text-sm hx-text-muted sm:text-base">
-              Retome de onde parou, acompanhe suas estatísticas e descubra novos cursos.
-            </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <Link href="/estatisticas" className="hx-intro-chip">
-                <BarChart3 className="h-3.5 w-3.5" />
-                Ver estatísticas
-              </Link>
-            </div>
-          </section>
+          <ScrollReveal>
+            <section className="mb-8">
+              <Badge variant="sky">Seu espaço de estudos</Badge>
+              <h1 className="mt-3 text-3xl font-black tracking-tight hx-text-title sm:text-4xl">
+                Olá, {session.user.name?.split(" ")[0] ?? session.user.username}!
+              </h1>
+              <p className="mt-2 max-w-2xl text-sm hx-text-muted sm:text-base">
+                Retome de onde parou, acompanhe suas estatísticas e descubra novos cursos.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <Link href="/estatisticas" className="hx-intro-chip">
+                  <BarChart3 className="h-3.5 w-3.5" />
+                  Ver estatísticas
+                </Link>
+              </div>
+            </section>
+          </ScrollReveal>
 
-          <StudyContinueHero continuation={homeData.continuation} />
+          <ScrollReveal delay={100}>
+            <StudyContinueHero continuation={homeData.continuation} />
+          </ScrollReveal>
 
-          <DashboardCommandCenter pendingItems={homeData.pendingItems} />
+          <ScrollReveal delay={200}>
+            <DashboardCommandCenter pendingItems={homeData.pendingItems} />
+          </ScrollReveal>
 
-          <DashboardHighlightsPanel highlights={homeData.highlights} />
+          <ScrollReveal delay={300}>
+            <DashboardHighlightsPanel highlights={homeData.highlights} />
+          </ScrollReveal>
 
           <div className="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
             <div className="min-w-0 space-y-8">
-              <PersonalStatsView
-                stats={homeData.stats}
-                variant="compact"
-                tourId="personal-stats"
-              />
-              <CourseRecommendations courses={homeData.recommendations} />
+              <ScrollReveal>
+                <PersonalStatsView
+                  stats={homeData.stats}
+                  variant="compact"
+                  tourId="personal-stats"
+                />
+              </ScrollReveal>
+
+              <ScrollReveal delay={100}>
+                <CourseRecommendations courses={homeData.recommendations} />
+              </ScrollReveal>
 
               {homeData.achievements.some((a) => a.unlocked) && (
-                <section>
-                  <h2 className="mb-4 text-lg font-bold hx-text-title">Conquistas recentes</h2>
-                  <AchievementGrid
-                    achievements={homeData.achievements.filter((a) => a.unlocked).slice(0, 4)}
-                    compact
-                  />
-                </section>
+                <ScrollReveal delay={200}>
+                  <section>
+                    <h2 className="mb-4 text-lg font-bold hx-text-title">Conquistas recentes</h2>
+                    <AchievementGrid
+                      achievements={homeData.achievements.filter((a) => a.unlocked).slice(0, 4)}
+                      compact
+                    />
+                  </section>
+                </ScrollReveal>
               )}
             </div>
 
-            <StudentDashboard
-              data={homeData}
-              userName={session.user.name ?? session.user.username ?? "Estudante"}
-            />
+            <ScrollReveal delay={150}>
+              <StudentDashboard
+                data={homeData}
+                userName={session.user.name ?? session.user.username ?? "Estudante"}
+              />
+            </ScrollReveal>
           </div>
         </>
       ) : (
-        <section className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-center lg:gap-8">
-          <div className="min-w-0">
-            <Badge variant="sky">Plataforma educacional Hexavante</Badge>
-            <h1 className="mt-4 max-w-3xl text-3xl font-black tracking-tight text-white sm:mt-5 sm:text-4xl xl:text-5xl">
-              Aprenda, pratique e acompanhe seu progresso em um só lugar.
-            </h1>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:mt-5 sm:text-base lg:text-lg">
-              Cursos, simulados, aulas ao vivo e gamificação para estudantes do ensino técnico,
-              universitários de TI e candidatos ao ENEM.
-            </p>
+        <ScrollReveal>
+          <section className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-center lg:gap-8">
+            <div className="min-w-0">
+              <Badge variant="sky">Plataforma educacional Hexavante</Badge>
+              <h1 className="mt-4 max-w-3xl text-3xl font-black tracking-tight text-white sm:mt-5 sm:text-4xl xl:text-5xl">
+                Aprenda, pratique e acompanhe seu progresso em um só lugar.
+              </h1>
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:mt-5 sm:text-base lg:text-lg">
+                Cursos, simulados, aulas ao vivo e gamificação para estudantes do ensino técnico,
+                universitários de TI e candidatos ao ENEM.
+              </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <LinkButton href="/courses" size="lg">
-                Explorar cursos
-                <ArrowRight className="h-4 w-4" />
-              </LinkButton>
-              <LinkButton href="/register" variant="outline" size="lg">
-                Criar conta
-              </LinkButton>
-            </div>
-          </div>
-
-          <Card padding="md" className="min-w-0 shadow-2xl shadow-black/30 backdrop-blur">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
-              <div>
-                <p className="text-sm font-semibold text-white">Comece agora</p>
-                <p className="mt-1 text-xs text-slate-400">Tudo em uma plataforma</p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <LinkButton href="/courses" size="lg">
+                  Explorar cursos
+                  <ArrowRight className="h-4 w-4" />
+                </LinkButton>
+                <LinkButton href="/register" variant="outline" size="lg">
+                  Criar conta
+                </LinkButton>
               </div>
-              <Badge variant="teal">Gratuito</Badge>
             </div>
-            <div className="mt-5 grid gap-3">
-              {highlights.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <div
-                    key={item.label}
-                    className="flex items-center gap-3 rounded-lg border border-white/8 bg-white/[0.04] p-4"
-                  >
-                    <span className={`grid h-10 w-10 place-items-center rounded-lg ${item.tone}`}>
-                      <Icon className="h-5 w-5" />
-                    </span>
-                    <div>
-                      <p className="text-sm font-semibold text-white">{item.label}</p>
-                      <p className="text-xs text-slate-400">{item.value}</p>
+
+            <Card padding="md" className="min-w-0 shadow-2xl shadow-black/30 backdrop-blur">
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <div>
+                  <p className="text-sm font-semibold text-white">Comece agora</p>
+                  <p className="mt-1 text-xs text-slate-400">Tudo em uma plataforma</p>
+                </div>
+                <Badge variant="teal">Gratuito</Badge>
+              </div>
+              <div className="mt-5 grid gap-3">
+                {highlights.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <div
+                      key={item.label}
+                      className="flex items-center gap-3 rounded-lg border border-white/8 bg-white/[0.04] p-4"
+                    >
+                      <span className={`grid h-10 w-10 place-items-center rounded-lg ${item.tone}`}>
+                        <Icon className="h-5 w-5" />
+                      </span>
+                      <div>
+                        <p className="text-sm font-semibold text-white">{item.label}</p>
+                        <p className="text-xs text-slate-400">{item.value}</p>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          </Card>
-        </section>
+                  );
+                })}
+              </div>
+            </Card>
+          </section>
+        </ScrollReveal>
       )}
 
-      <section className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {shortcuts.map((item) => {
-          const Icon = item.icon;
-          const href =
-            item.requiresAuth && !session?.user
-              ? `/login?callbackUrl=${encodeURIComponent(item.href)}`
-              : item.href;
-          return (
-            <Link
-              key={item.href}
-              href={href}
-              className="group flex items-center justify-between rounded-lg border border-[hsl(var(--sidebar-border))] bg-[var(--surface)] p-4 transition hover:border-[hsl(var(--sidebar-highlight)/0.35)] hover:bg-[hsl(var(--sidebar-highlight)/0.08)]"
-            >
-              <span className="flex items-center gap-3 text-sm font-semibold text-slate-100">
-                <Icon className="h-4 w-4 hx-accent-text" />
-                {item.label}
-              </span>
-              <ArrowRight className="h-4 w-4 text-slate-500 transition group-hover:translate-x-0.5 group-hover:text-[hsl(var(--sidebar-highlight)/0.85)]" />
-            </Link>
-          );
-        })}
-      </section>
+      <ScrollReveal>
+        <section className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {shortcuts.map((item) => {
+            const Icon = item.icon;
+            const href =
+              item.requiresAuth && !session?.user
+                ? `/login?callbackUrl=${encodeURIComponent(item.href)}`
+                : item.href;
+            return (
+              <Link
+                key={item.href}
+                href={href}
+                className="group flex items-center justify-between rounded-lg border border-[hsl(var(--sidebar-border))] bg-[var(--surface)] p-4 transition hover:border-[hsl(var(--sidebar-highlight)/0.35)] hover:bg-[hsl(var(--sidebar-highlight)/0.08)]"
+              >
+                <span className="flex items-center gap-3 text-sm font-semibold text-slate-100">
+                  <Icon className="h-4 w-4 hx-accent-text" />
+                  {item.label}
+                </span>
+                <ArrowRight className="h-4 w-4 text-slate-500 transition group-hover:translate-x-0.5 group-hover:text-[hsl(var(--sidebar-highlight)/0.85)]" />
+              </Link>
+            );
+          })}
+        </section>
+      </ScrollReveal>
+
+      {session?.user && (
+        <ScrollReveal delay={100}>
+          <CertificateVortex hasCertificates={Boolean(homeData?.highlights?.lastCertificate)} />
+        </ScrollReveal>
+      )}
     </PageShell>
   );
 }
