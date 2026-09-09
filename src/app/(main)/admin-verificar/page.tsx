@@ -66,7 +66,7 @@ export default function AdminVerifyPage({ searchParams }: { searchParams: Promis
           </Button>
 
           <a
-            href="/admin/login"
+            href="/admin-login"
             className="block text-center text-xs text-slate-500 hover:text-slate-300 transition"
           >
             ← Voltar ao login

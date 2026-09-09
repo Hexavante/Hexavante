@@ -56,7 +56,7 @@ export async function adminVerifyAction(email: string, code: string): Promise<Ad
 
 export async function adminLogoutAction() {
   await deleteAdminSession();
-  redirect("/admin/login");
+  redirect("/admin-login");
 }
 
 export async function getAdminUser() {

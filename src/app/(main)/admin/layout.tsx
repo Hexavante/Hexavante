@@ -11,7 +11,7 @@ import Link from "next/link";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const user = await getAdminSession();
-  if (!user) redirect("/admin/login");
+  if (!user) redirect("/admin-login");
   if (!canModerate(user.roles)) redirect("/");
 
   const pathname = (await headers()).get("x-pathname") ?? "/admin";
@@ -29,7 +29,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           "use server";
           const { deleteAdminSession } = await import("@/lib/admin-auth");
           await deleteAdminSession();
-          redirect("/admin/login");
+          redirect("/admin-login");
         }}>
           <button
             type="submit"

@@ -116,7 +116,7 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  const publicPaths = ["/", "/hexa", "/ajuda", "/login", "/register", "/recuperar-senha", "/redefinir-senha", "/manutencao", "/suspenso", "/tutorials", "/admin/login", "/admin/verificar"];
+  const publicPaths = ["/", "/hexa", "/ajuda", "/login", "/register", "/recuperar-senha", "/redefinir-senha", "/manutencao", "/suspenso", "/tutorials", "/admin-login", "/admin-verificar"];
 
   if (!isAuthenticated && !publicPaths.some((p) => pathname === p || pathname.startsWith(p + "/"))) {
     const login = new URL("/login", origin);
@@ -128,7 +128,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/app", origin));
   }
 
-  if (MODERATOR_REQUIRED.test(pathname) && !pathname.startsWith("/admin/login") && !pathname.startsWith("/admin/verificar") && !user.roles?.some((r: string) => ["ADMIN", "MODERATOR", "SUPERADMIN"].includes(r))) {
+  if (MODERATOR_REQUIRED.test(pathname) && !pathname.startsWith("/admin-login") && !pathname.startsWith("/admin-verificar") && !user.roles?.some((r: string) => ["ADMIN", "MODERATOR", "SUPERADMIN"].includes(r))) {
     return NextResponse.redirect(new URL("/app", origin));
   }
 
