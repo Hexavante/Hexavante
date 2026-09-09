@@ -3,6 +3,7 @@
 import { auth } from "@/auth";
 import { canModerate } from "@/lib/permissions";
 import { prisma } from "@/lib/prisma";
+import { updateUserWithRetry } from "@/lib/retry-update";
 import { revalidatePath } from "next/cache";
 
 export type ModActionResult = { success: boolean; error?: string; message?: string };
@@ -208,10 +209,10 @@ export async function deleteProfileData(userId: string): Promise<ModActionResult
     const user = await prisma.user.findUnique({ where: { id: userId }, select: { id: true, username: true } });
     if (!user) return { success: false, error: "Usuário não encontrado." };
 
-    await prisma.user.update({
-      where: { id: userId },
-      data: { avatarUrl: null, bannerUrl: null, bio: null },
-    });
+    await updateUserWithRetry(
+      { id: userId },
+      { avatarUrl: null, bannerUrl: null, bio: null },
+    );
     await prisma.moderationLog.create({
       data: {
         moderatorId: mod.id,

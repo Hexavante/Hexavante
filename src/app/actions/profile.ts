@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { updateUserWithRetry } from "@/lib/retry-update";
 import { ContentPolicyError } from "@/lib/profanity-filter";
 import { updateProfileSchema } from "@/lib/validations/profile";
 import { enforceCleanContent } from "@/services/content-policy.service";
@@ -94,9 +95,9 @@ export async function updateProfileAction(
     throw error;
   }
 
-  await prisma.user.update({
-    where: { id: session.user.id },
-    data: {
+  await updateUserWithRetry(
+    { id: session.user.id },
+    {
       fullName: parsed.data.fullName,
       bio: parsed.data.bio || null,
       phone: parsed.data.phone || null,
@@ -104,7 +105,7 @@ export async function updateProfileAction(
       state: parsed.data.state?.toUpperCase() || null,
       profileVisibility: parsed.data.profileVisibility,
     },
-  });
+  );
 
   revalidatePath("/", "layout");
   revalidatePath("/perfil");
@@ -143,10 +144,10 @@ export async function updateProfilePhotoAction(formData: FormData): Promise<Prof
     const base64 = Buffer.from(bytes).toString("base64");
     const avatarUrl = `data:${mimeType};base64,${base64}`;
 
-    await prisma.user.update({
-      where: { id: session.user.id },
-      data: { avatarUrl },
-    });
+    await updateUserWithRetry(
+      { id: session.user.id },
+      { avatarUrl },
+    );
 
     revalidatePath("/perfil");
     revalidatePath(`/perfil/${session.user.username}`);
@@ -196,10 +197,10 @@ export async function updateProfileBannerAction(formData: FormData): Promise<Pro
     const base64 = Buffer.from(bytes).toString("base64");
     const bannerUrl = `data:${mimeType};base64,${base64}`;
 
-    await prisma.user.update({
-      where: { id: session.user.id },
-      data: { bannerUrl },
-    });
+    await updateUserWithRetry(
+      { id: session.user.id },
+      { bannerUrl },
+    );
 
     revalidatePath("/perfil");
     revalidatePath(`/perfil/${session.user.username}`);
@@ -229,10 +230,10 @@ export async function removeProfileBannerAction(): Promise<ProfileActionResult> 
   }
 
   try {
-    await prisma.user.update({
-      where: { id: session.user.id },
-      data: { bannerUrl: null },
-    });
+    await updateUserWithRetry(
+      { id: session.user.id },
+      { bannerUrl: null },
+    );
 
     revalidatePath("/perfil");
     revalidatePath(`/perfil/${session.user.username}`);

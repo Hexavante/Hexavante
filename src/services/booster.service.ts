@@ -1,5 +1,6 @@
 import { buildPremiumStatus } from "@/lib/premium";
 import { prisma } from "@/lib/prisma";
+import { updateUserWithRetry } from "@/lib/retry-update";
 import { getGlobalBoosterMultiplier } from "@/services/platform-settings.service";
 
 export type BoosterState = {
@@ -18,13 +19,13 @@ export async function clearExpiredBooster(userId: string): Promise<void> {
   if (!user?.boosterExpiresAt) return;
   if (user.boosterExpiresAt > new Date()) return;
 
-  await prisma.user.update({
-    where: { id: userId },
-    data: {
+  await updateUserWithRetry(
+    { id: userId },
+    {
       boosterMultiplier: 1.0,
       boosterExpiresAt: null,
     },
-  });
+  );
 }
 
 export async function getBoosterState(userId: string): Promise<BoosterState> {
@@ -71,13 +72,13 @@ export async function activateBooster(
   const newExpiry = new Date(baseTime + durationMs);
   const newMultiplier = Math.max(user?.boosterMultiplier ?? 1, multiplier);
 
-  await prisma.user.update({
-    where: { id: userId },
-    data: {
+  await updateUserWithRetry(
+    { id: userId },
+    {
       boosterMultiplier: newMultiplier,
       boosterExpiresAt: newExpiry,
     },
-  });
+  );
 
   return {
     active: true,
