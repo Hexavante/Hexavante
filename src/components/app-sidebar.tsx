@@ -95,9 +95,6 @@ const NAV_SECTIONS: NavSection[] = [
 
 const ACCOUNT_ITEMS: NavItem[] = [
   { icon: Settings, label: "Gerenciar", href: "/instructor/gerenciar", requiresInstructor: true },
-  { icon: GraduationCap, label: "Meus cursos", href: "/instructor/courses", requiresAuth: true },
-  { icon: Video, label: "Meus tutoriais", href: "/instructor/tutorials", requiresInstructor: true },
-  { icon: Video, label: "Minhas salas", href: "/instructor/live-rooms", requiresInstructor: true },
   { icon: Shield, label: "Moderação", href: "/admin", requiresModerator: true },
 ];
 
@@ -284,8 +281,8 @@ export function AppSidebar({ session }: Props) {
 
   const accountItems = useMemo(() => {
     return ACCOUNT_ITEMS.filter((item) => isItemVisible(item, session)).map((item) => {
-      if (item.label === "Meus cursos" && (!session || !isInstructor(roles))) {
-        return { ...item, label: "Instrutor", href: "/instructor/apply" };
+      if (item.label === "Gerenciar" && (!session || !isInstructor(roles))) {
+        return { ...item, label: "Instrutor", href: "/instructor/apply", requiresInstructor: false, requiresAuth: true };
       }
       return item;
     });

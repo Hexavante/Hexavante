@@ -13,7 +13,6 @@ import { Alert } from "@/components/ui/alert";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageHeader } from "@/components/ui/page-header";
 import { PageShell } from "@/components/ui/page-shell";
-import { ScrollReveal } from "@/components/landing/scroll-reveal";
 import { getCurrentSeasonKey, parseLeagueFilter } from "@/lib/ranking-leagues";
 import {
   getLeagueRanking,
@@ -88,69 +87,63 @@ export default async function RankingPage({ searchParams }: Props) {
         ← Meu perfil
       </AppLink>
 
-      <ScrollReveal delay={0}>
-        <PageHeader
-          badge="Ligas"
-          icon={Trophy}
-          title="Ranking por ligas"
-          description="Compita em temporadas mensais nas ligas Bronze, Prata e Ouro. Os melhores sobem e ganham moedas."
-        />
-      </ScrollReveal>
+      <PageHeader
+        badge="Ligas"
+        icon={Trophy}
+        title="Ranking por ligas"
+        description="Compita em temporadas mensais nas ligas Bronze, Prata e Ouro. Os melhores sobem e ganham moedas."
+      />
 
-      <ScrollReveal delay={100}>
-        {session?.user && standing && (
-          <div className="mt-4">
-            <RankingSeasonPanel standing={standing} pendingRewards={pendingRewards} />
-          </div>
-        )}
-
-        <div className="mt-6 space-y-3">
-          <RankingFilters current={period} />
-          {period === "month" && (
-            <RankingLeagueFilters current={leagueFilter} period={period} />
-          )}
+      {session?.user && standing && (
+        <div className="mt-4">
+          <RankingSeasonPanel standing={standing} pendingRewards={pendingRewards} />
         </div>
-      </ScrollReveal>
+      )}
 
-      <ScrollReveal delay={200}>
-        {error ? (
-          <Alert variant="danger" className="mt-6 p-6 text-center">
-            Erro ao carregar ranking. Tente novamente mais tarde.
-          </Alert>
-        ) : ranking.length === 0 ? (
-          <EmptyState
-            icon={Trophy}
-            title="Ninguém no ranking ainda."
-            description="Ganhe XP nesta temporada para aparecer na sua liga!"
-            className="mt-6"
-          />
-        ) : (
-          <>
-            {showPodium && (
-              <RankingPodium
-                entries={ranking}
-                currentUserId={session?.user?.id}
-                periodLabel={PERIOD_LABELS[period]}
-              />
-            )}
-
-            {rest.length > 0 && (
-              <ol className="mt-6 overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] shadow-xl shadow-black/20">
-                {rest.map((entry, index) => (
-                  <RankingRow
-                    key={entry.id}
-                    entry={entry}
-                    position={listStartIndex + index + 1}
-                    isCurrentUser={session?.user?.id === entry.userId}
-                    showTotalXp={period !== "all"}
-                    showLeague={period !== "month"}
-                  />
-                ))}
-              </ol>
-            )}
-          </>
+      <div className="mt-6 space-y-3">
+        <RankingFilters current={period} />
+        {period === "month" && (
+          <RankingLeagueFilters current={leagueFilter} period={period} />
         )}
-      </ScrollReveal>
+      </div>
+
+      {error ? (
+        <Alert variant="danger" className="mt-6 p-6 text-center">
+          Erro ao carregar ranking. Tente novamente mais tarde.
+        </Alert>
+      ) : ranking.length === 0 ? (
+        <EmptyState
+          icon={Trophy}
+          title="Ninguém no ranking ainda."
+          description="Ganhe XP nesta temporada para aparecer na sua liga!"
+          className="mt-6"
+        />
+      ) : (
+        <>
+          {showPodium && (
+            <RankingPodium
+              entries={ranking}
+              currentUserId={session?.user?.id}
+              periodLabel={PERIOD_LABELS[period]}
+            />
+          )}
+
+          {rest.length > 0 && (
+            <ol className="mt-6 overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] shadow-xl shadow-black/20">
+              {rest.map((entry, index) => (
+                <RankingRow
+                  key={entry.id}
+                  entry={entry}
+                  position={listStartIndex + index + 1}
+                  isCurrentUser={session?.user?.id === entry.userId}
+                  showTotalXp={period !== "all"}
+                  showLeague={period !== "month"}
+                />
+              ))}
+            </ol>
+          )}
+        </>
+      )}
 
       {session?.user && <RankingSeasonHistory history={seasonHistory} />}
     </PageShell>

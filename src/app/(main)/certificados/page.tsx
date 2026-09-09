@@ -6,7 +6,6 @@ import { AppLink } from "@/components/ui/app-link";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageHeader } from "@/components/ui/page-header";
 import { PageShell } from "@/components/ui/page-shell";
-import { ScrollReveal } from "@/components/landing/scroll-reveal";
 import { redirect } from "next/navigation";
 
 export default async function CertificatesPage() {
@@ -17,29 +16,25 @@ export default async function CertificatesPage() {
 
   return (
     <PageShell>
-      <ScrollReveal delay={0}>
-        <PageHeader
-          badge="Conquistas"
-          icon={Award}
-          title="Meus certificados"
-          description="Compartilhe suas conquistas com orgulho — cada certificado tem página pública e QR Code."
-        />
-        <AppLink href="/certificados/verificar" className="mb-8 inline-block">
-          Verificar um certificado por código →
-        </AppLink>
-      </ScrollReveal>
+      <PageHeader
+        badge="Conquistas"
+        icon={Award}
+        title="Meus certificados"
+        description="Compartilhe suas conquistas com orgulho — cada certificado tem página pública e QR Code."
+      />
+      <AppLink href="/certificados/verificar" className="mb-8 inline-block">
+        Verificar um certificado por código →
+      </AppLink>
 
-      <ScrollReveal delay={100}>
-        {certificates.length === 0 ? (
-          <EmptyState
-            icon={FileBadge}
-            title="Você ainda não possui certificados."
-            description="Complete um curso para emitir o seu."
-          />
-        ) : (
-          <CertificateList certificates={certificates} />
-        )}
-      </ScrollReveal>
+      {certificates.length === 0 ? (
+        <EmptyState
+          icon={FileBadge}
+          title="Você ainda não possui certificados."
+          description="Complete um curso para emitir o seu."
+        />
+      ) : (
+        <CertificateList certificates={certificates} />
+      )}
     </PageShell>
   );
 }
