@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { ArrowRight, Award, BarChart3, BookOpen, Radio, Target, Sparkles } from "lucide-react";
+import { ArrowRight, Award, BarChart3, BookOpen, Radio, Target } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { LinkButton } from "@/components/ui/button";
@@ -7,7 +7,6 @@ import { PageShell } from "@/components/ui/page-shell";
 import { StudentDashboard } from "@/components/home/student-dashboard";
 import { StudyContinueHero } from "@/components/home/study-continue-hero";
 import { CourseRecommendations } from "@/components/home/course-recommendations";
-import { PersonalStatsView } from "@/components/stats/personal-stats-view";
 import { DashboardCommandCenter } from "@/components/home/dashboard-command-center";
 import { DashboardHighlightsPanel } from "@/components/home/dashboard-highlights-panel";
 import { OnboardingTour } from "@/components/onboarding/onboarding-tour";
@@ -88,14 +87,6 @@ export default async function HomePage() {
           <div className="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
             <div className="min-w-0 space-y-8">
               <ScrollReveal>
-                <PersonalStatsView
-                  stats={homeData.stats}
-                  variant="compact"
-                  tourId="personal-stats"
-                />
-              </ScrollReveal>
-
-              <ScrollReveal delay={100}>
                 <CourseRecommendations courses={homeData.recommendations} />
               </ScrollReveal>
 

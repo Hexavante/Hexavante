@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { Award, Calendar, Radio, Target } from "lucide-react";
+import { Calendar, Radio, Target } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { getCertificatePublicPath } from "@/lib/certificate-share";
 import type { DashboardHighlights } from "@/services/dashboard-goals.service";
 
 type Props = {
@@ -19,13 +18,13 @@ function formatEventDate(date: Date): string {
 }
 
 export function DashboardHighlightsPanel({ highlights }: Props) {
-  const { lastCertificate, nextGoal, nextLiveEvent } = highlights;
-  const hasContent = lastCertificate || nextGoal || nextLiveEvent;
+  const { nextGoal, nextLiveEvent } = highlights;
+  const hasContent = nextGoal || nextLiveEvent;
 
   if (!hasContent) return null;
 
   return (
-    <section className="mt-8 grid gap-3 md:grid-cols-3">
+    <section className="mt-8 grid gap-3 md:grid-cols-2">
       {nextGoal && (
         <Card padding="md" className="border-[hsl(var(--sidebar-highlight)/0.22)] bg-[hsl(var(--sidebar-highlight)/0.06)]">
           <div className="flex items-start gap-3">
@@ -47,31 +46,6 @@ export function DashboardHighlightsPanel({ highlights }: Props) {
                 className="mt-3 inline-block text-sm font-semibold hx-accent-link"
               >
                 Continuar curso →
-              </Link>
-            </div>
-          </div>
-        </Card>
-      )}
-
-      {lastCertificate && (
-        <Card padding="md" className="border-amber-400/20 bg-amber-400/5">
-          <div className="flex items-start gap-3">
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-amber-400/25 bg-amber-400/10 text-amber-300">
-              <Award className="h-5 w-5" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="text-xs font-bold uppercase tracking-wide text-amber-300">
-                Último certificado
-              </p>
-              <p className="mt-1 truncate font-semibold text-white">{lastCertificate.courseTitle}</p>
-              <p className="mt-1 text-sm text-slate-400">
-                {new Date(lastCertificate.issuedAt).toLocaleDateString("pt-BR")}
-              </p>
-              <Link
-                href={getCertificatePublicPath(lastCertificate.code)}
-                className="mt-3 inline-block text-sm font-semibold text-amber-300 hover:text-amber-200"
-              >
-                Compartilhar certificado →
               </Link>
             </div>
           </div>
