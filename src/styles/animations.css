@@ -887,25 +887,30 @@
 
 /* ═══ Sticky Scroll Swap ════════════════════════════════════════════════ */
 
-.ssc-root {
-  position: relative;
-  /* Total scroll height: COUNT sections × 100vh */
+.ssc-spacer {
   height: calc(4 * 100vh);
 }
 
-.ssc-sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
+.ssc-fixed {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.ssc-fixed--pinned {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.ssc-fixed-inner {
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.ssc-sticky > * {
-  pointer-events: auto;
 }
 
 .ssc-card {
@@ -917,17 +922,15 @@
   width: 100%;
   padding: 2rem 2rem;
   opacity: 0;
-  transform: translateY(30px) scale(0.96);
-  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(24px) scale(0.97);
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
-  pointer-events: none;
 }
 
 .ssc-card--active {
   opacity: 1;
   transform: translateY(0) scale(1);
-  pointer-events: auto;
 }
 
 .ssc-card-text {
@@ -977,26 +980,11 @@
 
 /* Responsive: below 768px disable sticky */
 @media (max-width: 767px) {
-  .ssc-root {
+  .ssc-spacer {
     height: auto;
   }
 
-  .ssc-sticky {
-    position: static;
-    height: auto;
-  }
-
-  .ssc-card {
-    position: static;
-    flex-direction: column;
-    opacity: 1;
-    transform: none;
-    transition: none;
-    padding: 0;
-    gap: 2rem;
-  }
-
-  .ssc-dots {
+  .ssc-fixed {
     display: none;
   }
 }
@@ -1004,6 +992,9 @@
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .ssc-card {
+    transition: none;
+  }
+  .ssc-fixed {
     transition: none;
   }
 }

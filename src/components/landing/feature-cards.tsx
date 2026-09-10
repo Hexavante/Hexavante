@@ -211,8 +211,9 @@ function FeatureCard({ feature, isActive }: { feature: Feature; isActive: boolea
 
 export function FeatureCards() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPinned, setIsPinned] = useState(false);
   const [isMobile, setIsMobile] = useState(true);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const prefersReduced = useRef(false);
 
   useEffect(() => {
@@ -233,30 +234,37 @@ export function FeatureCards() {
   }, []);
 
   const handleScroll = useCallback(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    if (isMobile) return;
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
 
-    const rect = container.getBoundingClientRect();
-    const containerHeight = container.offsetHeight;
-    const viewportHeight = window.innerHeight;
+    const rect = wrapper.getBoundingClientRect();
+    const wrapperHeight = wrapper.offsetHeight;
+    const vh = window.innerHeight;
 
-    // How far we've scrolled inside the container (0 = top just entered, 1 = bottom just entered)
+    // Should the card be pinned?
+    const shouldPin = rect.top <= 0 && rect.bottom > vh;
+    setIsPinned(shouldPin);
+
+    if (!shouldPin) return;
+
+    // Which card to show based on scroll progress
     const scrolled = -rect.top;
-    const scrollRange = containerHeight - viewportHeight;
-    if (scrollRange <= 0) return;
+    const totalScroll = wrapperHeight - vh;
+    if (totalScroll <= 0) return;
 
-    const progress = Math.max(0, Math.min(1, scrolled / scrollRange));
+    const progress = Math.min(1, scrolled / totalScroll);
     const idx = Math.min(COUNT - 1, Math.floor(progress * COUNT));
     setActiveIndex(idx);
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     if (isMobile) return;
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true, capture: true });
     handleScroll();
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll, { capture: true });
   }, [isMobile, handleScroll]);
 
   if (isMobile) {
@@ -313,35 +321,41 @@ export function FeatureCards() {
   }
 
   return (
-    <div ref={containerRef} className="ssc-root">
-      {/* Progress dots */}
-      <div className="ssc-dots">
-        {features.map((feature, i) => (
-          <button
-            key={feature.title}
-            className={cn("ssc-dot", i === activeIndex && "ssc-dot--active")}
-            onClick={() => {
-              const container = containerRef.current;
-              if (!container) return;
-              const sectionHeight = container.offsetHeight / COUNT;
-              const target = container.offsetTop + sectionHeight * i + sectionHeight / 2 - window.innerHeight / 2;
-              window.scrollTo({ top: target, behavior: prefersReduced.current ? "auto" : "smooth" });
-            }}
-            aria-label={feature.title}
-          />
-        ))}
-      </div>
+    <>
+      {/* Spacer — creates the scroll height */}
+      <div ref={wrapperRef} className="ssc-spacer" />
 
-      {/* Single sticky viewport — all cards stacked inside */}
-      <div className="ssc-sticky">
-        {features.map((feature, i) => (
-          <FeatureCard
-            key={feature.title}
-            feature={feature}
-            isActive={i === activeIndex}
-          />
-        ))}
+      {/* Fixed card layer */}
+      <div className={cn("ssc-fixed", isPinned && "ssc-fixed--pinned")}>
+        <div className="ssc-fixed-inner">
+          {/* Progress dots */}
+          <div className="ssc-dots">
+            {features.map((feature, i) => (
+              <button
+                key={feature.title}
+                className={cn("ssc-dot", i === activeIndex && "ssc-dot--active")}
+                onClick={() => {
+                  const wrapper = wrapperRef.current;
+                  if (!wrapper) return;
+                  const sectionH = (wrapper.offsetHeight - window.innerHeight) / COUNT;
+                  const target = wrapper.offsetTop + sectionH * i + sectionH * 0.5;
+                  window.scrollTo({ top: target, behavior: prefersReduced.current ? "auto" : "smooth" });
+                }}
+                aria-label={feature.title}
+              />
+            ))}
+          </div>
+
+          {/* Cards */}
+          {features.map((feature, i) => (
+            <FeatureCard
+              key={feature.title}
+              feature={feature}
+              isActive={i === activeIndex}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
