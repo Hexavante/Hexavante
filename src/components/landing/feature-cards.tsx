@@ -164,29 +164,23 @@ const features: Feature[] = [
 ];
 
 function FeatureCard({ feature, isActive }: { feature: Feature; isActive: boolean }) {
-  const Icon = feature.icon;
   return (
-    <div
-      className={cn(
-        "sticky-scroll-card",
-        isActive && "sticky-scroll-card--active"
-      )}
-    >
-      <div className="space-y-4">
+    <div className={cn("ssc-card", isActive && "ssc-card--active")}>
+      <div className="ssc-card-text space-y-5">
         <Badge variant={feature.badgeVariant}>{feature.badge}</Badge>
-        <h3 className="text-2xl font-black tracking-tight text-[hsl(var(--sidebar-foreground))] sm:text-3xl">
+        <h3 className="text-3xl font-black tracking-tight text-[hsl(var(--sidebar-foreground))] sm:text-4xl">
           {feature.title}
         </h3>
-        <p className="text-sm leading-relaxed text-[hsl(var(--sidebar-foreground)/0.6)] sm:text-base">
+        <p className="text-base leading-relaxed text-[hsl(var(--sidebar-foreground)/0.6)] sm:text-lg">
           {feature.description}
         </p>
-        <ul className="space-y-2 pt-2">
+        <ul className="space-y-3 pt-2">
           {feature.bullets.map((bullet) => (
             <li
               key={bullet}
-              className="flex items-center gap-2.5 text-sm text-[hsl(var(--sidebar-foreground)/0.78)]"
+              className="flex items-center gap-3 text-sm text-[hsl(var(--sidebar-foreground)/0.78)] sm:text-base"
             >
-              <Zap className="h-3.5 w-3.5 flex-shrink-0 hx-accent-text" />
+              <Zap className="h-4 w-4 flex-shrink-0 hx-accent-text" />
               {bullet}
             </li>
           ))}
@@ -195,7 +189,7 @@ function FeatureCard({ feature, isActive }: { feature: Feature; isActive: boolea
 
       <div
         className={cn(
-          "relative overflow-hidden rounded-2xl border border-white/10 p-6 sm:p-8",
+          "ssc-card-mockup relative overflow-hidden rounded-2xl border border-white/10 p-6 sm:p-8",
           "bg-gradient-to-br",
           feature.gradient
         )}
@@ -216,7 +210,7 @@ function FeatureCard({ feature, isActive }: { feature: Feature; isActive: boolea
 export function FeatureCards() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(true);
-  const triggerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const triggerRefs = useRef<(HTMLElement | null)[]>([]);
   const prefersReduced = useRef(false);
 
   useEffect(() => {
@@ -243,12 +237,12 @@ export function FeatureCards() {
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            const idx = triggerRefs.current.indexOf(entry.target as HTMLDivElement);
+            const idx = triggerRefs.current.indexOf(entry.target as HTMLElement);
             if (idx !== -1) setActiveIndex(idx);
           }
         }
       },
-      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
+      { rootMargin: "-40% 0px -40% 0px", threshold: 0 }
     );
 
     triggerRefs.current.forEach((el) => {
@@ -261,102 +255,87 @@ export function FeatureCards() {
   if (isMobile) {
     return (
       <div className="space-y-16 lg:space-y-24">
-        {features.map((feature) => {
-          const Icon = feature.icon;
-          return (
-            <div
-              key={feature.title}
-              className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12"
-            >
-              <div className="space-y-4">
-                <Badge variant={feature.badgeVariant}>{feature.badge}</Badge>
-                <h3 className="text-2xl font-black tracking-tight text-[hsl(var(--sidebar-foreground))] sm:text-3xl">
-                  {feature.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-[hsl(var(--sidebar-foreground)/0.6)] sm:text-base">
-                  {feature.description}
-                </p>
-                <ul className="space-y-2 pt-2">
-                  {feature.bullets.map((bullet) => (
-                    <li
-                      key={bullet}
-                      className="flex items-center gap-2.5 text-sm text-[hsl(var(--sidebar-foreground)/0.78)]"
-                    >
-                      <Zap className="h-3.5 w-3.5 flex-shrink-0 hx-accent-text" />
-                      {bullet}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+        {features.map((feature) => (
+          <div
+            key={feature.title}
+            className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12"
+          >
+            <div className="space-y-4">
+              <Badge variant={feature.badgeVariant}>{feature.badge}</Badge>
+              <h3 className="text-2xl font-black tracking-tight text-[hsl(var(--sidebar-foreground))] sm:text-3xl">
+                {feature.title}
+              </h3>
+              <p className="text-sm leading-relaxed text-[hsl(var(--sidebar-foreground)/0.6)] sm:text-base">
+                {feature.description}
+              </p>
+              <ul className="space-y-2 pt-2">
+                {feature.bullets.map((bullet) => (
+                  <li
+                    key={bullet}
+                    className="flex items-center gap-2.5 text-sm text-[hsl(var(--sidebar-foreground)/0.78)]"
+                  >
+                    <Zap className="h-3.5 w-3.5 flex-shrink-0 hx-accent-text" />
+                    {bullet}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-              <div>
-                <div
-                  className={cn(
-                    "relative overflow-hidden rounded-2xl border border-white/10 p-6 sm:p-8",
-                    "bg-gradient-to-br",
-                    feature.gradient
-                  )}
-                  style={{ boxShadow: "0 25px 50px -12px rgb(0 0 0 / 0.4)" }}
-                >
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent" />
-                  <div className="relative flex items-center justify-center">
-                    <div className="w-full max-w-xs">
-                      {feature.mockupContent}
-                    </div>
+            <div>
+              <div
+                className={cn(
+                  "relative overflow-hidden rounded-2xl border border-white/10 p-6 sm:p-8",
+                  "bg-gradient-to-br",
+                  feature.gradient
+                )}
+                style={{ boxShadow: "0 25px 50px -12px rgb(0 0 0 / 0.4)" }}
+              >
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent" />
+                <div className="relative flex items-center justify-center">
+                  <div className="w-full max-w-xs">
+                    {feature.mockupContent}
                   </div>
-                  <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/[0.04] blur-2xl" />
                 </div>
+                <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/[0.04] blur-2xl" />
               </div>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
     );
   }
 
   return (
-    <div className="sticky-scroll-container">
-      {/* Scroll triggers — each 100vh tall, invisible */}
-      <div className="sticky-scroll-triggers">
-        {features.map((feature, i) => (
-          <div
-            key={feature.title}
-            ref={(el) => { triggerRefs.current[i] = el; }}
-            className="sticky-scroll-trigger"
-            data-index={i}
-          />
-        ))}
-      </div>
-
-      {/* Progress dots */}
-      <div className="sticky-scroll-dots">
+    <div className="ssc-root">
+      {/* Progress dots — fixed on the right */}
+      <div className="ssc-dots">
         {features.map((feature, i) => (
           <button
             key={feature.title}
-            className={cn(
-              "sticky-scroll-dot",
-              i === activeIndex && "sticky-scroll-dot--active"
-            )}
+            className={cn("ssc-dot", i === activeIndex && "ssc-dot--active")}
             onClick={() => {
-              triggerRefs.current[i]?.scrollIntoView({ behavior: prefersReduced.current ? "auto" : "smooth", block: "center" });
+              triggerRefs.current[i]?.scrollIntoView({
+                behavior: prefersReduced.current ? "auto" : "smooth",
+                block: "center",
+              });
             }}
-            aria-label={`Ir para: ${feature.title}`}
+            aria-label={feature.title}
           />
         ))}
       </div>
 
-      {/* Sticky card container */}
-      <div className="sticky-scroll-viewport">
-        <div className="sticky-scroll-card-wrapper">
-          {features.map((feature, i) => (
-            <FeatureCard
-              key={feature.title}
-              feature={feature}
-              isActive={i === activeIndex}
-            />
-          ))}
-        </div>
-      </div>
+      {/* Each section = trigger (scroll height) + sticky card */}
+      {features.map((feature, i) => (
+        <section
+          key={feature.title}
+          ref={(el) => { triggerRefs.current[i] = el; }}
+          className="ssc-section"
+        >
+          <div className="ssc-sticky">
+            <FeatureCard feature={feature} isActive={i === activeIndex} />
+          </div>
+        </section>
+      ))}
     </div>
   );
 }

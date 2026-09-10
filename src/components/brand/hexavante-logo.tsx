@@ -41,10 +41,11 @@ export function HexavanteLogo({
       {showWordmark ? (
         <span
           className={cn(
-            "font-extrabold tracking-tight",
+            "font-black uppercase tracking-[0.2em]",
             dimensions.text,
             wordmarkClassName,
           )}
+          style={{ textShadow: "0 0 16px hsl(var(--sidebar-highlight) / 0.3)" }}
         >
           HEXAVANTE
         </span>

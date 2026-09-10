@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, useState, useEffect } from "react";
 
-const COOLDOWN_MS = 10_000;
+const COOLDOWN_MS = 2_500;
 const PARTICLE_COUNT = 12;
 const COINS = ["🪙", "⭐", "✨", "💰", "🪙", "⭐", "✨", "💰", "🪙", "⭐", "✨", "💰"];
 const DURATION = 800;
