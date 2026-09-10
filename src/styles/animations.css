@@ -887,30 +887,22 @@
 
 /* ═══ Sticky Scroll Swap ════════════════════════════════════════════════ */
 
-.ssc-spacer {
+.ssc-wrapper {
   height: calc(4 * 100vh);
+  position: relative;
 }
 
-.ssc-fixed {
-  position: fixed;
-  inset: 0;
-  z-index: 40;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-}
-
-.ssc-fixed--pinned {
-  pointer-events: auto;
-  opacity: 1;
-}
-
-.ssc-fixed-inner {
-  width: 100%;
-  height: 100%;
+.ssc-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.ssc-sentinel {
+  height: 100vh;
 }
 
 .ssc-card {
@@ -922,28 +914,15 @@
   width: 100%;
   padding: 2rem 2rem;
   opacity: 0;
-  transform: translateY(24px) scale(0.97);
-  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
+  transform: translateY(24px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.ssc-card--active {
+.ssc-card.on {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: translateY(0);
 }
 
-.ssc-card-text {
-  flex: 1;
-  min-width: 0;
-}
-
-.ssc-card-mockup {
-  flex: 1;
-  min-width: 0;
-}
-
-/* Progress dots */
 .ssc-dots {
   position: fixed;
   right: 1.5rem;
@@ -973,28 +952,14 @@
   transform: scale(1.3);
 }
 
-.ssc-dot:hover:not(.ssc-dot--active) {
-  border-color: hsl(var(--sidebar-foreground) / 0.5);
-  transform: scale(1.15);
-}
-
-/* Responsive: below 768px disable sticky */
 @media (max-width: 767px) {
-  .ssc-spacer {
-    height: auto;
-  }
-
-  .ssc-fixed {
-    display: none;
-  }
+  .ssc-wrapper { height: auto; }
+  .ssc-sticky { position: static; height: auto; }
+  .ssc-card { position: static; opacity: 1; transform: none; transition: none; flex-direction: column; gap: 2rem; padding: 0; }
+  .ssc-sentinel { display: none; }
+  .ssc-dots { display: none; }
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .ssc-card {
-    transition: none;
-  }
-  .ssc-fixed {
-    transition: none;
-  }
+  .ssc-card { transition: none; }
 }

@@ -1,13 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import {
-  BookOpen,
-  Target,
-  Trophy,
-  BarChart3,
-  Zap,
-} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { BookOpen, Target, Trophy, BarChart3, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/cn";
 
@@ -19,7 +13,6 @@ type Feature = {
   badgeVariant: "sky" | "red" | "amber" | "emerald";
   bullets: string[];
   gradient: string;
-  iconBg: string;
   mockupContent: React.ReactNode;
 };
 
@@ -27,38 +20,22 @@ const features: Feature[] = [
   {
     icon: BookOpen,
     title: "Central de Estudos",
-    description:
-      "Cursos organizados por disciplina com aulas em vídeo, material de apoio e exercícios práticos. Acompanhe seu progresso em tempo real.",
+    description: "Cursos organizados por disciplina com aulas em vídeo, material de apoio e exercícios práticos. Acompanhe seu progresso em tempo real.",
     badge: "Mais popular",
     badgeVariant: "sky",
     bullets: ["Cursos com videoaulas", "Material complementar", "Progresso em tempo real"],
     gradient: "from-cyan-500/20 via-blue-600/15 to-violet-600/10",
-    iconBg: "bg-cyan-400/20 text-cyan-300 border-cyan-400/30",
     mockupContent: (
       <div className="space-y-3 w-full">
         <div className="flex items-center gap-3 rounded-lg bg-white/[0.08] p-3">
-          <div className="grid h-9 w-9 place-items-center rounded-lg bg-cyan-400/20 text-cyan-300">
-            <BookOpen className="h-4 w-4" />
-          </div>
-          <div className="flex-1">
-            <div className="h-2.5 w-28 rounded bg-white/20" />
-            <div className="mt-1.5 h-1.5 w-20 rounded bg-white/10" />
-          </div>
-          <div className="h-5 w-12 rounded-full bg-emerald-400/20 text-[10px] font-bold text-emerald-300 flex items-center justify-center">
-            85%
-          </div>
+          <div className="grid h-9 w-9 place-items-center rounded-lg bg-cyan-400/20 text-cyan-300"><BookOpen className="h-4 w-4" /></div>
+          <div className="flex-1"><div className="h-2.5 w-28 rounded bg-white/20" /><div className="mt-1.5 h-1.5 w-20 rounded bg-white/10" /></div>
+          <div className="h-5 w-12 rounded-full bg-emerald-400/20 text-[10px] font-bold text-emerald-300 flex items-center justify-center">85%</div>
         </div>
         <div className="flex items-center gap-3 rounded-lg bg-white/[0.05] p-3">
-          <div className="grid h-9 w-9 place-items-center rounded-lg bg-violet-400/20 text-violet-300">
-            <BookOpen className="h-4 w-4" />
-          </div>
-          <div className="flex-1">
-            <div className="h-2.5 w-32 rounded bg-white/15" />
-            <div className="mt-1.5 h-1.5 w-24 rounded bg-white/8" />
-          </div>
-          <div className="h-5 w-12 rounded-full bg-amber-400/20 text-[10px] font-bold text-amber-300 flex items-center justify-center">
-            42%
-          </div>
+          <div className="grid h-9 w-9 place-items-center rounded-lg bg-violet-400/20 text-violet-300"><BookOpen className="h-4 w-4" /></div>
+          <div className="flex-1"><div className="h-2.5 w-32 rounded bg-white/15" /><div className="mt-1.5 h-1.5 w-24 rounded bg-white/8" /></div>
+          <div className="h-5 w-12 rounded-full bg-amber-400/20 text-[10px] font-bold text-amber-300 flex items-center justify-center">42%</div>
         </div>
       </div>
     ),
@@ -66,13 +43,11 @@ const features: Feature[] = [
   {
     icon: Target,
     title: "Simulados ao vivo",
-    description:
-      "Questões que simulam provas reais com correção automática e gabarito comentado. Prepare-se com estilo ENEM e vestibulares.",
+    description: "Questões que simulam provas reais com correção automática e gabarito comentado. Prepare-se com estilo ENEM e vestibulares.",
     badge: "Ao vivo",
     badgeVariant: "red",
     bullets: ["Correção automática", "Gabarito comentado", "Ranking de desempenho"],
     gradient: "from-rose-500/20 via-orange-500/15 to-amber-500/10",
-    iconBg: "bg-rose-400/20 text-rose-300 border-rose-400/30",
     mockupContent: (
       <div className="space-y-3 w-full">
         <div className="rounded-lg bg-white/[0.08] p-3">
@@ -94,38 +69,26 @@ const features: Feature[] = [
   {
     icon: Trophy,
     title: "Ranking e gamificação",
-    description:
-      "Ganhe XP, suba de nível e compita com outros estudantes. Desbloqueie conquistas e personalize seu perfil com itens da loja.",
+    description: "Ganhe XP, suba de nível e compita com outros estudantes. Desbloqueie conquistas e personalize seu perfil com itens da loja.",
     badge: "Competir",
     badgeVariant: "amber",
     bullets: ["Sistema de XP e níveis", "Conquistas desbloqueáveis", "Loja de cosméticos"],
     gradient: "from-amber-500/20 via-yellow-500/15 to-orange-500/10",
-    iconBg: "bg-amber-400/20 text-amber-300 border-amber-400/30",
     mockupContent: (
       <div className="space-y-3 w-full">
         <div className="flex items-center gap-3 rounded-lg bg-white/[0.08] p-3">
-          <div className="relative">
-            <div className="grid h-10 w-10 place-items-center rounded-full bg-amber-400/20 text-amber-300 text-sm font-black">
-              #1
-            </div>
-          </div>
+          <div className="grid h-10 w-10 place-items-center rounded-full bg-amber-400/20 text-amber-300 text-sm font-black">#1</div>
           <div className="flex-1">
             <div className="text-xs font-bold text-white">Você</div>
-            <div className="mt-1 h-1.5 w-full rounded-full bg-white/10">
-              <div className="h-full w-[78%] rounded-full bg-gradient-to-r from-amber-400 to-orange-500" />
-            </div>
+            <div className="mt-1 h-1.5 w-full rounded-full bg-white/10"><div className="h-full w-[78%] rounded-full bg-gradient-to-r from-amber-400 to-orange-500" /></div>
           </div>
           <span className="text-xs font-bold text-amber-300">2.450 XP</span>
         </div>
         <div className="flex items-center gap-3 rounded-lg bg-white/[0.05] p-3">
-          <div className="grid h-10 w-10 place-items-center rounded-full bg-white/[0.08] text-white/50 text-sm font-black">
-            #2
-          </div>
+          <div className="grid h-10 w-10 place-items-center rounded-full bg-white/[0.08] text-white/50 text-sm font-black">#2</div>
           <div className="flex-1">
             <div className="text-xs font-medium text-white/70">Maria S.</div>
-            <div className="mt-1 h-1.5 w-full rounded-full bg-white/10">
-              <div className="h-full w-[65%] rounded-full bg-white/20" />
-            </div>
+            <div className="mt-1 h-1.5 w-full rounded-full bg-white/10"><div className="h-full w-[65%] rounded-full bg-white/20" /></div>
           </div>
           <span className="text-xs text-white/40">2.100 XP</span>
         </div>
@@ -135,23 +98,17 @@ const features: Feature[] = [
   {
     icon: BarChart3,
     title: "Estatísticas detalhadas",
-    description:
-      "Acompanhe seu desempenho por disciplina, taxa de acerto, tempo de estudo e evolução ao longo do tempo com gráficos interativos.",
+    description: "Acompanhe seu desempenho por disciplina, taxa de acerto, tempo de estudo e evolução ao longo do tempo com gráficos interativos.",
     badge: "Insights",
     badgeVariant: "emerald",
     bullets: ["Gráficos interativos", "Desempenho por área", "Histórico completo"],
     gradient: "from-emerald-500/20 via-teal-500/15 to-cyan-500/10",
-    iconBg: "bg-emerald-400/20 text-emerald-300 border-emerald-400/30",
     mockupContent: (
       <div className="space-y-3 w-full">
         <div className="rounded-lg bg-white/[0.08] p-3">
           <div className="flex items-end justify-between gap-1 h-16">
             {[40, 65, 50, 80, 70, 90, 85].map((h, i) => (
-              <div
-                key={i}
-                className="flex-1 rounded-t bg-gradient-to-t from-emerald-400/40 to-emerald-400/10"
-                style={{ height: `${h}%` }}
-              />
+              <div key={i} className="flex-1 rounded-t bg-gradient-to-t from-emerald-400/40 to-emerald-400/10" style={{ height: `${h}%` }} />
             ))}
           </div>
           <div className="mt-2 flex justify-between text-[9px] text-white/30">
@@ -163,46 +120,24 @@ const features: Feature[] = [
   },
 ];
 
-const COUNT = features.length;
-
-function FeatureCard({ feature, isActive }: { feature: Feature; isActive: boolean }) {
+function Card({ f, active }: { f: Feature; active: boolean }) {
   return (
-    <div className={cn("ssc-card", isActive && "ssc-card--active")}>
-      <div className="ssc-card-text space-y-5">
-        <Badge variant={feature.badgeVariant}>{feature.badge}</Badge>
-        <h3 className="text-3xl font-black tracking-tight text-[hsl(var(--sidebar-foreground))] sm:text-4xl">
-          {feature.title}
-        </h3>
-        <p className="text-base leading-relaxed text-[hsl(var(--sidebar-foreground)/0.6)] sm:text-lg">
-          {feature.description}
-        </p>
+    <div className={cn("ssc-card", active && "on")}>
+      <div className="flex-1 space-y-5 min-w-0">
+        <Badge variant={f.badgeVariant}>{f.badge}</Badge>
+        <h3 className="text-3xl font-black tracking-tight text-[hsl(var(--sidebar-foreground))] sm:text-4xl">{f.title}</h3>
+        <p className="text-base leading-relaxed text-[hsl(var(--sidebar-foreground)/0.6)] sm:text-lg">{f.description}</p>
         <ul className="space-y-3 pt-2">
-          {feature.bullets.map((bullet) => (
-            <li
-              key={bullet}
-              className="flex items-center gap-3 text-sm text-[hsl(var(--sidebar-foreground)/0.78)] sm:text-base"
-            >
-              <Zap className="h-4 w-4 flex-shrink-0 hx-accent-text" />
-              {bullet}
+          {f.bullets.map((b) => (
+            <li key={b} className="flex items-center gap-3 text-sm text-[hsl(var(--sidebar-foreground)/0.78)] sm:text-base">
+              <Zap className="h-4 w-4 shrink-0 hx-accent-text" />{b}
             </li>
           ))}
         </ul>
       </div>
-
-      <div
-        className={cn(
-          "ssc-card-mockup relative overflow-hidden rounded-2xl border border-white/10 p-6 sm:p-8",
-          "bg-gradient-to-br",
-          feature.gradient
-        )}
-        style={{ boxShadow: "0 25px 50px -12px rgb(0 0 0 / 0.4)" }}
-      >
+      <div className={cn("flex-1 relative overflow-hidden rounded-2xl border border-white/10 p-6 sm:p-8 bg-gradient-to-br", f.gradient)} style={{ boxShadow: "0 25px 50px -12px rgb(0 0 0 / 0.4)" }}>
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent" />
-        <div className="relative flex items-center justify-center">
-          <div className="w-full max-w-xs">
-            {feature.mockupContent}
-          </div>
-        </div>
+        <div className="relative flex items-center justify-center"><div className="w-full max-w-xs">{f.mockupContent}</div></div>
         <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/[0.04] blur-2xl" />
       </div>
     </div>
@@ -210,107 +145,59 @@ function FeatureCard({ feature, isActive }: { feature: Feature; isActive: boolea
 }
 
 export function FeatureCards() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isPinned, setIsPinned] = useState(false);
-  const [isMobile, setIsMobile] = useState(true);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const prefersReduced = useRef(false);
+  const [active, setActive] = useState(0);
+  const [mobile, setMobile] = useState(true);
+  const refs = useRef<(HTMLElement | null)[]>([]);
+  const reduced = useRef(false);
 
   useEffect(() => {
-    prefersReduced.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    setIsMobile(window.innerWidth < 768);
-
-    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const onMotionChange = (e: MediaQueryListEvent) => { prefersReduced.current = e.matches; };
-    mql.addEventListener("change", onMotionChange);
-
-    const onResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      mql.removeEventListener("change", onMotionChange);
-      window.removeEventListener("resize", onResize);
-    };
+    reduced.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setMobile(window.innerWidth < 768);
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const ro = () => setMobile(window.innerWidth < 768);
+    mq.addEventListener("change", (e) => { reduced.current = e.matches; });
+    window.addEventListener("resize", ro);
+    return () => { mq.removeEventListener("change", (e) => { reduced.current = e.matches; }); window.removeEventListener("resize", ro); };
   }, []);
 
-  const handleScroll = useCallback(() => {
-    if (isMobile) return;
-    const wrapper = wrapperRef.current;
-    if (!wrapper) return;
-
-    const rect = wrapper.getBoundingClientRect();
-    const wrapperHeight = wrapper.offsetHeight;
-    const vh = window.innerHeight;
-
-    // Should the card be pinned?
-    const shouldPin = rect.top <= 0 && rect.bottom > vh;
-    setIsPinned(shouldPin);
-
-    if (!shouldPin) return;
-
-    // Which card to show based on scroll progress
-    const scrolled = -rect.top;
-    const totalScroll = wrapperHeight - vh;
-    if (totalScroll <= 0) return;
-
-    const progress = Math.min(1, scrolled / totalScroll);
-    const idx = Math.min(COUNT - 1, Math.floor(progress * COUNT));
-    setActiveIndex(idx);
-  }, [isMobile]);
-
   useEffect(() => {
-    if (isMobile) return;
+    if (mobile) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            const i = refs.current.indexOf(e.target as HTMLElement);
+            if (i >= 0) setActive(i);
+          }
+        }
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
+    );
+    refs.current.forEach((el) => { if (el) obs.observe(el); });
+    return () => obs.disconnect();
+  }, [mobile]);
 
-    window.addEventListener("scroll", handleScroll, { passive: true, capture: true });
-    handleScroll();
-
-    return () => window.removeEventListener("scroll", handleScroll, { capture: true });
-  }, [isMobile, handleScroll]);
-
-  if (isMobile) {
+  if (mobile) {
     return (
       <div className="space-y-16 lg:space-y-24">
-        {features.map((feature) => (
-          <div
-            key={feature.title}
-            className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12"
-          >
+        {features.map((f) => (
+          <div key={f.title} className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
             <div className="space-y-4">
-              <Badge variant={feature.badgeVariant}>{feature.badge}</Badge>
-              <h3 className="text-2xl font-black tracking-tight text-[hsl(var(--sidebar-foreground))] sm:text-3xl">
-                {feature.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-[hsl(var(--sidebar-foreground)/0.6)] sm:text-base">
-                {feature.description}
-              </p>
+              <Badge variant={f.badgeVariant}>{f.badge}</Badge>
+              <h3 className="text-2xl font-black tracking-tight text-[hsl(var(--sidebar-foreground))] sm:text-3xl">{f.title}</h3>
+              <p className="text-sm leading-relaxed text-[hsl(var(--sidebar-foreground)/0.6)] sm:text-base">{f.description}</p>
               <ul className="space-y-2 pt-2">
-                {feature.bullets.map((bullet) => (
-                  <li
-                    key={bullet}
-                    className="flex items-center gap-2.5 text-sm text-[hsl(var(--sidebar-foreground)/0.78)]"
-                  >
-                    <Zap className="h-3.5 w-3.5 flex-shrink-0 hx-accent-text" />
-                    {bullet}
+                {f.bullets.map((b) => (
+                  <li key={b} className="flex items-center gap-2.5 text-sm text-[hsl(var(--sidebar-foreground)/0.78)]">
+                    <Zap className="h-3.5 w-3.5 shrink-0 hx-accent-text" />{b}
                   </li>
                 ))}
               </ul>
             </div>
-
             <div>
-              <div
-                className={cn(
-                  "relative overflow-hidden rounded-2xl border border-white/10 p-6 sm:p-8",
-                  "bg-gradient-to-br",
-                  feature.gradient
-                )}
-                style={{ boxShadow: "0 25px 50px -12px rgb(0 0 0 / 0.4)" }}
-              >
+              <div className={cn("relative overflow-hidden rounded-2xl border border-white/10 p-6 sm:p-8 bg-gradient-to-br", f.gradient)} style={{ boxShadow: "0 25px 50px -12px rgb(0 0 0 / 0.4)" }}>
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent" />
-                <div className="relative flex items-center justify-center">
-                  <div className="w-full max-w-xs">
-                    {feature.mockupContent}
-                  </div>
-                </div>
+                <div className="relative flex items-center justify-center"><div className="w-full max-w-xs">{f.mockupContent}</div></div>
                 <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/[0.04] blur-2xl" />
               </div>
             </div>
@@ -321,41 +208,19 @@ export function FeatureCards() {
   }
 
   return (
-    <>
-      {/* Spacer — creates the scroll height */}
-      <div ref={wrapperRef} className="ssc-spacer" />
-
-      {/* Fixed card layer */}
-      <div className={cn("ssc-fixed", isPinned && "ssc-fixed--pinned")}>
-        <div className="ssc-fixed-inner">
-          {/* Progress dots */}
-          <div className="ssc-dots">
-            {features.map((feature, i) => (
-              <button
-                key={feature.title}
-                className={cn("ssc-dot", i === activeIndex && "ssc-dot--active")}
-                onClick={() => {
-                  const wrapper = wrapperRef.current;
-                  if (!wrapper) return;
-                  const sectionH = (wrapper.offsetHeight - window.innerHeight) / COUNT;
-                  const target = wrapper.offsetTop + sectionH * i + sectionH * 0.5;
-                  window.scrollTo({ top: target, behavior: prefersReduced.current ? "auto" : "smooth" });
-                }}
-                aria-label={feature.title}
-              />
-            ))}
-          </div>
-
-          {/* Cards */}
-          {features.map((feature, i) => (
-            <FeatureCard
-              key={feature.title}
-              feature={feature}
-              isActive={i === activeIndex}
-            />
-          ))}
-        </div>
+    <div className="ssc-wrapper">
+      <div className="ssc-sticky">
+        {features.map((f, i) => (
+          <Card key={f.title} f={f} active={i === active} />
+        ))}
       </div>
-    </>
+      {features.map((f, i) => (
+        <section
+          key={f.title}
+          ref={(el) => { refs.current[i] = el; }}
+          className="ssc-sentinel"
+        />
+      ))}
+    </div>
   );
 }
