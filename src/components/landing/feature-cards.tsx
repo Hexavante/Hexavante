@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import {
   BookOpen,
   Target,
@@ -163,6 +163,8 @@ const features: Feature[] = [
   },
 ];
 
+const COUNT = features.length;
+
 function FeatureCard({ feature, isActive }: { feature: Feature; isActive: boolean }) {
   return (
     <div className={cn("ssc-card", isActive && "ssc-card--active")}>
@@ -210,7 +212,7 @@ function FeatureCard({ feature, isActive }: { feature: Feature; isActive: boolea
 export function FeatureCards() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(true);
-  const triggerRefs = useRef<(HTMLElement | null)[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
   const prefersReduced = useRef(false);
 
   useEffect(() => {
@@ -230,27 +232,32 @@ export function FeatureCards() {
     };
   }, []);
 
+  const handleScroll = useCallback(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const rect = container.getBoundingClientRect();
+    const containerHeight = container.offsetHeight;
+    const viewportHeight = window.innerHeight;
+
+    // How far we've scrolled inside the container (0 = top just entered, 1 = bottom just entered)
+    const scrolled = -rect.top;
+    const scrollRange = containerHeight - viewportHeight;
+    if (scrollRange <= 0) return;
+
+    const progress = Math.max(0, Math.min(1, scrolled / scrollRange));
+    const idx = Math.min(COUNT - 1, Math.floor(progress * COUNT));
+    setActiveIndex(idx);
+  }, []);
+
   useEffect(() => {
     if (isMobile) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            const idx = triggerRefs.current.indexOf(entry.target as HTMLElement);
-            if (idx !== -1) setActiveIndex(idx);
-          }
-        }
-      },
-      { rootMargin: "-40% 0px -40% 0px", threshold: 0 }
-    );
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
 
-    triggerRefs.current.forEach((el) => {
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, [isMobile]);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isMobile, handleScroll]);
 
   if (isMobile) {
     return (
@@ -306,36 +313,35 @@ export function FeatureCards() {
   }
 
   return (
-    <div className="ssc-root">
-      {/* Progress dots — fixed on the right */}
+    <div ref={containerRef} className="ssc-root">
+      {/* Progress dots */}
       <div className="ssc-dots">
         {features.map((feature, i) => (
           <button
             key={feature.title}
             className={cn("ssc-dot", i === activeIndex && "ssc-dot--active")}
             onClick={() => {
-              triggerRefs.current[i]?.scrollIntoView({
-                behavior: prefersReduced.current ? "auto" : "smooth",
-                block: "center",
-              });
+              const container = containerRef.current;
+              if (!container) return;
+              const sectionHeight = container.offsetHeight / COUNT;
+              const target = container.offsetTop + sectionHeight * i + sectionHeight / 2 - window.innerHeight / 2;
+              window.scrollTo({ top: target, behavior: prefersReduced.current ? "auto" : "smooth" });
             }}
             aria-label={feature.title}
           />
         ))}
       </div>
 
-      {/* Each section = trigger (scroll height) + sticky card */}
-      {features.map((feature, i) => (
-        <section
-          key={feature.title}
-          ref={(el) => { triggerRefs.current[i] = el; }}
-          className="ssc-section"
-        >
-          <div className="ssc-sticky">
-            <FeatureCard feature={feature} isActive={i === activeIndex} />
-          </div>
-        </section>
-      ))}
+      {/* Single sticky viewport — all cards stacked inside */}
+      <div className="ssc-sticky">
+        {features.map((feature, i) => (
+          <FeatureCard
+            key={feature.title}
+            feature={feature}
+            isActive={i === activeIndex}
+          />
+        ))}
+      </div>
     </div>
   );
 }

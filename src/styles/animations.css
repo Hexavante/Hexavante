@@ -889,11 +889,8 @@
 
 .ssc-root {
   position: relative;
-}
-
-.ssc-section {
-  position: relative;
-  height: 100vh;
+  /* Total scroll height: COUNT sections × 100vh */
+  height: calc(4 * 100vh);
 }
 
 .ssc-sticky {
@@ -904,26 +901,33 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  pointer-events: none;
+}
+
+.ssc-sticky > * {
+  pointer-events: auto;
 }
 
 .ssc-card {
+  position: absolute;
   display: flex;
   align-items: center;
   gap: 4rem;
   max-width: 76rem;
   width: 100%;
-  margin: 0 auto;
   padding: 2rem 2rem;
   opacity: 0;
   transform: translateY(30px) scale(0.96);
   transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
               transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
+  pointer-events: none;
 }
 
 .ssc-card--active {
   opacity: 1;
   transform: translateY(0) scale(1);
+  pointer-events: auto;
 }
 
 .ssc-card-text {
@@ -973,7 +977,7 @@
 
 /* Responsive: below 768px disable sticky */
 @media (max-width: 767px) {
-  .ssc-section {
+  .ssc-root {
     height: auto;
   }
 
