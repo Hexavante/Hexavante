@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import {
   BookOpen,
   Target,
@@ -162,67 +163,200 @@ const features: Feature[] = [
   },
 ];
 
-export function FeatureCards() {
+function FeatureCard({ feature, isActive }: { feature: Feature; isActive: boolean }) {
+  const Icon = feature.icon;
   return (
-    <div className="space-y-16 lg:space-y-24">
-      {features.map((feature, i) => {
-        const Icon = feature.icon;
-        const isReversed = i % 2 === 1;
-        return (
-          <div
-            key={feature.title}
-            className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12"
-          >
-            {/* Text side */}
-            <div className={cn("space-y-4", isReversed && "lg:order-2")}>
-              <Badge variant={feature.badgeVariant}>{feature.badge}</Badge>
-              <h3 className="text-2xl font-black tracking-tight text-[hsl(var(--sidebar-foreground))] sm:text-3xl">
-                {feature.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-[hsl(var(--sidebar-foreground)/0.6)] sm:text-base">
-                {feature.description}
-              </p>
-              <ul className="space-y-2 pt-2">
-                {feature.bullets.map((bullet) => (
-                  <li
-                    key={bullet}
-                    className="flex items-center gap-2.5 text-sm text-[hsl(var(--sidebar-foreground)/0.78)]"
-                  >
-                    <Zap className="h-3.5 w-3.5 flex-shrink-0 hx-accent-text" />
-                    {bullet}
-                  </li>
-                ))}
-              </ul>
-            </div>
+    <div
+      className={cn(
+        "sticky-scroll-card",
+        isActive && "sticky-scroll-card--active"
+      )}
+    >
+      <div className="space-y-4">
+        <Badge variant={feature.badgeVariant}>{feature.badge}</Badge>
+        <h3 className="text-2xl font-black tracking-tight text-[hsl(var(--sidebar-foreground))] sm:text-3xl">
+          {feature.title}
+        </h3>
+        <p className="text-sm leading-relaxed text-[hsl(var(--sidebar-foreground)/0.6)] sm:text-base">
+          {feature.description}
+        </p>
+        <ul className="space-y-2 pt-2">
+          {feature.bullets.map((bullet) => (
+            <li
+              key={bullet}
+              className="flex items-center gap-2.5 text-sm text-[hsl(var(--sidebar-foreground)/0.78)]"
+            >
+              <Zap className="h-3.5 w-3.5 flex-shrink-0 hx-accent-text" />
+              {bullet}
+            </li>
+          ))}
+        </ul>
+      </div>
 
-            {/* Gradient card side */}
-            <div className={cn(isReversed && "lg:order-1")}>
-              <div
-                className={cn(
-                  "relative overflow-hidden rounded-2xl border border-white/10 p-6 sm:p-8",
-                  "bg-gradient-to-br",
-                  feature.gradient
-                )}
-                style={{
-                  boxShadow: "0 25px 50px -12px rgb(0 0 0 / 0.4)",
-                }}
-              >
-                {/* Inner glow */}
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent" />
+      <div
+        className={cn(
+          "relative overflow-hidden rounded-2xl border border-white/10 p-6 sm:p-8",
+          "bg-gradient-to-br",
+          feature.gradient
+        )}
+        style={{ boxShadow: "0 25px 50px -12px rgb(0 0 0 / 0.4)" }}
+      >
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent" />
+        <div className="relative flex items-center justify-center">
+          <div className="w-full max-w-xs">
+            {feature.mockupContent}
+          </div>
+        </div>
+        <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/[0.04] blur-2xl" />
+      </div>
+    </div>
+  );
+}
 
-                <div className="relative flex items-center justify-center">
-                  <div className="w-full max-w-xs">
-                    {feature.mockupContent}
+export function FeatureCards() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(true);
+  const triggerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const prefersReduced = useRef(false);
+
+  useEffect(() => {
+    prefersReduced.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setIsMobile(window.innerWidth < 768);
+
+    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onMotionChange = (e: MediaQueryListEvent) => { prefersReduced.current = e.matches; };
+    mql.addEventListener("change", onMotionChange);
+
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      mql.removeEventListener("change", onMotionChange);
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const idx = triggerRefs.current.indexOf(entry.target as HTMLDivElement);
+            if (idx !== -1) setActiveIndex(idx);
+          }
+        }
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
+    );
+
+    triggerRefs.current.forEach((el) => {
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [isMobile]);
+
+  if (isMobile) {
+    return (
+      <div className="space-y-16 lg:space-y-24">
+        {features.map((feature) => {
+          const Icon = feature.icon;
+          return (
+            <div
+              key={feature.title}
+              className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12"
+            >
+              <div className="space-y-4">
+                <Badge variant={feature.badgeVariant}>{feature.badge}</Badge>
+                <h3 className="text-2xl font-black tracking-tight text-[hsl(var(--sidebar-foreground))] sm:text-3xl">
+                  {feature.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-[hsl(var(--sidebar-foreground)/0.6)] sm:text-base">
+                  {feature.description}
+                </p>
+                <ul className="space-y-2 pt-2">
+                  {feature.bullets.map((bullet) => (
+                    <li
+                      key={bullet}
+                      className="flex items-center gap-2.5 text-sm text-[hsl(var(--sidebar-foreground)/0.78)]"
+                    >
+                      <Zap className="h-3.5 w-3.5 flex-shrink-0 hx-accent-text" />
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <div
+                  className={cn(
+                    "relative overflow-hidden rounded-2xl border border-white/10 p-6 sm:p-8",
+                    "bg-gradient-to-br",
+                    feature.gradient
+                  )}
+                  style={{ boxShadow: "0 25px 50px -12px rgb(0 0 0 / 0.4)" }}
+                >
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent" />
+                  <div className="relative flex items-center justify-center">
+                    <div className="w-full max-w-xs">
+                      {feature.mockupContent}
+                    </div>
                   </div>
+                  <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/[0.04] blur-2xl" />
                 </div>
-
-                {/* Corner accent */}
-                <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/[0.04] blur-2xl" />
               </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
+    );
+  }
+
+  return (
+    <div className="sticky-scroll-container">
+      {/* Scroll triggers — each 100vh tall, invisible */}
+      <div className="sticky-scroll-triggers">
+        {features.map((feature, i) => (
+          <div
+            key={feature.title}
+            ref={(el) => { triggerRefs.current[i] = el; }}
+            className="sticky-scroll-trigger"
+            data-index={i}
+          />
+        ))}
+      </div>
+
+      {/* Progress dots */}
+      <div className="sticky-scroll-dots">
+        {features.map((feature, i) => (
+          <button
+            key={feature.title}
+            className={cn(
+              "sticky-scroll-dot",
+              i === activeIndex && "sticky-scroll-dot--active"
+            )}
+            onClick={() => {
+              triggerRefs.current[i]?.scrollIntoView({ behavior: prefersReduced.current ? "auto" : "smooth", block: "center" });
+            }}
+            aria-label={`Ir para: ${feature.title}`}
+          />
+        ))}
+      </div>
+
+      {/* Sticky card container */}
+      <div className="sticky-scroll-viewport">
+        <div className="sticky-scroll-card-wrapper">
+          {features.map((feature, i) => (
+            <FeatureCard
+              key={feature.title}
+              feature={feature}
+              isActive={i === activeIndex}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
