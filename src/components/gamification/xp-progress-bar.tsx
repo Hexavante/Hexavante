@@ -23,7 +23,7 @@ export function XpProgressBar({
           </span>
         </div>
         <div
-          className="hx-progress-track h-2"
+          className="hx-progress-track h-2 relative overflow-visible"
           role="progressbar"
           aria-valuenow={progressPercent}
           aria-valuemin={0}
@@ -31,6 +31,7 @@ export function XpProgressBar({
           aria-label={`Progresso de XP: ${progressPercent}%`}
         >
           <div className="hx-progress-fill" style={{ width: `${progressPercent}%` }} />
+          <div className="xp-neon-dot" />
         </div>
       </div>
     );
@@ -45,7 +46,7 @@ export function XpProgressBar({
         </span>
       </div>
       <div
-        className="hx-progress-track h-4"
+        className="hx-progress-track h-4 relative overflow-visible"
         role="progressbar"
         aria-valuenow={progressPercent}
         aria-valuemin={0}
@@ -53,6 +54,7 @@ export function XpProgressBar({
         aria-label={`Progresso de XP: ${progressPercent}%`}
       >
         <div className="hx-progress-fill" style={{ width: `${progressPercent}%` }} />
+        <div className="xp-neon-dot" />
       </div>
       <p className="mt-2 text-xs font-medium text-[hsl(var(--sidebar-foreground)/0.55)]">
         {progressPercent}% para o próximo nível

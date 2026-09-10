@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Coins } from "lucide-react";
 import { BoosterIndicator } from "@/components/gamification/booster-indicator";
+import { CoinExplosion } from "@/components/gamification/coin-explosion";
 import { getUserXpProfile } from "@/services/xp.service";
 import { getUserCoinProfile, getUserWallet } from "@/services/wallet.service";
 
@@ -29,10 +30,12 @@ export async function HeaderGamificationHud({ userId }: Props) {
           <span>—</span>
         </Link>
       ) : (
-        <Link href="/shop" className="hx-header-hud-coins" title="Suas moedas">
-          <Coins className="hx-header-hud-coins-icon" aria-hidden />
-          <span className="hx-header-hud-coins-value">{coinResult.coins.toLocaleString("pt-BR")}</span>
-        </Link>
+        <CoinExplosion>
+          <Link href="/shop" className="hx-header-hud-coins" title="Suas moedas">
+            <Coins className="hx-header-hud-coins-icon" aria-hidden />
+            <span className="hx-header-hud-coins-value">{coinResult.coins.toLocaleString("pt-BR")}</span>
+          </Link>
+        </CoinExplosion>
       )}
 
       {xpProfile ? (
@@ -44,7 +47,7 @@ export async function HeaderGamificationHud({ userId }: Props) {
             </span>
           </div>
           <div
-            className="hx-progress-track hx-header-hud-xp-track"
+            className="hx-progress-track hx-header-hud-xp-track relative overflow-visible"
             role="progressbar"
             aria-valuenow={xpProfile.progressPercent}
             aria-valuemin={0}
@@ -52,6 +55,7 @@ export async function HeaderGamificationHud({ userId }: Props) {
             aria-label={`Progresso de XP: ${xpProfile.progressPercent}%`}
           >
             <div className="hx-progress-fill" style={{ width: `${xpProfile.progressPercent}%` }} />
+            <div className="xp-neon-dot" />
           </div>
         </Link>
       ) : (

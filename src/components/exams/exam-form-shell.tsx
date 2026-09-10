@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { NativeSelect } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { SuccessPopup } from "@/components/ui/success-popup";
 
 type Props = {
   action: (prev: ActionResult, formData: FormData) => Promise<ActionResult>;
@@ -66,84 +67,86 @@ export function ExamFormShell({ action, initial, submitLabel, cancelHref }: Prop
   };
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className="max-w-2xl space-y-4">
-      <ExamCoverUpload ref={coverRef} initialUrl={initial?.coverImage} />
+    <>
+      <SuccessPopup show={success} message="Simulado criado com sucesso!" />
+      <form ref={formRef} onSubmit={handleSubmit} className="max-w-2xl space-y-4">
+        <ExamCoverUpload ref={coverRef} initialUrl={initial?.coverImage} />
 
-      <div>
-        <Label htmlFor="title">Título</Label>
-        <Input id="title" name="title" required defaultValue={initial?.title} />
-      </div>
-      <div>
-        <Label htmlFor="examType">Tipo</Label>
-        <NativeSelect
-          id="examType"
-          name="examType"
-          defaultValue={initial?.examType ?? "TECNOLOGIA"}
-        >
-          <option value="ENEM">ENEM</option>
-          <option value="VESTIBULAR">Vestibular</option>
-          <option value="TECNOLOGIA">Tecnologia</option>
-        </NativeSelect>
-      </div>
-      <div>
-        <Label htmlFor="description">Descrição</Label>
-        <Textarea
-          id="description"
-          name="description"
-          rows={3}
-          defaultValue={initial?.description ?? ""}
-        />
-      </div>
-      <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <Label htmlFor="timeLimit">Tempo limite (min)</Label>
-          <Input
-            id="timeLimit"
-            name="timeLimit"
-            type="number"
-            min={1}
-            max={300}
-            placeholder="Ex: 60"
-            defaultValue={initial?.timeLimit != null ? String(initial.timeLimit) : ""}
+          <Label htmlFor="title">Título</Label>
+          <Input id="title" name="title" required defaultValue={initial?.title} />
+        </div>
+        <div>
+          <Label htmlFor="examType">Tipo</Label>
+          <NativeSelect
+            id="examType"
+            name="examType"
+            defaultValue={initial?.examType ?? "TECNOLOGIA"}
+          >
+            <option value="ENEM">ENEM</option>
+            <option value="VESTIBULAR">Vestibular</option>
+            <option value="TECNOLOGIA">Tecnologia</option>
+          </NativeSelect>
+        </div>
+        <div>
+          <Label htmlFor="description">Descrição</Label>
+          <Textarea
+            id="description"
+            name="description"
+            rows={3}
+            defaultValue={initial?.description ?? ""}
           />
         </div>
-        <div>
-          <Label htmlFor="isPublished">Status</Label>
-          <NativeSelect
-            id="isPublished"
-            name="isPublished"
-            defaultValue={initial?.isPublished ? "true" : "false"}
-          >
-            <option value="false">Rascunho</option>
-            <option value="true">Publicado</option>
-          </NativeSelect>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <Label htmlFor="timeLimit">Tempo limite (min)</Label>
+            <Input
+              id="timeLimit"
+              name="timeLimit"
+              type="number"
+              min={1}
+              max={300}
+              placeholder="Ex: 60"
+              defaultValue={initial?.timeLimit != null ? String(initial.timeLimit) : ""}
+            />
+          </div>
+          <div>
+            <Label htmlFor="isPublished">Status</Label>
+            <NativeSelect
+              id="isPublished"
+              name="isPublished"
+              defaultValue={initial?.isPublished ? "true" : "false"}
+            >
+              <option value="false">Rascunho</option>
+              <option value="true">Publicado</option>
+            </NativeSelect>
+          </div>
+          <div>
+            <Label htmlFor="isPremiumOnly">Acesso</Label>
+            <NativeSelect
+              id="isPremiumOnly"
+              name="isPremiumOnly"
+              defaultValue={initial?.isPremiumOnly ? "true" : "false"}
+            >
+              <option value="false">Todos os alunos</option>
+              <option value="true">Somente Premium</option>
+            </NativeSelect>
+          </div>
         </div>
-        <div>
-          <Label htmlFor="isPremiumOnly">Acesso</Label>
-          <NativeSelect
-            id="isPremiumOnly"
-            name="isPremiumOnly"
-            defaultValue={initial?.isPremiumOnly ? "true" : "false"}
+        {error && <p className="text-sm text-red-400">{error}</p>}
+        <div className="flex gap-3">
+          <Button type="submit" disabled={pending}>
+            {pending ? "Salvando..." : submitLabel}
+          </Button>
+          <AppLink
+            href={cancelHref}
+            muted
+            className="inline-flex items-center rounded-lg border border-white/10 px-4 py-2 hover:border-sky-400/40 hover:bg-sky-400/10"
           >
-            <option value="false">Todos os alunos</option>
-            <option value="true">Somente Premium</option>
-          </NativeSelect>
+            Cancelar
+          </AppLink>
         </div>
-      </div>
-      {error && <p className="text-sm text-red-400">{error}</p>}
-      {success && <p className="text-sm text-emerald-400">Simulado salvo com sucesso!</p>}
-      <div className="flex gap-3">
-        <Button type="submit" disabled={pending}>
-          {pending ? "Salvando..." : submitLabel}
-        </Button>
-        <AppLink
-          href={cancelHref}
-          muted
-          className="inline-flex items-center rounded-lg border border-white/10 px-4 py-2 hover:border-sky-400/40 hover:bg-sky-400/10"
-        >
-          Cancelar
-        </AppLink>
-      </div>
-    </form>
+      </form>
+    </>
   );
 }

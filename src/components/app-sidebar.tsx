@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -150,26 +150,28 @@ function NavSectionBlock({
   section,
   session,
   pathname,
+  sectionIndex,
 }: {
   section: NavSection;
   session: NavSession;
   pathname: string;
+  sectionIndex: number;
 }) {
   const visible = section.items.filter((item) => isItemVisible(item, session));
   if (!visible.length) return null;
 
   return (
-    <SidebarGroup className="px-2 py-1">
+    <SidebarGroup className="px-2 py-1 sidebar-section-animate" style={{ animationDelay: `${0.05 + sectionIndex * 0.12}s` }}>
       <SidebarGroupLabel className="hx-sidebar-group-label">{section.label}</SidebarGroupLabel>
       <SidebarGroupContent>
         <SidebarMenu className="gap-0.5">
-          {visible.map((item) => {
+          {visible.map((item, itemIndex) => {
             const href = resolveNavHref(item, session);
             const active = isActive(pathname, item.href);
             const Icon = item.icon;
 
             return (
-              <SidebarMenuItem key={item.href}>
+              <SidebarMenuItem key={item.href} className="sidebar-item-animate" style={{ animationDelay: `${0.08 + sectionIndex * 0.12 + itemIndex * 0.05}s` }}>
                 <SidebarMenuButton
                   asChild
                   isActive={active}
@@ -218,13 +220,13 @@ function SidebarNav({ session, pathname, accountItems }: { session: NavSession; 
 
   return (
     <>
-      {NAV_SECTIONS.map((section) => (
-        <NavSectionBlock key={section.id} section={section} session={session} pathname={pathname} />
+      {NAV_SECTIONS.map((section, index) => (
+        <NavSectionBlock key={section.id} section={section} session={session} pathname={pathname} sectionIndex={index} />
       ))}
       {accountItems.length > 0 ? (
         <>
           <SidebarSeparator className="mx-3 bg-sidebar-border/80" />
-          <NavSectionBlock section={accountSection} session={session} pathname={pathname} />
+          <NavSectionBlock section={accountSection} session={session} pathname={pathname} sectionIndex={NAV_SECTIONS.length} />
         </>
       ) : null}
     </>

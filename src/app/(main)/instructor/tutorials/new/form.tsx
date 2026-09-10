@@ -8,6 +8,7 @@ import { PageShell } from "@/components/ui/page-shell";
 import { Button } from "@/components/ui/button";
 import { createTutorialAction, type ActionResult } from "@/app/actions/tutorial";
 import { VideoUploadInput } from "@/components/tutorials/video-upload-input";
+import { SuccessPopup } from "@/components/ui/success-popup";
 
 const initialState: ActionResult = { success: false };
 
@@ -18,6 +19,8 @@ export default function NewTutorialForm({ categories }: { categories: Category[]
 
   return (
     <PageShell>
+      <SuccessPopup show={state.success} message="Tutorial criado com sucesso!" />
+
       <Link
         href="/instructor/tutorials"
         className="mb-4 inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition"

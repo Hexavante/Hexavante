@@ -211,14 +211,14 @@ const Sidebar = React.forwardRef<
         <div
           data-sidebar="spacer"
           className={cn(
-            "relative shrink-0 bg-transparent transition-[width] duration-200 ease-linear",
+            "relative shrink-0 bg-transparent transition-[width] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)]",
             "group-data-[side=right]:rotate-180",
           )}
           style={{ width: isCollapsed ? 0 : "var(--sidebar-width)" }}
         />
         <div
           className={cn(
-            "fixed inset-y-0 z-10 flex h-svh transition-[left,right,width] duration-200 ease-linear",
+            "fixed inset-y-0 z-10 flex h-svh transition-[left,right,width] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)]",
             "group-data-[side=left]:border-r group-data-[side=right]:border-l border-sidebar-border",
             side === "left" ? "left-0" : "right-0",
             className,

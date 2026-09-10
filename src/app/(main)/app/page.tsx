@@ -13,6 +13,7 @@ import { OnboardingTour } from "@/components/onboarding/onboarding-tour";
 import { AchievementGrid } from "@/components/achievements/achievement-grid";
 import { ScrollReveal } from "@/components/landing/scroll-reveal";
 import { CertificateVortex } from "@/components/home/certificate-vortex";
+import { MarqueeShortcuts } from "@/components/home/marquee-shortcuts";
 import { getStudentHomeData } from "@/services/student.service";
 import Link from "next/link";
 
@@ -38,10 +39,10 @@ const highlights = [
 ];
 
 const shortcuts = [
-  { href: "/courses", label: "Catálogo de cursos", icon: BookOpen },
-  { href: "/simulados", label: "Simulados", icon: Target },
-  { href: "/estatisticas", label: "Estatísticas", icon: BarChart3, requiresAuth: true },
-  { href: "/live-rooms", label: "Aulas ao vivo", icon: Radio },
+  { href: "/courses", label: "Catálogo de cursos", icon: "BookOpen" },
+  { href: "/simulados", label: "Simulados", icon: "Target" },
+  { href: "/estatisticas", label: "Estatísticas", icon: "BarChart3", requiresAuth: true },
+  { href: "/live-rooms", label: "Aulas ao vivo", icon: "Radio" },
 ];
 
 export default async function HomePage() {
@@ -58,12 +59,22 @@ export default async function HomePage() {
             <section className="mb-8">
               <Badge variant="sky">Seu espaço de estudos</Badge>
               <h1 className="mt-3 text-3xl font-black tracking-tight hx-text-title sm:text-4xl">
-                Olá, {session.user.name?.split(" ")[0] ?? session.user.username}!
+                <span className="welcome-animated">
+                  {"Olá, ".split("").map((char, i) => (
+                    <span key={i} style={{ animationDelay: `${0.1 + i * 0.04}s` }}>
+                      {char === " " ? "\u00A0" : char}
+                    </span>
+                  ))}
+                  <span style={{ animationDelay: `${0.1 + "Olá, ".length * 0.04}s` }}>
+                    {session.user.name?.split(" ")[0] ?? session.user.username}
+                  </span>
+                </span>
+                !
               </h1>
-              <p className="mt-2 max-w-2xl text-sm hx-text-muted sm:text-base">
+              <p className="mt-2 max-w-2xl text-sm hx-text-muted sm:text-base anim-enter anim-d3">
                 Retome de onde parou, acompanhe suas estatísticas e descubra novos cursos.
               </p>
-              <div className="mt-4 flex flex-wrap gap-2">
+              <div className="mt-4 flex flex-wrap gap-2 anim-enter anim-d4">
                 <Link href="/estatisticas" className="hx-intro-chip">
                   <BarChart3 className="h-3.5 w-3.5" />
                   Ver estatísticas
@@ -168,28 +179,15 @@ export default async function HomePage() {
       )}
 
       <ScrollReveal>
-        <section className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {shortcuts.map((item) => {
-            const Icon = item.icon;
-            const href =
+        <MarqueeShortcuts
+          items={shortcuts.map((item) => ({
+            ...item,
+            href:
               item.requiresAuth && !session?.user
                 ? `/login?callbackUrl=${encodeURIComponent(item.href)}`
-                : item.href;
-            return (
-              <Link
-                key={item.href}
-                href={href}
-                className="group flex items-center justify-between rounded-lg border border-[hsl(var(--sidebar-border))] bg-[var(--surface)] p-4 transition hover:border-[hsl(var(--sidebar-highlight)/0.35)] hover:bg-[hsl(var(--sidebar-highlight)/0.08)]"
-              >
-                <span className="flex items-center gap-3 text-sm font-semibold text-slate-100">
-                  <Icon className="h-4 w-4 hx-accent-text" />
-                  {item.label}
-                </span>
-                <ArrowRight className="h-4 w-4 text-slate-500 transition group-hover:translate-x-0.5 group-hover:text-[hsl(var(--sidebar-highlight)/0.85)]" />
-              </Link>
-            );
-          })}
-        </section>
+                : item.href,
+          }))}
+        />
       </ScrollReveal>
 
       {session?.user && (

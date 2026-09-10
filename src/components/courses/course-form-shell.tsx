@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { NativeSelect } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { SuccessPopup } from "@/components/ui/success-popup";
 
 type Props = {
   categories: { id: string; name: string }[];
@@ -74,134 +75,136 @@ export function CourseFormShell({ categories, action, initial, submitLabel, canc
   };
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className="max-w-2xl space-y-4">
-      <CourseCoverUpload ref={coverRef} initialUrl={initial?.coverImage ?? initial?.thumbnailUrl} />
+    <>
+      <SuccessPopup show={success} message="Curso criado com sucesso!" />
+      <form ref={formRef} onSubmit={handleSubmit} className="max-w-2xl space-y-4">
+        <CourseCoverUpload ref={coverRef} initialUrl={initial?.coverImage ?? initial?.thumbnailUrl} />
 
-      <div>
-        <Label htmlFor="title">Título</Label>
-        <Input id="title" name="title" required defaultValue={initial?.title} />
-      </div>
-      <div>
-        <Label htmlFor="categoryId">Categoria</Label>
-          <NativeSelect
-            id="categoryId"
-            name="categoryId"
-            required
-            defaultValue={initial?.categoryId ?? ""}
-          >
-            <option value="">Selecione...</option>
-            {categories.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
-          </NativeSelect>
-          <p className="text-xs text-slate-500">
-            Não encontrou a categoria? Cadastre uma nova abaixo — ela passará por aprovação do
-            moderador antes de ficar disponível para todos.
-          </p>
-          <div>
-            <Label htmlFor="newCategory">Criar nova categoria (opcional)</Label>
-            <Input
-              id="newCategory"
-              name="newCategory"
-              placeholder="Ex: Inteligência Artificial"
-              defaultValue=""
+        <div>
+          <Label htmlFor="title">Título</Label>
+          <Input id="title" name="title" required defaultValue={initial?.title} />
+        </div>
+        <div>
+          <Label htmlFor="categoryId">Categoria</Label>
+            <NativeSelect
+              id="categoryId"
+              name="categoryId"
+              required
+              defaultValue={initial?.categoryId ?? ""}
+            >
+              <option value="">Selecione...</option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </NativeSelect>
+            <p className="text-xs text-slate-500">
+              Não encontrou a categoria? Cadastre uma nova abaixo — ela passará por aprovação do
+              moderador antes de ficar disponível para todos.
+            </p>
+            <div>
+              <Label htmlFor="newCategory">Criar nova categoria (opcional)</Label>
+              <Input
+                id="newCategory"
+                name="newCategory"
+                placeholder="Ex: Inteligência Artificial"
+                defaultValue=""
+              />
+            </div>
+          </div>
+        <div>
+          <Label htmlFor="shortDescription">Descrição curta</Label>
+          <Input
+            id="shortDescription"
+            name="shortDescription"
+            defaultValue={initial?.shortDescription ?? ""}
+          />
+        </div>
+        <div>
+          <Label htmlFor="description">Descrição completa</Label>
+            <Textarea
+              id="description"
+              name="description"
+              rows={4}
+              defaultValue={initial?.description ?? ""}
             />
           </div>
-        </div>
-      <div>
-        <Label htmlFor="shortDescription">Descrição curta</Label>
-        <Input
-          id="shortDescription"
-          name="shortDescription"
-          defaultValue={initial?.shortDescription ?? ""}
-        />
-      </div>
-      <div>
-        <Label htmlFor="description">Descrição completa</Label>
-          <Textarea
-            id="description"
-            name="description"
-            rows={4}
-            defaultValue={initial?.description ?? ""}
-          />
-        </div>
-        <div>
-          <Label htmlFor="tags">Tags (separadas por vírgula)</Label>
-          <Input
-            id="tags"
-            name="tags"
-            placeholder="Ex: javascript, frontend, iniciante"
-            defaultValue={initial?.tags ?? ""}
-          />
-          <p className="mt-1 text-xs text-slate-500">
-            Ajudam a categorizar e recomendar seu curso.
-          </p>
-        </div>
-      <div className="grid gap-4 sm:grid-cols-3">
-        <div>
-          <Label htmlFor="level">Nível</Label>
-          <NativeSelect id="level" name="level" defaultValue={initial?.level ?? "BEGINNER"}>
-            <option value="BEGINNER">Iniciante</option>
-            <option value="INTERMEDIATE">Intermediário</option>
-            <option value="ADVANCED">Avançado</option>
-          </NativeSelect>
-        </div>
-        <div>
-          <Label htmlFor="estimatedHours">Carga horária (h)</Label>
-          <Input
-            id="estimatedHours"
-            name="estimatedHours"
-            type="number"
-            min={1}
-            max={500}
-            placeholder="Ex: 20"
-            defaultValue={initial?.estimatedHours != null ? String(initial.estimatedHours) : ""}
-          />
-        </div>
-        <div>
-          <Label htmlFor="progressionType">Progressão</Label>
-          <NativeSelect
-            id="progressionType"
-            name="progressionType"
-            defaultValue={initial?.progressionType ?? "FREE"}
-          >
-            <option value="FREE">Livre</option>
-            <option value="PROGRESSIVE">Progressiva</option>
-          </NativeSelect>
-        </div>
-        {initial && (
           <div>
-            <Label htmlFor="isPublished">Visibilidade</Label>
-            <NativeSelect
-              id="isPublished"
-              name="isPublished"
-              defaultValue={initial?.isPublished ? "true" : "false"}
-            >
-              <option value="false">Rascunho (oculto)</option>
-              <option value="true">Publicado</option>
+            <Label htmlFor="tags">Tags (separadas por vírgula)</Label>
+            <Input
+              id="tags"
+              name="tags"
+              placeholder="Ex: javascript, frontend, iniciante"
+              defaultValue={initial?.tags ?? ""}
+            />
+            <p className="mt-1 text-xs text-slate-500">
+              Ajudam a categorizar e recomendar seu curso.
+            </p>
+          </div>
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div>
+            <Label htmlFor="level">Nível</Label>
+            <NativeSelect id="level" name="level" defaultValue={initial?.level ?? "BEGINNER"}>
+              <option value="BEGINNER">Iniciante</option>
+              <option value="INTERMEDIATE">Intermediário</option>
+              <option value="ADVANCED">Avançado</option>
             </NativeSelect>
           </div>
-        )}
-      </div>
-      <p className="text-sm text-slate-500">
-        Todos os cursos são gratuitos por enquanto. Pagamentos serão habilitados em versão futura.
-      </p>
-      {error && <p className="text-sm text-red-400">{error}</p>}
-      {success && <p className="text-sm text-emerald-400">Curso salvo com sucesso!</p>}
-      <div className="flex gap-3">
-        <Button type="submit" disabled={pending}>
-          {pending ? "Salvando..." : submitLabel}
-        </Button>
-        <AppLink
-          href={cancelHref}
-          muted
-          className="inline-flex items-center rounded-lg border border-white/10 px-4 py-2 hover:border-sky-400/40 hover:bg-sky-400/10"
-        >
-          Cancelar
-        </AppLink>
-      </div>
-    </form>
+          <div>
+            <Label htmlFor="estimatedHours">Carga horária (h)</Label>
+            <Input
+              id="estimatedHours"
+              name="estimatedHours"
+              type="number"
+              min={1}
+              max={500}
+              placeholder="Ex: 20"
+              defaultValue={initial?.estimatedHours != null ? String(initial.estimatedHours) : ""}
+            />
+          </div>
+          <div>
+            <Label htmlFor="progressionType">Progressão</Label>
+            <NativeSelect
+              id="progressionType"
+              name="progressionType"
+              defaultValue={initial?.progressionType ?? "FREE"}
+            >
+              <option value="FREE">Livre</option>
+              <option value="PROGRESSIVE">Progressiva</option>
+            </NativeSelect>
+          </div>
+          {initial && (
+            <div>
+              <Label htmlFor="isPublished">Visibilidade</Label>
+              <NativeSelect
+                id="isPublished"
+                name="isPublished"
+                defaultValue={initial?.isPublished ? "true" : "false"}
+              >
+                <option value="false">Rascunho (oculto)</option>
+                <option value="true">Publicado</option>
+              </NativeSelect>
+            </div>
+          )}
+        </div>
+        <p className="text-sm text-slate-500">
+          Todos os cursos são gratuitos por enquanto. Pagamentos serão habilitados em versão futura.
+        </p>
+        {error && <p className="text-sm text-red-400">{error}</p>}
+        <div className="flex gap-3">
+          <Button type="submit" disabled={pending}>
+            {pending ? "Salvando..." : submitLabel}
+          </Button>
+          <AppLink
+            href={cancelHref}
+            muted
+            className="inline-flex items-center rounded-lg border border-white/10 px-4 py-2 hover:border-sky-400/40 hover:bg-sky-400/10"
+          >
+            Cancelar
+          </AppLink>
+        </div>
+      </form>
+    </>
   );
 }
