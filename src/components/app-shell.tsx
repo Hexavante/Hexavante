@@ -14,6 +14,8 @@ const BARE_LAYOUT_PREFIXES = [
   "/redefinir-senha",
   "/hexa",
   "/ajuda",
+  "/cursos",
+  "/tutorials",
 ];
 
 const BARE_LAYOUT_EXACT = ["/"];
