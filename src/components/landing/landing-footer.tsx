@@ -4,7 +4,7 @@ import Link from "next/link";
 import { HexavanteLogo } from "@/components/brand/hexavante-logo";
 
 const productLinks = [
-  { label: "Cursos", href: "/courses" },
+  { label: "Cursos", href: "/cursos" },
   { label: "Tutoriais", href: "/tutorials" },
   { label: "Simulados", href: "/simulados" },
   { label: "Ranking", href: "/ranking" },
