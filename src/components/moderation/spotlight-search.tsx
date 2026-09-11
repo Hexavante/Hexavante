@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { Search, Video, GraduationCap, ClipboardCheck } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 
@@ -16,10 +16,28 @@ type UserHit = {
   isMuted: boolean;
 };
 
+type ContentHit = {
+  id: string;
+  title: string;
+  slug: string;
+  type: "tutorial" | "course" | "exam";
+  status: string;
+};
+
+type SpotlightResult = {
+  users: UserHit[];
+  tutorials: ContentHit[];
+  courses: ContentHit[];
+  exams: ContentHit[];
+};
+
 export function SpotlightSearch() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<UserHit[]>([]);
+  const [users, setUsers] = useState<UserHit[]>([]);
+  const [tutorials, setTutorials] = useState<ContentHit[]>([]);
+  const [courses, setCourses] = useState<ContentHit[]>([]);
+  const [exams, setExams] = useState<ContentHit[]>([]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -35,12 +53,18 @@ export function SpotlightSearch() {
 
   const search = useCallback(async (q: string) => {
     if (q.length < 2) {
-      setResults([]);
+      setUsers([]);
+      setTutorials([]);
+      setCourses([]);
+      setExams([]);
       return;
     }
-    const res = await fetch(`/api/moderation/users?search=${encodeURIComponent(q)}&limit=8`);
-    const data = (await res.json()) as { users: UserHit[] };
-    setResults(data.users ?? []);
+    const res = await fetch(`/api/moderation/spotlight?q=${encodeURIComponent(q)}`);
+    const data = (await res.json()) as SpotlightResult;
+    setUsers(data.users ?? []);
+    setTutorials(data.tutorials ?? []);
+    setCourses(data.courses ?? []);
+    setExams(data.exams ?? []);
   }, []);
 
   useEffect(() => {
@@ -50,6 +74,8 @@ export function SpotlightSearch() {
 
   if (!open) return null;
 
+  const totalResults = users.length + tutorials.length + courses.length + exams.length;
+
   return (
     <div className="fixed inset-0 z-[10004] flex items-start justify-center bg-black/60 p-4 pt-[15vh]">
       <div className="w-full max-w-lg rounded-xl border border-[#1e1e2e] bg-[#0a0a0f] shadow-2xl">
@@ -57,7 +83,7 @@ export function SpotlightSearch() {
           <Search className="h-4 w-4 text-slate-500" />
           <Input
             autoFocus
-            placeholder="Buscar usuário, @username..."
+            placeholder="Buscar usuários, tutoriais, cursos, simulados..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="border-0 bg-transparent shadow-none focus:ring-0"
@@ -66,9 +92,15 @@ export function SpotlightSearch() {
             Esc
           </button>
         </div>
-        <ul className="max-h-80 overflow-y-auto p-2">
-          {results.map((user) => (
-            <li key={user.id}>
+        <ul className="max-h-96 overflow-y-auto p-2">
+          {/* Users */}
+          {users.length > 0 && (
+            <li className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-500">
+              Usuários
+            </li>
+          )}
+          {users.map((user) => (
+            <li key={`u-${user.id}`}>
               <Link
                 href={`/perfil/${user.username}`}
                 onClick={() => setOpen(false)}
@@ -88,7 +120,85 @@ export function SpotlightSearch() {
               </Link>
             </li>
           ))}
-          {query.length >= 2 && results.length === 0 && (
+
+          {/* Tutorials */}
+          {tutorials.length > 0 && (
+            <li className="mt-2 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-500">
+              Tutoriais
+            </li>
+          )}
+          {tutorials.map((t) => (
+            <li key={`t-${t.id}`}>
+              <Link
+                href={`/tutorials/${t.slug}`}
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-white/[0.06]"
+              >
+                <Video className="h-4 w-4 text-violet-400" />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-medium text-white">{t.title}</p>
+                  <p className="text-sm text-slate-400">
+                    {t.status === "published" ? "Publicado" : "Rascunho"}
+                  </p>
+                </div>
+                <Link
+                  href={`/admin/tutorials`}
+                  onClick={(e) => e.stopPropagation()}
+                  className="text-xs text-slate-500 hover:text-slate-300"
+                >
+                  Mod
+                </Link>
+              </Link>
+            </li>
+          ))}
+
+          {/* Courses */}
+          {courses.length > 0 && (
+            <li className="mt-2 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-500">
+              Cursos
+            </li>
+          )}
+          {courses.map((c) => (
+            <li key={`c-${c.id}`}>
+              <Link
+                href={`/admin/cursos/${c.id}`}
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-white/[0.06]"
+              >
+                <GraduationCap className="h-4 w-4 text-sky-400" />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-medium text-white">{c.title}</p>
+                  <p className="text-sm text-slate-400">{c.status}</p>
+                </div>
+              </Link>
+            </li>
+          ))}
+
+          {/* Exams */}
+          {exams.length > 0 && (
+            <li className="mt-2 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-500">
+              Simulados
+            </li>
+          )}
+          {exams.map((e) => (
+            <li key={`e-${e.id}`}>
+              <Link
+                href={`/admin/simulados/${e.id}/edit`}
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-white/[0.06]"
+              >
+                <ClipboardCheck className="h-4 w-4 text-teal-400" />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-medium text-white">{e.title}</p>
+                  <p className="text-sm text-slate-400">
+                    {e.status === "published" ? "Publicado" : "Rascunho"}
+                  </p>
+                </div>
+              </Link>
+            </li>
+          ))}
+
+          {query.length >= 2 && totalResults === 0 && (
             <li className="px-3 py-6 text-center text-sm text-slate-500">Nenhum resultado.</li>
           )}
         </ul>

@@ -5,6 +5,7 @@ const tabs = [
   { href: "/admin", label: "Visão Geral", exact: true },
   { href: "/admin/usuarios", label: "Usuários" },
   { href: "/admin/conteudo", label: "Conteúdo" },
+  { href: "/admin/tutorials", label: "Tutoriais" },
   { href: "/admin/logs", label: "Logs" },
   { href: "/admin/terminal", label: "Terminal" },
   { href: "/admin/configuracoes", label: "Configurações" },

@@ -5,7 +5,8 @@ type Props = {
   icon: LucideIcon;
   label: string;
   value: string | number;
-  color?: "default" | "yellow" | "red" | "teal";
+  color?: "default" | "yellow" | "red" | "teal" | "green";
+  subtitle?: string;
 };
 
 const colors = {
@@ -13,9 +14,10 @@ const colors = {
   yellow: "text-amber-300",
   red: "text-red-300",
   teal: "text-teal-300",
+  green: "text-emerald-300",
 };
 
-export function StatCard({ icon: Icon, label, value, color = "default" }: Props) {
+export function StatCard({ icon: Icon, label, value, color = "default", subtitle }: Props) {
   return (
     <div className="hx-stat">
       <div className="flex items-center gap-2 text-slate-400">
@@ -23,6 +25,7 @@ export function StatCard({ icon: Icon, label, value, color = "default" }: Props)
         <span className="text-sm">{label}</span>
       </div>
       <p className={cn("mt-2 text-3xl font-bold", colors[color])}>{value}</p>
+      {subtitle && <p className="mt-1 text-xs text-slate-500">{subtitle}</p>}
     </div>
   );
 }

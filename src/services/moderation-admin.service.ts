@@ -321,6 +321,12 @@ export async function getPlatformModerationStats() {
     pendingCourses,
     pendingApplications,
     pendingReports,
+    totalTutorials,
+    publishedTutorials,
+    totalExams,
+    publishedExams,
+    totalEnrollments,
+    newUsersToday,
   ] = await Promise.all([
     prisma.user.count({ where: { lastLogin: { gte: today } } }),
     prisma.userBan.count({ where: { isActive: true } }),
@@ -334,6 +340,12 @@ export async function getPlatformModerationStats() {
     prisma.course.count({ where: { status: "PENDING_REVIEW" } }),
     prisma.instructorApplication.count({ where: { status: "PENDING" } }),
     prisma.communityReport.count({ where: { status: "PENDING" } }),
+    prisma.tutorial.count(),
+    prisma.tutorial.count({ where: { isPublished: true } }),
+    prisma.exam.count(),
+    prisma.exam.count({ where: { isPublished: true } }),
+    prisma.courseEnrollment.count(),
+    prisma.user.count({ where: { createdAt: { gte: today } } }),
   ]);
 
   const activityData = await getActivityLast7Days();
@@ -349,6 +361,12 @@ export async function getPlatformModerationStats() {
     totalUsers,
     pendingCourses,
     pendingApplications,
+    totalTutorials,
+    publishedTutorials,
+    totalExams,
+    publishedExams,
+    totalEnrollments,
+    newUsersToday,
     activityData,
   };
 }
@@ -854,6 +872,63 @@ export async function executeModerationCommand(
         }
         throw new Error("Use: /simulado list | reset @user <id>");
       }
+      case "/tutorials": {
+        requireModAction("tutorials", roles);
+        const sub = tokens[1]?.toLowerCase();
+        if (sub === "list") {
+          const tutorials = await prisma.tutorial.findMany({
+            take: 20,
+            orderBy: { createdAt: "desc" },
+            select: { id: true, title: true, slug: true, isPublished: true, viewCount: true },
+          });
+          return {
+            status: "info",
+            message: tutorials
+              .map(
+                (t) =>
+                  `${t.id.slice(0, 8)}… ${t.title} [${t.isPublished ? "publicado" : "rascunho"}] · ${t.viewCount} views`,
+              )
+              .join("\n"),
+            data: tutorials,
+          };
+        }
+        if (sub === "publish" || sub === "unpublish") {
+          const tutorial = await prisma.tutorial.findFirst({
+            where: { OR: [{ id: tokens[2] }, { slug: tokens[2] }] },
+          });
+          if (!tutorial) throw new Error("Tutorial não encontrado.");
+          const publish = sub === "publish";
+          await prisma.tutorial.update({ where: { id: tutorial.id }, data: { isPublished: publish } });
+          await writeModerationLog({
+            moderatorId,
+            action: publish ? "COURSE_PUBLISH" : "COURSE_UNPUBLISH",
+            description: `${publish ? "Publicou" : "Despublicou"} tutorial ${tutorial.title}`,
+            metadata: { tutorialId: tutorial.id },
+          });
+          return {
+            status: "success",
+            message: `✅ Tutorial "${tutorial.title}" ${publish ? "publicado" : "despublicado"}.`,
+          };
+        }
+        if (sub === "delete") {
+          const tutorial = await prisma.tutorial.findFirst({
+            where: { OR: [{ id: tokens[2] }, { slug: tokens[2] }] },
+          });
+          if (!tutorial) throw new Error("Tutorial não encontrado.");
+          await prisma.tutorial.delete({ where: { id: tutorial.id } });
+          await writeModerationLog({
+            moderatorId,
+            action: "OTHER",
+            description: `Excluiu tutorial ${tutorial.title}`,
+            metadata: { tutorialId: tutorial.id },
+          });
+          return {
+            status: "success",
+            message: `✅ Tutorial "${tutorial.title}" excluído.`,
+          };
+        }
+        throw new Error("Use: /tutorials list | publish <id> | unpublish <id> | delete <id>");
+      }
       case "/resetpass": {
         requireModAction("resetpass", roles);
         return {
@@ -904,6 +979,7 @@ function showHelp(roles: string[]): CommandResult {
     "/ban · /unban · /mute · /unmute · /warn @u",
     '/broadcast "msg" · /manutencao on|off "msg"',
     "/booster <2x|3x> <24h|7d> · /cursos list|publish|unpublish",
+    "/tutorials list|publish|unpublish|delete",
     "/simulado list|reset @u <id> · /clear",
   ];
   if (!roles.includes("ADMIN") && !roles.includes("SUPERADMIN")) {
@@ -935,6 +1011,7 @@ export const ALL_TERMINAL_COMMANDS = [
   "/booster",
   "/logs",
   "/cursos",
+  "/tutorials",
   "/simulado",
   "/clear",
 ];

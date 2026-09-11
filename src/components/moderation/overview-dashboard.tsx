@@ -1,7 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AlertTriangle, Ban, Coins, MessageSquare, TrendingUp, Users } from "lucide-react";
+import {
+  AlertTriangle,
+  Ban,
+  Coins,
+  GraduationCap,
+  MessageSquare,
+  TrendingUp,
+  Users,
+  Video,
+  ClipboardCheck,
+  UserPlus,
+} from "lucide-react";
 import { ActivityChart } from "./activity-chart";
 import { StatCard } from "./stat-card";
 
@@ -15,6 +26,13 @@ type Stats = {
   totalCoins: number;
   pendingCourses: number;
   pendingApplications: number;
+  totalTutorials: number;
+  publishedTutorials: number;
+  totalExams: number;
+  publishedExams: number;
+  totalEnrollments: number;
+  newUsersToday: number;
+  totalUsers: number;
   activityData: { date: string; usuarios: number; simulados: number; xpGanho: number }[];
 };
 
@@ -35,16 +53,10 @@ export function OverviewDashboard({ initial }: { initial: Stats }) {
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <StatCard icon={Users} label="Usuários ativos hoje" value={stats.activeToday} />
-        <StatCard
-          icon={AlertTriangle}
-          label="Denúncias pendentes"
-          value={stats.pendingReports}
-          color="yellow"
-        />
-        <StatCard icon={Ban} label="Bans ativos" value={stats.activeBans} color="red" />
-        <StatCard icon={MessageSquare} label="Mutes ativos" value={stats.activeMutes} />
+      {/* Primary stats */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <StatCard icon={Users} label="Usuários totais" value={stats.totalUsers} />
+        <StatCard icon={UserPlus} label="Novos hoje" value={stats.newUsersToday} color="green" />
         <StatCard icon={TrendingUp} label="XP distribuído hoje" value={stats.xpToday} />
         <StatCard
           icon={Coins}
@@ -52,6 +64,42 @@ export function OverviewDashboard({ initial }: { initial: Stats }) {
           value={stats.totalCoins.toLocaleString("pt-BR")}
         />
       </div>
+
+      {/* Content stats */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <StatCard
+          icon={GraduationCap}
+          label="Cursos publicados"
+          value={stats.totalEnrollments}
+          subtitle={`${stats.pendingCourses} pendentes`}
+        />
+        <StatCard
+          icon={Video}
+          label="Tutoriais publicados"
+          value={stats.publishedTutorials}
+          subtitle={`${stats.totalTutorials - stats.publishedTutorials} rascunhos`}
+        />
+        <StatCard
+          icon={ClipboardCheck}
+          label="Simulados publicados"
+          value={stats.publishedExams}
+          subtitle={`${stats.totalExams - stats.publishedExams} rascunhos`}
+        />
+        <StatCard
+          icon={AlertTriangle}
+          label="Denúncias pendentes"
+          value={stats.pendingReports}
+          color="yellow"
+        />
+      </div>
+
+      {/* Mod stats */}
+      <div className="grid gap-4 sm:grid-cols-3">
+        <StatCard icon={Ban} label="Bans ativos" value={stats.activeBans} color="red" />
+        <StatCard icon={MessageSquare} label="Mutes ativos" value={stats.activeMutes} />
+        <StatCard icon={Users} label="Usuários ativos hoje" value={stats.activeToday} color="green" />
+      </div>
+
       <ActivityChart data={stats.activityData} />
     </div>
   );

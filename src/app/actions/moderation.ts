@@ -222,3 +222,43 @@ export async function deleteExamModeratorAction(examId: string) {
   revalidateExamPaths();
   redirect("/admin/simulados");
 }
+
+export async function toggleTutorialPublishAction(tutorialId: string) {
+  await requireModerator();
+  const tutorial = await prisma.tutorial.findUnique({
+    where: { id: tutorialId },
+    select: { isPublished: true },
+  });
+  if (!tutorial) redirect("/admin/tutorials");
+
+  await prisma.tutorial.update({
+    where: { id: tutorialId },
+    data: { isPublished: !tutorial.isPublished },
+  });
+
+  revalidatePath("/admin/tutorials");
+  revalidatePath("/admin/conteudo");
+  revalidatePath("/tutorials");
+}
+
+export async function deleteTutorialModeratorAction(tutorialId: string) {
+  const moderator = await requireModerator();
+  const tutorial = await prisma.tutorial.findUnique({ where: { id: tutorialId } });
+  if (!tutorial) redirect("/admin/tutorials");
+
+  await prisma.tutorial.delete({ where: { id: tutorialId } });
+  await prisma.moderationLog.create({
+    data: {
+      moderatorId: moderator.id,
+      targetUserId: tutorial.authorId,
+      action: "OTHER",
+      description: `Excluiu tutorial "${tutorial.title}" via moderação`,
+      metadata: { tutorialId },
+    },
+  });
+
+  revalidatePath("/admin/tutorials");
+  revalidatePath("/admin/conteudo");
+  revalidatePath("/tutorials");
+  redirect("/admin/tutorials");
+}
