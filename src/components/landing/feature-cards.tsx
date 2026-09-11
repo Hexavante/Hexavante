@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { BookOpen, Target, Trophy, BarChart3, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/cn";
@@ -120,107 +119,35 @@ const features: Feature[] = [
   },
 ];
 
-function Card({ f, active }: { f: Feature; active: boolean }) {
-  return (
-    <div className={cn("ssc-card", active && "on")}>
-      <div className="flex-1 space-y-5 min-w-0">
-        <Badge variant={f.badgeVariant}>{f.badge}</Badge>
-        <h3 className="text-3xl font-black tracking-tight text-[hsl(var(--sidebar-foreground))] sm:text-4xl">{f.title}</h3>
-        <p className="text-base leading-relaxed text-[hsl(var(--sidebar-foreground)/0.6)] sm:text-lg">{f.description}</p>
-        <ul className="space-y-3 pt-2">
-          {f.bullets.map((b) => (
-            <li key={b} className="flex items-center gap-3 text-sm text-[hsl(var(--sidebar-foreground)/0.78)] sm:text-base">
-              <Zap className="h-4 w-4 shrink-0 hx-accent-text" />{b}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className={cn("flex-1 relative overflow-hidden rounded-2xl border border-white/10 p-6 sm:p-8 bg-gradient-to-br", f.gradient)} style={{ boxShadow: "0 25px 50px -12px rgb(0 0 0 / 0.4)" }}>
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent" />
-        <div className="relative flex items-center justify-center"><div className="w-full max-w-xs">{f.mockupContent}</div></div>
-        <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/[0.04] blur-2xl" />
-      </div>
-    </div>
-  );
-}
-
 export function FeatureCards() {
-  const [active, setActive] = useState(0);
-  const [mobile, setMobile] = useState(true);
-  const refs = useRef<(HTMLElement | null)[]>([]);
-  const reduced = useRef(false);
-
-  useEffect(() => {
-    reduced.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    setMobile(window.innerWidth < 768);
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const ro = () => setMobile(window.innerWidth < 768);
-    mq.addEventListener("change", (e) => { reduced.current = e.matches; });
-    window.addEventListener("resize", ro);
-    return () => { mq.removeEventListener("change", (e) => { reduced.current = e.matches; }); window.removeEventListener("resize", ro); };
-  }, []);
-
-  useEffect(() => {
-    if (mobile) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            const i = refs.current.indexOf(e.target as HTMLElement);
-            if (i >= 0) setActive(i);
-          }
-        }
-      },
-      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
-    );
-    refs.current.forEach((el) => { if (el) obs.observe(el); });
-    return () => obs.disconnect();
-  }, [mobile]);
-
-  if (mobile) {
-    return (
-      <div className="space-y-16 lg:space-y-24">
-        {features.map((f) => (
-          <div key={f.title} className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
-            <div className="space-y-4">
+  return (
+    <div className="space-y-20 lg:space-y-28">
+      {features.map((f, i) => {
+        const reversed = i % 2 === 1;
+        return (
+          <div key={f.title} className={cn("grid items-center gap-10 lg:grid-cols-2 lg:gap-16", reversed && "lg:[direction:rtl]")}>
+            {/* Text */}
+            <div className={cn("space-y-5", reversed && "lg:[direction:ltr]")}>
               <Badge variant={f.badgeVariant}>{f.badge}</Badge>
-              <h3 className="text-2xl font-black tracking-tight text-[hsl(var(--sidebar-foreground))] sm:text-3xl">{f.title}</h3>
-              <p className="text-sm leading-relaxed text-[hsl(var(--sidebar-foreground)/0.6)] sm:text-base">{f.description}</p>
-              <ul className="space-y-2 pt-2">
+              <h3 className="text-3xl font-black tracking-tight text-[hsl(var(--sidebar-foreground))] sm:text-4xl">{f.title}</h3>
+              <p className="text-base leading-relaxed text-[hsl(var(--sidebar-foreground)/0.6)] sm:text-lg">{f.description}</p>
+              <ul className="space-y-3 pt-1">
                 {f.bullets.map((b) => (
-                  <li key={b} className="flex items-center gap-2.5 text-sm text-[hsl(var(--sidebar-foreground)/0.78)]">
-                    <Zap className="h-3.5 w-3.5 shrink-0 hx-accent-text" />{b}
+                  <li key={b} className="flex items-center gap-3 text-sm text-[hsl(var(--sidebar-foreground)/0.78)] sm:text-base">
+                    <Zap className="h-4 w-4 shrink-0 hx-accent-text" />{b}
                   </li>
                 ))}
               </ul>
             </div>
-            <div>
-              <div className={cn("relative overflow-hidden rounded-2xl border border-white/10 p-6 sm:p-8 bg-gradient-to-br", f.gradient)} style={{ boxShadow: "0 25px 50px -12px rgb(0 0 0 / 0.4)" }}>
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent" />
-                <div className="relative flex items-center justify-center"><div className="w-full max-w-xs">{f.mockupContent}</div></div>
-                <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/[0.04] blur-2xl" />
-              </div>
+            {/* Mockup card */}
+            <div className={cn("relative overflow-hidden rounded-2xl border border-white/10 p-6 sm:p-8 bg-gradient-to-br", f.gradient, reversed && "lg:[direction:ltr]")} style={{ boxShadow: "0 25px 50px -12px rgb(0 0 0 / 0.4)" }}>
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent" />
+              <div className="relative flex items-center justify-center"><div className="w-full max-w-xs">{f.mockupContent}</div></div>
+              <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/[0.04] blur-2xl" />
             </div>
           </div>
-        ))}
-      </div>
-    );
-  }
-
-  return (
-    <div className="ssc-wrapper">
-      <div className="ssc-sticky">
-        {features.map((f, i) => (
-          <Card key={f.title} f={f} active={i === active} />
-        ))}
-      </div>
-      {features.map((f, i) => (
-        <section
-          key={f.title}
-          ref={(el) => { refs.current[i] = el; }}
-          className="ssc-sentinel"
-        />
-      ))}
+        );
+      })}
     </div>
   );
 }
