@@ -113,7 +113,10 @@ export async function updateTutorialAction(
       categoryId: formData.get("categoryId")?.toString().trim() || undefined,
       description: formData.get("description")?.toString() || undefined,
       videoUrl: formData.get("videoUrl")?.toString() || undefined,
-      thumbnailUrl: formData.get("thumbnailUrl")?.toString() || undefined,
+      thumbnailUrl:
+        formData.get("removeThumbnail") === "true"
+          ? null
+          : formData.get("thumbnailUrl")?.toString() || undefined,
       duration,
       isPublished: formData.get("isPublished") === "true",
     });

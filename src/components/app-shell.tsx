@@ -15,8 +15,6 @@ const BARE_LAYOUT_PREFIXES = [
   "/hexa",
   "/ajuda",
   "/cursos",
-  "/tutorials",
-  "/simulados",
 ];
 
 const BARE_LAYOUT_EXACT = ["/"];

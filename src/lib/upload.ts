@@ -49,3 +49,11 @@ export function isSafeExamQuestionImagePath(url: string): boolean {
 export function buildExamQuestionImageFilename(mime: string): string | null {
   return buildCourseCoverFilename(mime);
 }
+
+export function buildTutorialThumbnailFilename(mime: string): string | null {
+  return buildCourseCoverFilename(mime);
+}
+
+export function isSafeTutorialThumbnailPath(url: string): boolean {
+  return isSafePublicUploadPathInFolder(url, "tutorials");
+}

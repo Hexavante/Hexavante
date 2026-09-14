@@ -22,7 +22,6 @@ import { listApprovedCourses } from "@/services/course.service";
 import { listTutorials } from "@/services/tutorial.service";
 import { searchPublishedExams } from "@/services/exam.service";
 import { getUserCertificates } from "@/services/certificate.service";
-import { useState } from "react";
 
 export default async function LandingPage() {
   const session = await auth();

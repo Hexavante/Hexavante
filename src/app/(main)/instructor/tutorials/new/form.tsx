@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useRef, useState } from "react";
 import { Video, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { PageHeader } from "@/components/ui/page-header";
@@ -8,6 +8,10 @@ import { PageShell } from "@/components/ui/page-shell";
 import { Button } from "@/components/ui/button";
 import { createTutorialAction, type ActionResult } from "@/app/actions/tutorial";
 import { VideoUploadInput } from "@/components/tutorials/video-upload-input";
+import {
+  TutorialThumbnailUpload,
+  type TutorialThumbnailUploadHandle,
+} from "@/components/tutorials/tutorial-thumbnail-upload";
 import { SuccessPopup } from "@/components/ui/success-popup";
 
 const initialState: ActionResult = { success: false };
@@ -16,6 +20,40 @@ type Category = { id: string; name: string };
 
 export default function NewTutorialForm({ categories }: { categories: Category[] }) {
   const [state, formAction, isPending] = useActionState(createTutorialAction, initialState);
+  const thumbRef = useRef<TutorialThumbnailUploadHandle>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setUploadError(null);
+    setUploading(true);
+    try {
+      const url = await thumbRef.current?.uploadIfNeeded();
+      const form = formRef.current;
+      if (!form) return;
+      const formData = new FormData(form);
+      if (thumbRef.current?.isRemoved()) {
+        formData.set("thumbnailUrl", "");
+      } else if (url) {
+        formData.set("thumbnailUrl", url);
+      }
+      formAction(formData);
+    } catch (submitError) {
+      if (
+        submitError instanceof Error &&
+        (submitError as { digest?: string }).digest?.startsWith("NEXT_REDIRECT")
+      ) {
+        throw submitError;
+      }
+      setUploadError(
+        submitError instanceof Error ? submitError.message : "Erro ao enviar miniatura.",
+      );
+    } finally {
+      setUploading(false);
+    }
+  };
 
   return (
     <PageShell>
@@ -36,7 +74,7 @@ export default function NewTutorialForm({ categories }: { categories: Category[]
         description="Adicione um vídeo tutorial para a comunidade."
       />
 
-      <form action={formAction} className="mx-auto max-w-2xl space-y-5">
+      <form ref={formRef} onSubmit={handleSubmit} className="mx-auto max-w-2xl space-y-5">
         <div>
           <label htmlFor="title" className="mb-1.5 block text-sm font-medium text-slate-300">
             Título *
@@ -84,6 +122,8 @@ export default function NewTutorialForm({ categories }: { categories: Category[]
 
         <VideoUploadInput />
 
+        <TutorialThumbnailUpload ref={thumbRef} />
+
         <div>
           <label htmlFor="duration" className="mb-1.5 block text-sm font-medium text-slate-300">
             Duração (segundos)
@@ -126,9 +166,12 @@ export default function NewTutorialForm({ categories }: { categories: Category[]
         {state.error && (
           <p className="text-sm text-red-400">{state.error}</p>
         )}
+        {uploadError && (
+          <p className="text-sm text-red-400">{uploadError}</p>
+        )}
 
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Criando..." : "Criar tutorial"}
+        <Button type="submit" disabled={isPending || uploading}>
+          {isPending || uploading ? "Criando..." : "Criar tutorial"}
         </Button>
       </form>
     </PageShell>

@@ -186,3 +186,20 @@ export async function deleteExamAction(examId: string) {
   revalidatePath("/simulados");
   redirect("/admin/simulados");
 }
+
+export async function deleteExamByIdAction(examId: string): Promise<ActionResult> {
+  try {
+    const user = await requireModerator();
+    await deleteExamByModerator(examId, user.id);
+    revalidatePath("/admin/simulados");
+    revalidatePath("/admin/conteudo");
+    revalidatePath("/simulados");
+    revalidatePath("/instructor/gerenciar");
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Erro ao excluir simulado",
+    };
+  }
+}

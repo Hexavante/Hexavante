@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useRef, useState } from "react";
 import { Video, ArrowLeft, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -13,6 +13,10 @@ import {
   type ActionResult,
 } from "@/app/actions/tutorial";
 import { VideoUploadInput } from "@/components/tutorials/video-upload-input";
+import {
+  TutorialThumbnailUpload,
+  type TutorialThumbnailUploadHandle,
+} from "@/components/tutorials/tutorial-thumbnail-upload";
 
 const initialState: ActionResult = { success: false };
 
@@ -43,6 +47,42 @@ export default function EditTutorialForm({
       updateTutorialAction(tutorial.id, prev, formData),
     initialState,
   );
+  const thumbRef = useRef<TutorialThumbnailUploadHandle>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setUploadError(null);
+    setUploading(true);
+    try {
+      const url = await thumbRef.current?.uploadIfNeeded();
+      const form = formRef.current;
+      if (!form) return;
+      const formData = new FormData(form);
+      if (thumbRef.current?.isRemoved()) {
+        formData.set("thumbnailUrl", "");
+        formData.set("removeThumbnail", "true");
+      } else {
+        formData.set("removeThumbnail", "false");
+        if (url) formData.set("thumbnailUrl", url);
+      }
+      formAction(formData);
+    } catch (submitError) {
+      if (
+        submitError instanceof Error &&
+        (submitError as { digest?: string }).digest?.startsWith("NEXT_REDIRECT")
+      ) {
+        throw submitError;
+      }
+      setUploadError(
+        submitError instanceof Error ? submitError.message : "Erro ao enviar miniatura.",
+      );
+    } finally {
+      setUploading(false);
+    }
+  };
 
   async function handleDelete() {
     if (!confirm("Tem certeza que deseja excluir este tutorial?")) return;
@@ -77,7 +117,7 @@ export default function EditTutorialForm({
         }
       />
 
-      <form action={formAction} className="mx-auto max-w-2xl space-y-5">
+      <form ref={formRef} onSubmit={handleSubmit} className="mx-auto max-w-2xl space-y-5">
         <div>
           <label htmlFor="title" className="mb-1.5 block text-sm font-medium text-slate-300">
             Título *
@@ -126,6 +166,8 @@ export default function EditTutorialForm({
 
         <VideoUploadInput initialUrl={tutorial.videoUrl ?? ""} />
 
+        <TutorialThumbnailUpload ref={thumbRef} initialUrl={tutorial.thumbnailUrl ?? null} />
+
         <div>
           <label htmlFor="duration" className="mb-1.5 block text-sm font-medium text-slate-300">
             Duração (segundos)
@@ -169,12 +211,15 @@ export default function EditTutorialForm({
         {state.error && (
           <p className="text-sm text-red-400">{state.error}</p>
         )}
+        {uploadError && (
+          <p className="text-sm text-red-400">{uploadError}</p>
+        )}
         {state.success && (
           <p className="text-sm text-emerald-400">Tutorial atualizado!</p>
         )}
 
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Salvando..." : "Salvar alterações"}
+        <Button type="submit" disabled={isPending || uploading}>
+          {isPending || uploading ? "Salvando..." : "Salvar alterações"}
         </Button>
       </form>
     </PageShell>

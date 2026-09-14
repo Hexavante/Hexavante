@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label";
 
 import { cn } from "@/lib/cn";
 
+import { uploadImageFile } from "@/lib/upload-client";
+
 import { ClipboardList, ImagePlus, Loader2, X } from "lucide-react";
 
 import Image from "next/image";
@@ -56,31 +58,17 @@ export const ExamCoverUpload = forwardRef<ExamCoverUploadHandle, Props>(function
 
       setError(null);
 
-      try {
-        const body = new FormData();
+        try {
+          const data = await uploadImageFile("/api/upload/exam-cover", pendingFile);
 
-        body.append("file", pendingFile);
+          setPreviewUrl(data.url);
 
-        const response = await fetch("/api/upload/exam-cover", {
-          method: "POST",
+          setSavedUrl(data.url);
 
-          body,
-        });
+          setPendingFile(null);
 
-        const data = (await response.json()) as { url?: string; error?: string };
-
-        if (!response.ok || !data.url) {
-          throw new Error(data.error ?? "Falha no upload da capa.");
-        }
-
-        setPreviewUrl(data.url);
-
-        setSavedUrl(data.url);
-
-        setPendingFile(null);
-
-        return data.url;
-      } catch (uploadError) {
+          return data.url;
+        } catch (uploadError) {
         const message =
           uploadError instanceof Error ? uploadError.message : "Erro ao enviar imagem.";
 

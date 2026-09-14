@@ -6,7 +6,7 @@ export type TutorialInput = {
   categoryId?: string;
   description?: string;
   videoUrl?: string;
-  thumbnailUrl?: string;
+  thumbnailUrl?: string | null;
   duration?: number;
   isPublished?: boolean;
 };
@@ -34,6 +34,34 @@ export async function listTutorials(params?: { categoryId?: string; publishedOnl
       tags: { include: { tag: true } },
     },
     orderBy: { createdAt: "desc" },
+  });
+}
+
+export async function searchPublishedTutorials(params?: {
+  q?: string;
+  categoryId?: string;
+  sort?: "recent" | "popular";
+}) {
+  const query = params?.q?.trim();
+  return prisma.tutorial.findMany({
+    where: {
+      isPublished: true,
+      ...(params?.categoryId ? { categoryId: params.categoryId } : {}),
+      ...(query
+        ? {
+            OR: [
+              { title: { contains: query } },
+              { description: { contains: query } },
+            ],
+          }
+        : {}),
+    },
+    include: {
+      author: { select: { id: true, username: true, fullName: true, avatarUrl: true } },
+      category: { select: { id: true, name: true } },
+    },
+    orderBy:
+      params?.sort === "popular" ? { viewCount: "desc" } : { createdAt: "desc" },
   });
 }
 

@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@/auth";
-import { isInstructor } from "@/lib/permissions";
+import { canModerate, isInstructor } from "@/lib/permissions";
 import { courseSchema, lessonSchema, materialSchema, moduleSchema } from "@/lib/validations/course";
 import {
   addLesson,
@@ -334,4 +334,40 @@ export async function deleteMaterialAction(courseId: string, materialId: string)
   const user = await requireInstructor();
   await deleteMaterial(materialId, user.id);
   revalidatePath(`/instructor/courses/${courseId}/edit`);
+}
+
+export async function deleteCourseAction(courseId: string): Promise<ActionResult> {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return { success: false, error: "Faça login para continuar." };
+    }
+
+    const isOwner = await prisma.courseInstructor.findFirst({
+      where: { courseId, userId: session.user.id },
+    });
+    if (!isOwner && !canModerate(session.user.roles)) {
+      return { success: false, error: "Você não tem permissão para excluir este curso." };
+    }
+
+    const enrollments = await prisma.courseEnrollment.count({ where: { courseId } });
+    if (enrollments > 0) {
+      return {
+        success: false,
+        error: `Não é possível excluir: há ${enrollments} aluno(s) matriculado(s).`,
+      };
+    }
+
+    await prisma.course.delete({ where: { id: courseId } });
+    revalidatePath("/instructor/courses");
+    revalidatePath("/instructor/gerenciar");
+    revalidatePath("/courses");
+    revalidatePath("/admin/conteudo");
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Erro ao excluir curso",
+    };
+  }
 }

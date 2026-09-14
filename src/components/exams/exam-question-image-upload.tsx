@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { NativeSelect } from "@/components/ui/select";
 import { cn } from "@/lib/cn";
+import { uploadImageFile } from "@/lib/upload-client";
 import {
   EXAM_QUESTION_IMAGE_SIZE_LABELS,
   EXAM_QUESTION_IMAGE_SIZES,
@@ -76,23 +77,10 @@ export const ExamQuestionImageUpload = forwardRef<ExamQuestionImageUploadHandle,
         setError(null);
 
         try {
-          const body = new FormData();
-          body.append("file", pendingFile);
+          const data = await uploadImageFile("/api/upload/exam-question-image", pendingFile);
 
-          const response = await fetch("/api/upload/exam-question-image", {
-            method: "POST",
-            body,
-          });
-
-          const data = (await response.json()) as {
-            url?: string;
-            width?: number;
-            height?: number;
-            error?: string;
-          };
-
-          if (!response.ok || !data.url || !data.width || !data.height) {
-            throw new Error(data.error ?? "Falha no upload da imagem.");
+          if (!data.width || !data.height) {
+            throw new Error("Falha no upload da imagem.");
           }
 
           revokeBlobUrl();

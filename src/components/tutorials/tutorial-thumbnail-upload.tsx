@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/cn";
 import { uploadImageFile } from "@/lib/upload-client";
-import { BookOpen, ImagePlus, Loader2, X } from "lucide-react";
+import { Video, ImagePlus, Loader2, X } from "lucide-react";
 import Image from "next/image";
 
-export type CourseCoverUploadHandle = {
+export type TutorialThumbnailUploadHandle = {
   uploadIfNeeded: () => Promise<string | null>;
   isRemoved: () => boolean;
 };
@@ -18,8 +18,8 @@ type Props = {
   name?: string;
 };
 
-export const CourseCoverUpload = forwardRef<CourseCoverUploadHandle, Props>(
-  function CourseCoverUpload({ initialUrl, name = "coverImage" }, ref) {
+export const TutorialThumbnailUpload = forwardRef<TutorialThumbnailUploadHandle, Props>(
+  function TutorialThumbnailUpload({ initialUrl, name = "thumbnailUrl" }, ref) {
     const [previewUrl, setPreviewUrl] = useState<string | null>(initialUrl ?? null);
     const [pendingFile, setPendingFile] = useState<File | null>(null);
     const [uploading, setUploading] = useState(false);
@@ -40,8 +40,7 @@ export const CourseCoverUpload = forwardRef<CourseCoverUploadHandle, Props>(
         setError(null);
 
         try {
-          const data = await uploadImageFile("/api/upload/course-cover", pendingFile);
-
+          const data = await uploadImageFile("/api/upload/tutorial-cover", pendingFile);
           setPreviewUrl(data.url);
           setSavedUrl(data.url);
           setPendingFile(null);
@@ -78,10 +77,9 @@ export const CourseCoverUpload = forwardRef<CourseCoverUploadHandle, Props>(
 
     return (
       <div className="space-y-3">
-        <Label>Imagem de capa</Label>
+        <Label>Miniatura do tutorial</Label>
 
         <input type="hidden" name={name} value={removed ? "" : savedUrl} />
-        <input type="hidden" name="removeCover" value={removed ? "true" : "false"} />
 
         <div
           className={cn(
@@ -92,7 +90,7 @@ export const CourseCoverUpload = forwardRef<CourseCoverUploadHandle, Props>(
           {displayUrl ? (
             <Image
               src={displayUrl}
-              alt="Pré-visualização da capa do curso"
+              alt="Pré-visualização da miniatura"
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 640px"
@@ -100,8 +98,8 @@ export const CourseCoverUpload = forwardRef<CourseCoverUploadHandle, Props>(
             />
           ) : (
             <div className="flex flex-col items-center gap-2 text-slate-500">
-              <BookOpen className="h-10 w-10 text-sky-400/40" />
-              <span className="text-sm">Nenhuma capa selecionada</span>
+              <Video className="h-10 w-10 text-cyan-400/40" />
+              <span className="text-sm">Nenhuma miniatura selecionada</span>
             </div>
           )}
         </div>
