@@ -83,7 +83,7 @@ export function StudyContinueHero({ continuation }: Props) {
           )}
         </div>
 
-        <Link href={continuation.href} className="hx-hero-btn group shrink-0">
+        <Link href={continuation.href} className="hx-hero-btn group animate-pulse-glow shrink-0">
           {isExam ? "Ver simulado" : "Retomar aula"}
           <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
         </Link>

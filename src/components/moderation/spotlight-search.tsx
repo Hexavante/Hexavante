@@ -78,7 +78,7 @@ export function SpotlightSearch() {
 
   return (
     <div className="fixed inset-0 z-[10004] flex items-start justify-center bg-black/60 p-4 pt-[15vh]">
-      <div className="w-full max-w-lg rounded-xl border border-[#1e1e2e] bg-[#0a0a0f] shadow-2xl">
+      <div className="hx-dark-surface w-full max-w-lg rounded-xl border border-[#1e1e2e] bg-[#0a0a0f] shadow-2xl">
         <div className="flex items-center gap-2 border-b border-[#1e1e2e] px-4 py-3">
           <Search className="h-4 w-4 text-slate-500" />
           <Input

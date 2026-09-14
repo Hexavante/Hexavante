@@ -135,7 +135,7 @@ function SidebarBrand() {
         />
       </span>
       <span className="min-w-0">
-        <span className="block truncate text-sm font-extrabold tracking-tight text-white transition group-hover:text-cyan-100">
+        <span className="block truncate text-sm font-extrabold tracking-tight text-[hsl(var(--sidebar-foreground))] transition group-hover:hx-accent-text">
           HEXAVANTE
         </span>
         <span className="hx-sidebar-brand-subtitle block truncate text-[11px] font-medium">
@@ -257,10 +257,10 @@ function SidebarUserFooter({ session }: { session: NavSession }) {
           borderClassName={session.user.avatarBorderClassName}
         />
         <span className="min-w-0 flex-1">
-          <span className="block truncate text-sm font-semibold text-white">
+          <span className="block truncate text-sm font-semibold text-[hsl(var(--sidebar-foreground))]">
             {session.user.username ? `@${session.user.username}` : "Meu perfil"}
           </span>
-          <span className="block truncate text-xs text-slate-400">Ver perfil</span>
+          <span className="block truncate text-xs text-[hsl(var(--sidebar-foreground)/0.5)]">Ver perfil</span>
         </span>
       </Link>
       <Link href="/configuracoes" className="hx-sidebar-settings">

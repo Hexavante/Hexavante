@@ -251,6 +251,32 @@
     overflow: hidden;
   }
 
+  .hx-progress-fill {
+    @apply h-full rounded-full transition-all duration-500;
+    background: linear-gradient(
+      90deg,
+      hsl(var(--sidebar-highlight)),
+      hsl(var(--sidebar-highlight) / 0.55),
+      hsl(var(--sidebar-highlight))
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2.4s linear infinite;
+  }
+
+  /* Elevação suave para cards clicáveis */
+  .hx-lift {
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease,
+      border-color 0.25s ease,
+      background-color 0.25s ease;
+  }
+
+  .hx-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 34px -14px rgb(0 0 0 / 0.55);
+  }
+
   /* Segment nav */
   .hx-segment-nav {
     display: inline-flex;

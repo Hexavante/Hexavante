@@ -37,11 +37,12 @@ export function CourseRecommendations({ courses }: Props) {
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        {courses.map((course) => (
-          <Link key={course.id} href={`/courses/${course.slug}`}>
+        {courses.map((course, i) => (
+          <div key={course.id} className="anim-enter-scale" style={{ animationDelay: `${0.05 + i * 0.07}s` }}>
+          <Link href={`/courses/${course.slug}`}>
             <Card
               padding="md"
-              className="group h-full transition hover:border-violet-400/30 hover:bg-violet-400/5"
+              className="group hx-lift h-full transition hover:border-violet-400/30 hover:bg-violet-400/5"
             >
               <div className="flex h-full flex-col">
                 <div className="mb-3 flex items-start justify-between gap-2">
@@ -65,6 +66,7 @@ export function CourseRecommendations({ courses }: Props) {
               </div>
             </Card>
           </Link>
+          </div>
         ))}
       </div>
     </section>

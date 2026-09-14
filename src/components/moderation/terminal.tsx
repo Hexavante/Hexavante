@@ -97,7 +97,7 @@ export function ModerationTerminal() {
   };
 
   return (
-    <div className="overflow-hidden rounded-xl border border-[#1e1e2e] bg-[#0a0a0f] font-mono">
+    <div className="hx-dark-surface overflow-hidden rounded-xl border border-[#1e1e2e] bg-[#0a0a0f] font-mono">
       <div className="flex items-center justify-between border-b border-[#1e1e2e] bg-[#111120] px-4 py-2">
         <div className="flex gap-2">
           <span className="h-3 w-3 rounded-full bg-red-500" />

@@ -66,7 +66,7 @@ export function CookieBanner() {
       className={cn(
         "hx-cookie-banner",
         "hx-cookie-banner-visible",
-        "border-t border-white/10 bg-zinc-900/98 shadow-2xl backdrop-blur-md",
+        "hx-dark-surface border-t border-white/10 bg-zinc-900/98 shadow-2xl backdrop-blur-md",
       )}
     >
       <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-6 sm:py-4 lg:px-8">

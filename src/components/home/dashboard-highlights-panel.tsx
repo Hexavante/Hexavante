@@ -24,9 +24,10 @@ export function DashboardHighlightsPanel({ highlights }: Props) {
   if (!hasContent) return null;
 
   return (
-    <section className="mt-8 grid gap-3 md:grid-cols-2">
+    <section className="mt-10 grid gap-3 md:grid-cols-2">
       {nextGoal && (
-        <Card padding="md" className="border-[hsl(var(--sidebar-highlight)/0.22)] bg-[hsl(var(--sidebar-highlight)/0.06)]">
+        <div className="anim-enter anim-d1">
+        <Card padding="md" className="hx-lift h-full border-[hsl(var(--sidebar-highlight)/0.22)] bg-[hsl(var(--sidebar-highlight)/0.06)]">
           <div className="flex items-start gap-3">
             <span className="hx-icon-box">
               <Target className="h-5 w-5" />
@@ -50,15 +51,17 @@ export function DashboardHighlightsPanel({ highlights }: Props) {
             </div>
           </div>
         </Card>
+        </div>
       )}
 
       {nextLiveEvent && (
+        <div className="anim-enter anim-d2">
         <Card
           padding="md"
           className={
             nextLiveEvent.status === "LIVE"
-              ? "border-red-400/25 bg-red-400/5"
-              : "border-violet-400/20 bg-violet-400/5"
+              ? "hx-lift h-full border-red-400/25 bg-red-400/5"
+              : "hx-lift h-full border-violet-400/20 bg-violet-400/5"
           }
         >
           <div className="flex items-start gap-3">
@@ -96,6 +99,7 @@ export function DashboardHighlightsPanel({ highlights }: Props) {
             </div>
           </div>
         </Card>
+        </div>
       )}
     </section>
   );

@@ -56,29 +56,35 @@ export default async function HomePage() {
       {homeData && session?.user ? (
         <>
           <ScrollReveal>
-            <section className="mb-8">
-              <Badge variant="sky">Seu espaço de estudos</Badge>
-              <h1 className="mt-3 text-3xl font-black tracking-tight hx-text-title sm:text-4xl">
-                <span className="welcome-animated">
-                  {"Olá, ".split("").map((char, i) => (
-                    <span key={i} style={{ animationDelay: `${0.1 + i * 0.04}s` }}>
-                      {char === " " ? "\u00A0" : char}
+            <section className="relative mb-10">
+              <div
+                aria-hidden
+                className="animate-bg-breathe pointer-events-none absolute -top-12 right-0 h-56 w-56 rounded-full bg-[hsl(var(--sidebar-highlight)/0.1)] blur-[5rem]"
+              />
+              <div className="relative">
+                <Badge variant="sky">Seu espaço de estudos</Badge>
+                <h1 className="mt-3 text-3xl font-black tracking-tight hx-text-title sm:text-4xl">
+                  <span className="welcome-animated">
+                    {"Olá, ".split("").map((char, i) => (
+                      <span key={i} style={{ animationDelay: `${0.1 + i * 0.04}s` }}>
+                        {char === " " ? "\u00A0" : char}
+                      </span>
+                    ))}
+                    <span style={{ animationDelay: `${0.1 + "Olá, ".length * 0.04}s` }}>
+                      {session.user.name?.split(" ")[0] ?? session.user.username}
                     </span>
-                  ))}
-                  <span style={{ animationDelay: `${0.1 + "Olá, ".length * 0.04}s` }}>
-                    {session.user.name?.split(" ")[0] ?? session.user.username}
                   </span>
-                </span>
-                !
-              </h1>
-              <p className="mt-2 max-w-2xl text-sm hx-text-muted sm:text-base anim-enter anim-d3">
-                Retome de onde parou, acompanhe suas estatísticas e descubra novos cursos.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2 anim-enter anim-d4">
-                <Link href="/estatisticas" className="hx-intro-chip">
-                  <BarChart3 className="h-3.5 w-3.5" />
-                  Ver estatísticas
-                </Link>
+                  !
+                </h1>
+                <p className="mt-2 max-w-2xl text-sm hx-text-muted sm:text-base anim-enter anim-d3">
+                  Retome de onde parou, acompanhe suas estatísticas e descubra novos cursos.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2 anim-enter anim-d4">
+                  <Link href="/estatisticas" className="hx-intro-chip">
+                    <BarChart3 className="h-3.5 w-3.5" />
+                    Ver estatísticas
+                  </Link>
+                </div>
               </div>
             </section>
           </ScrollReveal>
@@ -88,21 +94,21 @@ export default async function HomePage() {
           </ScrollReveal>
 
           <ScrollReveal delay={200}>
-            <DashboardCommandCenter pendingItems={homeData.pendingItems} />
-          </ScrollReveal>
-
-          <ScrollReveal delay={300}>
             <DashboardHighlightsPanel highlights={homeData.highlights} />
           </ScrollReveal>
 
-          <div className="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
-            <div className="min-w-0 space-y-8">
+          <ScrollReveal delay={250}>
+            <DashboardCommandCenter pendingItems={homeData.pendingItems} />
+          </ScrollReveal>
+
+          <div className="mt-10 grid items-start gap-8 xl:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
+            <div className="min-w-0 space-y-10">
               <ScrollReveal>
                 <CourseRecommendations courses={homeData.recommendations} />
               </ScrollReveal>
 
               {homeData.achievements.some((a) => a.unlocked) && (
-                <ScrollReveal delay={200}>
+                <ScrollReveal delay={150}>
                   <section>
                     <h2 className="mb-4 text-lg font-bold hx-text-title">Conquistas recentes</h2>
                     <AchievementGrid
@@ -114,12 +120,14 @@ export default async function HomePage() {
               )}
             </div>
 
-            <ScrollReveal delay={150}>
-              <StudentDashboard
-                data={homeData}
-                userName={session.user.name ?? session.user.username ?? "Estudante"}
-              />
-            </ScrollReveal>
+            <div className="min-w-0 lg:sticky lg:top-6 lg:self-start">
+              <ScrollReveal delay={150}>
+                <StudentDashboard
+                  data={homeData}
+                  userName={session.user.name ?? session.user.username ?? "Estudante"}
+                />
+              </ScrollReveal>
+            </div>
           </div>
         </>
       ) : (

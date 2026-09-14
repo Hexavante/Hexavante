@@ -88,12 +88,12 @@ export function DashboardCommandCenter({ pendingItems }: Props) {
 
       {pendingItems.length > 0 && (
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          {pendingItems.map((item) => (
+          {pendingItems.map((item, i) => (
+            <div key={item.id} className="anim-enter-scale" style={{ animationDelay: `${0.05 + i * 0.07}s` }}>
             <Link
-              key={item.id}
               href={item.href}
               className={cn(
-                "group flex flex-col rounded-xl border p-4 transition",
+                "group hx-lift flex h-full flex-col rounded-xl border p-4",
                 toneStyles[item.tone],
               )}
             >
@@ -104,6 +104,7 @@ export function DashboardCommandCenter({ pendingItems }: Props) {
                 <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
               </span>
             </Link>
+            </div>
           ))}
         </div>
       )}
@@ -120,7 +121,7 @@ export function DashboardCommandCenter({ pendingItems }: Props) {
                 key={action.href}
                 href={action.href}
                 className={cn(
-                  "group flex items-center gap-2.5 rounded-xl border border-[hsl(var(--sidebar-border))] bg-[var(--surface)] px-3 py-2.5 text-sm font-semibold hx-text-body transition",
+                  "group hx-lift flex items-center gap-2.5 rounded-xl border border-[hsl(var(--sidebar-border))] bg-[var(--surface)] px-3 py-2.5 text-sm font-semibold hx-text-body",
                   meta.tone,
                 )}
               >

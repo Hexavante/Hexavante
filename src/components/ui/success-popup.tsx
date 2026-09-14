@@ -32,7 +32,7 @@ export function SuccessPopup({ show, message = "Criado com sucesso!", onClose }:
 
   return (
     <div className="success-popup-overlay" onClick={() => { setExiting(true); setTimeout(() => { setVisible(false); onClose?.(); }, 260); }}>
-      <div className={`success-popup-card ${exiting ? "exiting" : ""}`} onClick={(e) => e.stopPropagation()}>
+      <div className={`success-popup-card hx-dark-surface ${exiting ? "exiting" : ""}`} onClick={(e) => e.stopPropagation()}>
         <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/15">
           <CheckCircle className="h-8 w-8 text-emerald-400" />
         </div>

@@ -109,7 +109,7 @@ export function UserActionModals({ user, modal, onClose, onSuccess }: Props) {
 
   return (
     <div className="fixed inset-0 z-[10003] flex items-center justify-center bg-black/60 p-4">
-      <div className="w-full max-w-md rounded-xl border border-[#1e1e2e] bg-[#0a0a0f] p-6 shadow-2xl">
+      <div className="hx-dark-surface w-full max-w-md rounded-xl border border-[#1e1e2e] bg-[#0a0a0f] p-6 shadow-2xl">
         <h3 className="text-lg font-bold text-white">{titles[modal]}</h3>
         <p className="mt-1 text-sm text-slate-400">
           @{user.username} · {user.fullName}
