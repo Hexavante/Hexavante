@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Bell, Lock, Palette, Settings, UserRound } from "lucide-react";
+import { Bell, Lock, MonitorSmartphone, Palette, Settings, ShieldCheck, UserRound, UsersRound } from "lucide-react";
 import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/page-header";
 import { PageShell } from "@/components/ui/page-shell";
@@ -21,6 +21,24 @@ export default async function ConfiguracoesPage() {
       icon: UserRound,
       title: "Editar perfil",
       description: "Nome, bio, foto e visibilidade do perfil.",
+    },
+    {
+      href: "/configuracoes/seguranca",
+      icon: ShieldCheck,
+      title: "Segurança",
+      description: "Verificação em duas etapas e status de presença.",
+    },
+    {
+      href: "/configuracoes/dispositivos",
+      icon: MonitorSmartphone,
+      title: "Dispositivos",
+      description: "Veja onde sua conta está conectada e desconecte aparelhos.",
+    },
+    {
+      href: "/configuracoes/contas",
+      icon: UsersRound,
+      title: "Trocar de conta",
+      description: "Use mais de uma conta neste dispositivo.",
     },
     {
       href: "/perfil",

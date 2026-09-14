@@ -24,8 +24,26 @@ export async function getUserByUsername(username: string) {
       isPremium: true,
       premiumExpiresAt: true,
       createdAt: true,
+      presence: true,
+      lastSeenAt: true,
     },
   });
+}
+
+const OFFLINE_AFTER_MS = 5 * 60 * 1000;
+
+export function effectivePresence(input: {
+  presence: string;
+  lastSeenAt: Date | null;
+}): "ONLINE" | "AWAY" | "STUDYING" | "DND" | "OFFLINE" {
+  if (input.presence === "INVISIBLE") return "OFFLINE";
+  if (!input.lastSeenAt || Date.now() - input.lastSeenAt.getTime() > OFFLINE_AFTER_MS) {
+    return "OFFLINE";
+  }
+  if (["ONLINE", "AWAY", "STUDYING", "DND"].includes(input.presence)) {
+    return input.presence as "ONLINE" | "AWAY" | "STUDYING" | "DND";
+  }
+  return "ONLINE";
 }
 
 function mapCertificates(
@@ -63,6 +81,7 @@ export async function getPublicProfile(
         avatarUrl: null,
         bannerUrl: null,
         isPremium: false,
+        presence: "OFFLINE" as const,
       },
       isOwner,
       isPrivate: true,
@@ -104,6 +123,7 @@ export async function getPublicProfile(
       ...user,
       fullName: filterProfanity(user.fullName),
       bio: user.bio ? filterProfanity(user.bio) : user.bio,
+      presence: effectivePresence({ presence: user.presence, lastSeenAt: user.lastSeenAt }),
     },
     isOwner,
     isPrivate: false,

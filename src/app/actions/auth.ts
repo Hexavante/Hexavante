@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { registerSchema, loginSchema } from "@/lib/validations/auth";
 import type { ZodError } from "zod";
 import { getApiUrl } from "@/lib/auth-session";
+import { addAccount } from "@/lib/account-switcher";
 
 const WEB_ORIGIN =
   process.env.WEB_ORIGIN ||
@@ -67,7 +68,12 @@ export async function registerAction(
     fullName: formData.get("fullName"),
     email: formData.get("email"),
     password: formData.get("password"),
+    confirmPassword: formData.get("confirmPassword"),
     birthDate: formData.get("birthDate"),
+    phone: formData.get("phone") || undefined,
+    city: formData.get("city") || undefined,
+    state: formData.get("state") || undefined,
+    terms: formData.get("terms") ? "on" : undefined,
   };
   const callbackUrl = (formData.get("callbackUrl") as string) || "/";
   if (!isSafeRedirect(callbackUrl)) {
@@ -96,6 +102,9 @@ export async function registerAction(
         password: parsed.data.password,
         username: parsed.data.username,
         birthDate: parsed.data.birthDate,
+        phone: parsed.data.phone,
+        city: parsed.data.city,
+        state: parsed.data.state,
       }),
     });
 
@@ -144,6 +153,17 @@ export async function registerAction(
           maxAge: 7 * 24 * 60 * 60, // 7 days
           domain: process.env.NODE_ENV === "production" ? ".hexavante.com.br" : undefined,
         });
+        await addAccount(loginData.session.token);
+      }
+    }
+
+    if (loginRes.status === 202) {
+      const data = await loginRes.json() as { verificationId?: string };
+      if (data.verificationId) {
+        return {
+          success: true,
+          redirectTo: `/verificar-dispositivo?vid=${encodeURIComponent(data.verificationId)}&callbackUrl=${encodeURIComponent(callbackUrl)}`,
+        };
       }
     }
 
@@ -189,6 +209,15 @@ export async function loginAction(_prev: ActionResult, formData: FormData): Prom
     });
 
     if (!res.ok) {
+      if (res.status === 202) {
+        const data = await res.json() as { verificationId?: string };
+        if (data.verificationId) {
+          return {
+            success: true,
+            redirectTo: `/verificar-dispositivo?vid=${encodeURIComponent(data.verificationId)}&callbackUrl=${encodeURIComponent(callbackUrl)}`,
+          };
+        }
+      }
       return { success: false, error: "E-mail ou senha incorretos." };
     }
 
@@ -207,6 +236,7 @@ export async function loginAction(_prev: ActionResult, formData: FormData): Prom
         maxAge: 7 * 24 * 60 * 60, // 7 days
         domain: process.env.NODE_ENV === "production" ? ".hexavante.com.br" : undefined,
       });
+      await addAccount(data.session.token);
     }
 
     return { success: true, redirectTo: callbackUrl };

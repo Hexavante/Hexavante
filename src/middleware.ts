@@ -125,6 +125,10 @@ export async function middleware(req: NextRequest) {
   }
 
   if (isAuthenticated && (pathname.startsWith("/login") || pathname.startsWith("/register"))) {
+    // Modo "adicionar conta": permite abrir o login mesmo logado
+    if (req.nextUrl.searchParams.get("addAccount") === "1") {
+      return nextWithPathname(req);
+    }
     return NextResponse.redirect(new URL("/app", origin));
   }
 

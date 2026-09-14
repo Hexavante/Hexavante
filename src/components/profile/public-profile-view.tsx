@@ -1,5 +1,6 @@
 import { ProfileIconBadge } from "@/components/profile/profile-icon-badge";
 import { ProfileShowcase } from "@/components/profile/profile-showcase";
+import { PresenceDot, PRESENCE_META } from "@/components/presence/presence-dot";
 import Link from "next/link";
 import { Award, Pencil, Settings, Store } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
@@ -91,12 +92,17 @@ export function PublicProfileView({ profile, viewerId, viewerUsername }: Props) 
         </div>
         <div className="grid gap-6 p-6 lg:grid-cols-[180px_minmax(0,1fr)]">
           <div className="-mt-16 flex flex-col items-center gap-3 lg:items-start">
-            <Avatar
-              src={user.avatarUrl}
-              alt={user.username ?? ""}
-              size="lg"
-              borderClassName={cosmetics?.avatarBorderClassName}
-            />
+            <span className="relative inline-block">
+              <Avatar
+                src={user.avatarUrl}
+                alt={user.username ?? ""}
+                size="lg"
+                borderClassName={cosmetics?.avatarBorderClassName}
+              />
+              <span className="absolute -bottom-0.5 -right-0.5 rounded-full bg-[var(--surface-strong)] p-0.5">
+                <PresenceDot status={"presence" in user ? user.presence : "OFFLINE"} size="md" />
+              </span>
+            </span>
           </div>
 
           <div className="min-w-0">
@@ -104,6 +110,12 @@ export function PublicProfileView({ profile, viewerId, viewerUsername }: Props) 
               <div>
                 <div className="flex flex-wrap items-center gap-2">
                   <h1 className="text-3xl font-black tracking-tight text-white">{user.fullName}</h1>
+                  {"presence" in user && (
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-slate-300">
+                      <PresenceDot status={user.presence} size="sm" />
+                      {PRESENCE_META[user.presence as keyof typeof PRESENCE_META]?.label ?? user.presence}
+                    </span>
+                  )}
                   {cosmetics?.profileIconId && (
                     <ProfileIconBadge iconId={cosmetics.profileIconId} />
                   )}

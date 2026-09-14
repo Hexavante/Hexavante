@@ -7,6 +7,7 @@ import { HeaderBar } from "@/components/layout/header-bar";
 import { NativeAppBootstrap } from "@/components/native/native-app-bootstrap";
 import { GlobalThemeLayer } from "@/components/shop/global-theme-layer";
 import { ThemeEquipOverlay } from "@/components/shop/theme-equip-overlay";
+import { PresenceHeartbeat } from "@/components/presence/presence-heartbeat";
 import { CookieBanner } from "@/components/ui/cookie-banner";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { ToastProvider } from "@/components/ui/toast";
@@ -69,6 +70,7 @@ export default async function RootLayout({
                 themeClassName={cosmetics.themeClassName}
               />
               <ThemeEquipOverlay />
+              {navSession && <PresenceHeartbeat />}
               <AppShell session={navSession} header={<HeaderBar session={navSession} />}>
                 {children}
               </AppShell>

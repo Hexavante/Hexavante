@@ -27,11 +27,16 @@ export default async function RegisterPage({ searchParams }: Props) {
           callbackUrl={safeCallback}
           formKind="register"
           fields={[
-            { name: "username", label: "Nome de usuário" },
-            { name: "fullName", label: "Nome completo" },
-            { name: "email", label: "E-mail", type: "email" },
-            { name: "password", label: "Senha", type: "password" },
+            { name: "username", label: "Nome de usuário", placeholder: "seu_usuario" },
+            { name: "fullName", label: "Nome completo", placeholder: "Seu nome" },
+            { name: "email", label: "E-mail", type: "email", placeholder: "voce@email.com" },
+            { name: "password", label: "Senha", type: "password", placeholder: "Mínimo 8 caracteres" },
+            { name: "confirmPassword", label: "Confirmar senha", type: "password", placeholder: "Repita a senha" },
             { name: "birthDate", label: "Data de nascimento", type: "date" },
+            { name: "phone", label: "Telefone (opcional)", required: false, placeholder: "(11) 99999-9999" },
+            { name: "city", label: "Cidade (opcional)", required: false, half: true, placeholder: "São Paulo" },
+            { name: "state", label: "Estado (opcional)", required: false, half: true, placeholder: "SP" },
+            { name: "terms", label: "Termos", checkbox: true },
           ]}
           footer={
             <p>
