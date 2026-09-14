@@ -2,7 +2,7 @@
 
 import { useState, use } from "react";
 import { useActionState } from "react";
-import { adminVerifyAction } from "@/app/actions/admin-auth";
+import { adminResendCodeAction, adminVerifyAction } from "@/app/actions/admin-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Shield, KeyRound } from "lucide-react";
@@ -14,6 +14,12 @@ export default function AdminVerifyPage({ searchParams }: { searchParams: Promis
     async (_prev: Awaited<ReturnType<typeof adminVerifyAction>> | null, formData: FormData) => {
       const c = formData.get("code") as string;
       return adminVerifyAction(email, c);
+    },
+    null,
+  );
+  const [resendState, resendAction, resending] = useActionState(
+    async (_prev: Awaited<ReturnType<typeof adminResendCodeAction>> | null) => {
+      return adminResendCodeAction(email);
     },
     null,
   );
@@ -64,14 +70,27 @@ export default function AdminVerifyPage({ searchParams }: { searchParams: Promis
           <Button type="submit" disabled={pending || code.length !== 6} className="w-full">
             {pending ? "Verificando..." : "Verificar"}
           </Button>
-
-          <a
-            href="/admin-login"
-            className="block text-center text-xs text-slate-500 hover:text-slate-300 transition"
-          >
-            ← Voltar ao login
-          </a>
         </form>
+
+        {resendState?.error && (
+          <p className="mt-4 text-sm text-red-400">{resendState.error}</p>
+        )}
+        {resendState?.ok && (
+          <p className="mt-4 text-sm text-emerald-300">Novo código enviado para seu e-mail.</p>
+        )}
+
+        <form action={resendAction} className="mt-2">
+          <Button type="submit" variant="ghost" disabled={resending} className="w-full">
+            {resending ? "Enviando..." : "Não recebeu? Reenviar código"}
+          </Button>
+        </form>
+
+        <a
+          href="/admin-login"
+          className="mt-2 block text-center text-xs text-slate-500 hover:text-slate-300 transition"
+        >
+          ← Voltar ao login
+        </a>
       </div>
     </div>
   );

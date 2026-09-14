@@ -44,11 +44,11 @@ export function StudentDashboard({ data, userName }: Props) {
       <div className="mt-5 grid gap-3 sm:grid-cols-3">
         <div className="rounded-lg border border-[hsl(var(--sidebar-border))] bg-[var(--surface)] p-3">
           <p className="text-xs text-slate-400">Em andamento</p>
-          <p className="mt-1 text-2xl font-bold text-white">{inProgress.length}</p>
+          <p className="mt-1 text-xl font-bold text-white">{inProgress.length}</p>
         </div>
         <div className="rounded-lg border border-[hsl(var(--sidebar-border))] bg-[var(--surface)] p-3">
           <p className="text-xs text-slate-400">Concluídos</p>
-          <p className="mt-1 text-2xl font-bold text-white">{completedCount}</p>
+          <p className="mt-1 text-xl font-bold text-white">{completedCount}</p>
         </div>
         <div className="rounded-lg border border-[hsl(var(--sidebar-border))] bg-[var(--surface)] p-3">
           <p className="text-xs text-slate-400">Ranking</p>

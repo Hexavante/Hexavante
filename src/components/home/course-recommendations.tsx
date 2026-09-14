@@ -18,7 +18,7 @@ export function CourseRecommendations({ courses }: Props) {
   if (courses.length === 0) return null;
 
   return (
-    <section data-tour="course-recommendations" className="mt-10">
+    <section data-tour="course-recommendations" className="mt-8">
       <div className="mb-4 flex items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
@@ -36,7 +36,7 @@ export function CourseRecommendations({ courses }: Props) {
         </Link>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {courses.map((course, i) => (
           <div key={course.id} className="anim-enter-scale" style={{ animationDelay: `${0.05 + i * 0.07}s` }}>
           <Link href={`/courses/${course.slug}`}>

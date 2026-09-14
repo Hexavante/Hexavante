@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useActionState } from "react";
 import Link from "next/link";
 import { Package, Rocket } from "lucide-react";
@@ -9,6 +9,7 @@ import { equipItemAction, type ShopActionResult } from "@/app/actions/shop";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ThemeSwatch } from "@/components/shop/theme-swatch";
+import { notifyThemeEquipped } from "@/lib/theme-equip-event";
 import { STORE_CATEGORY_LABELS } from "@/lib/shop-catalog";
 import {
   INVENTORY_SECTION_ORDER,
@@ -43,6 +44,15 @@ function EquipRow({ item }: { item: InventoryEntry }) {
     item.storeItem.category === "THEME"
       ? ((item.storeItem.metadata as { themeId?: string } | null)?.themeId ?? "default")
       : null;
+  const notified = useRef(false);
+
+  useEffect(() => {
+    if (state.success && themeId && !notified.current) {
+      notified.current = true;
+      notifyThemeEquipped(themeId);
+    }
+    if (!state.success) notified.current = false;
+  }, [state.success, themeId]);
 
   return (
     <InventoryCard

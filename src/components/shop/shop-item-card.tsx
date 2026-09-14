@@ -1,8 +1,9 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { Coins } from "lucide-react";
 import { equipItemAction, purchaseItemAction, type ShopActionResult } from "@/app/actions/shop";
+import { notifyThemeEquipped } from "@/lib/theme-equip-event";
 import { ThemeSwatch } from "@/components/shop/theme-swatch";
 import { Badge } from "@/components/ui/badge";
 import { Button, LinkButton } from "@/components/ui/button";
@@ -74,12 +75,21 @@ export function ShopItemCard({
 }: Props) {
   const [purchaseState, purchase, purchasing] = useActionState(purchaseItemAction, initial);
   const [equipState, equip, equipping] = useActionState(equipItemAction, initial);
+  const notified = useRef(false);
 
   const Icon = SHOP_CATEGORY_ICONS[item.category];
   const themeId =
     item.category === "THEME" && typeof item.metadata?.themeId === "string"
       ? item.metadata.themeId
       : null;
+
+  useEffect(() => {
+    if (equipState.success && item.category === "THEME" && !notified.current) {
+      notified.current = true;
+      notifyThemeEquipped(themeId ?? "default");
+    }
+    if (!equipState.success) notified.current = false;
+  }, [equipState.success, item.category, themeId]);
   const rarity = item.metadata?.rarity as keyof typeof RARITY_LABELS | undefined;
   const isFreePremium = item.isPremiumOnly && isPremium;
   const canAfford = isFreePremium || item.cost <= userCoins;

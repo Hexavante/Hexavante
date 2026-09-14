@@ -87,7 +87,7 @@ export function DashboardCommandCenter({ pendingItems }: Props) {
       </div>
 
       {pendingItems.length > 0 && (
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {pendingItems.map((item, i) => (
             <div key={item.id} className="anim-enter-scale" style={{ animationDelay: `${0.05 + i * 0.07}s` }}>
             <Link
@@ -111,7 +111,7 @@ export function DashboardCommandCenter({ pendingItems }: Props) {
 
       <Card padding="md" className="mt-4">
         <p className="text-xs font-semibold uppercase tracking-wide hx-text-subtle">Atalhos</p>
-        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7">
+        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
           {DASHBOARD_QUICK_ACTIONS.map((action) => {
             const meta = QUICK_ACTION_META[action.href] ?? defaultQuickMeta;
             const Icon = meta.icon;

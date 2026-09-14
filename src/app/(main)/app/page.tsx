@@ -56,14 +56,14 @@ export default async function HomePage() {
       {homeData && session?.user ? (
         <>
           <ScrollReveal>
-            <section className="relative mb-10">
+            <section className="relative mb-8">
               <div
                 aria-hidden
-                className="animate-bg-breathe pointer-events-none absolute -top-12 right-0 h-56 w-56 rounded-full bg-[hsl(var(--sidebar-highlight)/0.1)] blur-[5rem]"
+                className="animate-bg-breathe pointer-events-none absolute -top-12 right-0 h-48 w-48 rounded-full bg-[hsl(var(--sidebar-highlight)/0.1)] blur-[5rem]"
               />
               <div className="relative">
                 <Badge variant="sky">Seu espaço de estudos</Badge>
-                <h1 className="mt-3 text-3xl font-black tracking-tight hx-text-title sm:text-4xl">
+                <h1 className="mt-2 text-2xl font-black tracking-tight hx-text-title sm:text-3xl">
                   <span className="welcome-animated">
                     {"Olá, ".split("").map((char, i) => (
                       <span key={i} style={{ animationDelay: `${0.1 + i * 0.04}s` }}>
@@ -76,10 +76,10 @@ export default async function HomePage() {
                   </span>
                   !
                 </h1>
-                <p className="mt-2 max-w-2xl text-sm hx-text-muted sm:text-base anim-enter anim-d3">
+                <p className="mt-2 max-w-2xl text-sm hx-text-muted anim-enter anim-d3">
                   Retome de onde parou, acompanhe suas estatísticas e descubra novos cursos.
                 </p>
-                <div className="mt-4 flex flex-wrap gap-2 anim-enter anim-d4">
+                <div className="mt-3 flex flex-wrap gap-2 anim-enter anim-d4">
                   <Link href="/estatisticas" className="hx-intro-chip">
                     <BarChart3 className="h-3.5 w-3.5" />
                     Ver estatísticas
@@ -101,8 +101,8 @@ export default async function HomePage() {
             <DashboardCommandCenter pendingItems={homeData.pendingItems} />
           </ScrollReveal>
 
-          <div className="mt-10 grid items-start gap-8 xl:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
-            <div className="min-w-0 space-y-10">
+          <div className="mt-8 grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,20rem)]">
+            <div className="min-w-0 space-y-8">
               <ScrollReveal>
                 <CourseRecommendations courses={homeData.recommendations} />
               </ScrollReveal>

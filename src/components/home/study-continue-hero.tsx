@@ -58,7 +58,7 @@ export function StudyContinueHero({ continuation }: Props) {
             </span>
           </div>
 
-          <h2 className="mt-3 truncate text-2xl font-black hx-text-title">
+          <h2 className="mt-3 truncate text-xl font-black hx-text-title">
             {isExam ? continuation.examTitle : continuation.courseTitle}
           </h2>
           <p className="mt-1 text-sm hx-text-muted">
