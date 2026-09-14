@@ -32,6 +32,11 @@ COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
 COPY --from=builder /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
+COPY --from=builder /app/node_modules/sharp ./node_modules/sharp
+COPY --from=builder /app/node_modules/@img ./node_modules/@img
+COPY --from=builder /app/node_modules/colour ./node_modules/colour
+COPY --from=builder /app/node_modules/detect-libc ./node_modules/detect-libc
+COPY --from=builder /app/node_modules/semver ./node_modules/semver
 COPY --from=builder /app/scripts/docker-entrypoint.sh ./docker-entrypoint.sh
 
 RUN chmod +x ./docker-entrypoint.sh

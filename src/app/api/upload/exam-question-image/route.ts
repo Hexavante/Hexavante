@@ -13,8 +13,6 @@ import { mkdir, writeFile } from "fs/promises";
 
 import path from "path";
 
-import sharp from "sharp";
-
 export const runtime = "nodejs";
 
 const MAX_DIMENSION = 1920;
@@ -62,6 +60,8 @@ export async function POST(request: Request) {
 
     await mkdir(uploadDir, { recursive: true });
 
+    // Import lazy: se o binário nativo falhar, o erro cai no catch e vira JSON.
+    const { default: sharp } = await import("sharp");
     const buffer = Buffer.from(await file.arrayBuffer());
 
     const output = await sharp(buffer)
