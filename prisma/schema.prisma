@@ -45,11 +45,18 @@ model User {
   banReason         String?   @map("ban_reason")
   banExpires        DateTime? @map("ban_expires")
 
+  twoFactorEnabled  Boolean   @default(false) @map("two_factor_enabled")
+  presence          String    @default("ONLINE")
+  presenceUpdatedAt DateTime? @map("presence_updated_at")
+  lastSeenAt        DateTime? @map("last_seen_at")
+
   roles              UserRole[]
   xp                 UserXP?
   wallet             UserWallet?
   accounts           Account[]
   sessions           Session[]
+  trustedDevices     TrustedDevice[]
+  deviceCodes        DeviceVerificationCode[]
   instructedCourses  CourseInstructor[]
   enrollments        CourseEnrollment[]
   lessonProgresses   LessonProgress[]
@@ -402,6 +409,7 @@ model CourseInstructor {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([courseId, userId])
+  @@index([userId], map: "course_instructors_user_id_idx")
   @@map("course_instructors")
 }
 
@@ -546,7 +554,8 @@ model TutorialTag {
   tutorial   Tutorial @relation(fields: [tutorialId], references: [id], onDelete: Cascade)
   tag        Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
-  @@unique([tutorialId, tagId])
+  @@id([tutorialId, tagId])
+  @@unique([tutorialId, tagId], map: "tutorial_tags_tutorial_id_tag_id_key")
   @@index([tagId])
   @@map("tutorial_tags")
 }
@@ -580,6 +589,7 @@ model LessonProgress {
   enrollment CourseEnrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
 
   @@unique([userId, lessonId])
+  @@index([enrollmentId], map: "lesson_progress_enrollment_id_idx")
   @@map("lesson_progress")
 }
 
@@ -737,6 +747,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([providerId, accountId])
+  @@index([userId], map: "accounts_user_id_idx")
   @@map("accounts")
 }
 
@@ -753,6 +764,7 @@ model Session {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([userId], map: "sessions_user_id_idx")
   @@map("sessions")
 }
 
@@ -873,6 +885,7 @@ model RankingSeasonResult {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, seasonKey])
+  @@index([userId])
   @@index([seasonKey, league])
   @@map("ranking_season_results")
 }
@@ -936,6 +949,7 @@ model UserInventory {
 
   @@unique([userId, storeItemId])
   @@index([userId])
+  @@index([storeItemId], map: "user_inventory_store_item_id_idx")
   @@map("user_inventory")
 }
 
@@ -1288,4 +1302,39 @@ model AdminVerificationCode {
 
   @@index([userId, code])
   @@map("admin_verification_codes")
+}
+
+model TrustedDevice {
+  id          String    @id @default(cuid())
+  userId      String   @map("user_id")
+  fingerprint String
+  name        String?
+  ipAddress   String?   @map("ip_address")
+  userAgent   String?   @map("user_agent") @db.Text
+  lastSeenAt  DateTime  @default(now()) @map("last_seen_at")
+  revokedAt   DateTime? @map("revoked_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, fingerprint])
+  @@index([userId])
+  @@map("trusted_devices")
+}
+
+model DeviceVerificationCode {
+  id          String   @id @default(cuid())
+  userId      String   @map("user_id")
+  fingerprint String?
+  purpose     String   @default("DEVICE")
+  code        String
+  attempts    Int      @default(0)
+  used        Boolean  @default(false)
+  expiresAt   DateTime @map("expires_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("device_verification_codes")
 }
