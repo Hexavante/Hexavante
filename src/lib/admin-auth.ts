@@ -34,7 +34,8 @@ export async function getAdminSession() {
     const roles = userRoles.map((r) => r.role.name);
 
     return { ...session.user, roles };
-  } catch {
+  } catch (e) {
+    console.log(`[admin-auth-debug] getAdminSession error: ${e instanceof Error ? e.message : String(e)}`);
     return null;
   }
 }
