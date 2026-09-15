@@ -9,24 +9,22 @@ export async function getAdminSession() {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get(COOKIE)?.value;
-    console.log(`[admin-auth-debug] hasToken=${Boolean(token)}`);
     if (!token) return null;
 
-    console.log(`[admin-auth-debug] delegate=${typeof (prisma as unknown as Record<string, unknown>).adminSession}`);
     const session = await prisma.adminSession.findUnique({
       where: { token },
-      include: {
-        user: {
-          select: { id: true, name: true, email: true, username: true, avatarUrl: true },
-        },
-      },
     });
-    console.log(`[admin-auth-debug] sessionFound=${Boolean(session)}`);
     if (!session) return null;
     if (session.expiresAt < new Date()) {
       await prisma.adminSession.delete({ where: { id: session.id } });
       return null;
     }
+
+    const user = await prisma.user.findUnique({
+      where: { id: session.userId },
+      select: { id: true, name: true, email: true, username: true, avatarUrl: true },
+    });
+    if (!user) return null;
 
     const userRoles = await prisma.userRole.findMany({
       where: { userId: session.userId },
@@ -34,7 +32,7 @@ export async function getAdminSession() {
     });
     const roles = userRoles.map((r) => r.role.name);
 
-    return { ...session.user, roles };
+    return { ...user, roles };
   } catch (e) {
     const name = e instanceof Error ? e.constructor.name : typeof e;
     const msg = e instanceof Error ? e.message : String(e);
