@@ -9,6 +9,7 @@ export async function getAdminSession() {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get(COOKIE)?.value;
+    console.log(`[admin-auth-debug] hasToken=${Boolean(token)}`);
     if (!token) return null;
 
     const session = await prisma.adminSession.findUnique({
@@ -19,6 +20,7 @@ export async function getAdminSession() {
         },
       },
     });
+    console.log(`[admin-auth-debug] sessionFound=${Boolean(session)}`);
     if (!session) return null;
     if (session.expiresAt < new Date()) {
       await prisma.adminSession.delete({ where: { id: session.id } });
