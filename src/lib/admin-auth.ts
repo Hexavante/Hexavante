@@ -12,6 +12,7 @@ export async function getAdminSession() {
     console.log(`[admin-auth-debug] hasToken=${Boolean(token)}`);
     if (!token) return null;
 
+    console.log(`[admin-auth-debug] delegate=${typeof (prisma as unknown as Record<string, unknown>).adminSession}`);
     const session = await prisma.adminSession.findUnique({
       where: { token },
       include: {
@@ -35,7 +36,10 @@ export async function getAdminSession() {
 
     return { ...session.user, roles };
   } catch (e) {
-    console.log(`[admin-auth-debug] getAdminSession error: ${e instanceof Error ? e.message : String(e)}`);
+    const name = e instanceof Error ? e.constructor.name : typeof e;
+    const msg = e instanceof Error ? e.message : String(e);
+    const stack = e instanceof Error ? (e.stack ?? "").split("\n").slice(0, 3).join(" | ") : "";
+    console.log(`[admin-auth-debug] error name=${name} msg=${msg} stack=${stack}`);
     return null;
   }
 }
