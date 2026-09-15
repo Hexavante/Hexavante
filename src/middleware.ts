@@ -118,7 +118,16 @@ export async function middleware(req: NextRequest) {
 
   const publicPaths = ["/", "/hexa", "/ajuda", "/login", "/register", "/recuperar-senha", "/redefinir-senha", "/verificar-dispositivo", "/manutencao", "/suspenso", "/tutorials", "/cursos", "/admin-login", "/admin-verificar"];
 
+  // O painel admin usa sessão própria (cookie hx_admin_session). O layout
+  // /admin valida de verdade; aqui só deixamos passar quem tem o cookie
+  // para não exigir login no app principal antes do login admin.
+  const hasAdminCookie = Boolean(req.cookies.get("hx_admin_session")?.value);
+  const isAdminArea = pathname === "/admin" || pathname.startsWith("/admin/");
+
   if (!isAuthenticated && !publicPaths.some((p) => pathname === p || pathname.startsWith(p + "/"))) {
+    if (isAdminArea && hasAdminCookie) {
+      return nextWithPathname(req);
+    }
     const login = new URL("/login", origin);
     login.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(login);
@@ -133,6 +142,10 @@ export async function middleware(req: NextRequest) {
   }
 
   if (MODERATOR_REQUIRED.test(pathname) && !pathname.startsWith("/admin-login") && !pathname.startsWith("/admin-verificar") && !user.roles?.some((r: string) => ["ADMIN", "MODERATOR", "SUPERADMIN"].includes(r))) {
+    // Com cookie admin, o layout /admin valida a sessão de verdade
+    if (isAdminArea && hasAdminCookie) {
+      return nextWithPathname(req);
+    }
     return NextResponse.redirect(new URL("/app", origin));
   }
 
