@@ -25,6 +25,9 @@ export default function AdminVerifyPage({ searchParams }: { searchParams: Promis
   );
 
   if (state?.ok) {
+    if (typeof window !== "undefined") {
+      window.location.href = "/admin";
+    }
     return (
       <div className="flex min-h-screen items-center justify-center bg-[var(--background)]">
         <p className="text-slate-400">Verificado! Redirecionando...</p>

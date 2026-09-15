@@ -84,10 +84,10 @@ export async function adminVerifyAction(email: string, code: string): Promise<Ad
     if (!valid) return { ok: false, error: "Código inválido ou expirado." };
 
     await createAdminSession(user.id);
+    return { ok: true };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Erro ao verificar" };
   }
-  redirect("/admin");
 }
 
 export async function adminLogoutAction() {
