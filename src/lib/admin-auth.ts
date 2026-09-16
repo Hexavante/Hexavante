@@ -22,7 +22,7 @@ export async function getAdminSession() {
 
     const user = await prisma.user.findUnique({
       where: { id: session.userId },
-      select: { id: true, name: true, email: true, username: true, avatarUrl: true },
+      select: { id: true, fullName: true, email: true, username: true, avatarUrl: true },
     });
     if (!user) return null;
 
@@ -32,7 +32,14 @@ export async function getAdminSession() {
     });
     const roles = userRoles.map((r) => r.role.name);
 
-    return { ...user, roles };
+    return {
+      id: user.id,
+      name: user.fullName,
+      email: user.email,
+      username: user.username,
+      avatarUrl: user.avatarUrl,
+      roles,
+    };
   } catch (e) {
     const name = e instanceof Error ? e.constructor.name : typeof e;
     const msg = e instanceof Error ? e.message : String(e);
