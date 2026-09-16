@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { resendDeviceCodeAction, verifyDeviceAction } from "@/app/actions/device-auth";
 
 type Props = {
-  searchParams: Promise<{ vid?: string; callbackUrl?: string }>;
+  searchParams: Promise<{ vid?: string; callbackUrl?: string; motivo?: string }>;
 };
 
 export default function VerificarDispositivoPage({ searchParams }: Props) {
@@ -21,7 +21,9 @@ import { use } from "react";
 import { useEffect } from "react";
 
 function VerificarDispositivoForm({ searchParams }: Props) {
-  const { vid = "", callbackUrl = "/app" } = use(searchParams);
+  const { vid = "", callbackUrl = "/app", motivo = "" } = use(searchParams);
+  const isEmail = motivo === "email";
+  const is2fa = motivo === "2fa";
   const [code, setCode] = useState("");
   const [vid2, setVid2] = useState(vid);
   const [state, action, pending] = useActionState(
@@ -59,10 +61,16 @@ function VerificarDispositivoForm({ searchParams }: Props) {
         <div className="anim-enter-scale mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl border border-cyan-400/25 bg-cyan-400/10">
           <MonitorSmartphone className="h-7 w-7 text-cyan-300" />
         </div>
-        <p className="text-xs font-semibold uppercase tracking-wide text-sky-300">Novo dispositivo</p>
-        <h1 className="mt-2 text-2xl font-black tracking-tight text-white">Confirme que é você</h1>
+        <p className="text-xs font-semibold uppercase tracking-wide text-sky-300">
+          {isEmail ? "Confirme seu e-mail" : is2fa ? "Verificação em duas etapas" : "Novo dispositivo"}
+        </p>
+        <h1 className="mt-2 text-2xl font-black tracking-tight text-white">
+          {isEmail ? "Ative sua conta" : "Confirme que é você"}
+        </h1>
         <p className="mt-2 text-sm leading-6 text-slate-400">
-          Enviamos um código de 6 dígitos para o seu e-mail. Ele expira em 10 minutos.
+          {isEmail
+            ? "Enviamos um código de 6 dígitos para o seu e-mail. Confirme para ativar sua conta."
+            : "Enviamos um código de 6 dígitos para o seu e-mail. Ele expira em 10 minutos."}
         </p>
       </div>
 

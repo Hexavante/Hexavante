@@ -158,11 +158,12 @@ export async function registerAction(
     }
 
     if (loginRes.status === 202) {
-      const data = await loginRes.json() as { verificationId?: string };
+      const data = await loginRes.json() as { verificationId?: string; reason?: string };
       if (data.verificationId) {
+        const motivo = data.reason === "EMAIL_VERIFY" ? "&motivo=email" : data.reason === "TWO_FACTOR" ? "&motivo=2fa" : "";
         return {
           success: true,
-          redirectTo: `/verificar-dispositivo?vid=${encodeURIComponent(data.verificationId)}&callbackUrl=${encodeURIComponent(callbackUrl)}`,
+          redirectTo: `/verificar-dispositivo?vid=${encodeURIComponent(data.verificationId)}${motivo}&callbackUrl=${encodeURIComponent(callbackUrl)}`,
         };
       }
     }
@@ -210,11 +211,12 @@ export async function loginAction(_prev: ActionResult, formData: FormData): Prom
 
     if (!res.ok) {
       if (res.status === 202) {
-        const data = await res.json() as { verificationId?: string };
+        const data = await res.json() as { verificationId?: string; reason?: string };
         if (data.verificationId) {
+          const motivo = data.reason === "EMAIL_VERIFY" ? "&motivo=email" : data.reason === "TWO_FACTOR" ? "&motivo=2fa" : "";
           return {
             success: true,
-            redirectTo: `/verificar-dispositivo?vid=${encodeURIComponent(data.verificationId)}&callbackUrl=${encodeURIComponent(callbackUrl)}`,
+            redirectTo: `/verificar-dispositivo?vid=${encodeURIComponent(data.verificationId)}${motivo}&callbackUrl=${encodeURIComponent(callbackUrl)}`,
           };
         }
       }
