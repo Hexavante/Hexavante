@@ -139,6 +139,19 @@ export async function registerAction(
       }),
     });
 
+    // NOTE: Response.ok é true para 202 — checar o status ANTES de .ok (e ler o body uma vez só)
+    if (loginRes.status === 202) {
+      const data = await loginRes.json() as { verificationId?: string; reason?: string };
+      if (data.verificationId) {
+        const motivo = data.reason === "EMAIL_VERIFY" ? "&motivo=email" : data.reason === "TWO_FACTOR" ? "&motivo=2fa" : "";
+        return {
+          success: true,
+          redirectTo: `/verificar-dispositivo?vid=${encodeURIComponent(data.verificationId)}${motivo}&callbackUrl=${encodeURIComponent(callbackUrl)}`,
+        };
+      }
+      return { success: false, error: "Não foi possível iniciar a verificação. Tente novamente." };
+    }
+
     if (loginRes.ok) {
       const loginData = await loginRes.json() as {
         session?: { token: string; expiresAt: string };
@@ -154,17 +167,6 @@ export async function registerAction(
           domain: process.env.NODE_ENV === "production" ? ".hexavante.com.br" : undefined,
         });
         await addAccount(loginData.session.token);
-      }
-    }
-
-    if (loginRes.status === 202) {
-      const data = await loginRes.json() as { verificationId?: string; reason?: string };
-      if (data.verificationId) {
-        const motivo = data.reason === "EMAIL_VERIFY" ? "&motivo=email" : data.reason === "TWO_FACTOR" ? "&motivo=2fa" : "";
-        return {
-          success: true,
-          redirectTo: `/verificar-dispositivo?vid=${encodeURIComponent(data.verificationId)}${motivo}&callbackUrl=${encodeURIComponent(callbackUrl)}`,
-        };
       }
     }
 
@@ -209,17 +211,20 @@ export async function loginAction(_prev: ActionResult, formData: FormData): Prom
       }),
     });
 
-    if (!res.ok) {
-      if (res.status === 202) {
-        const data = await res.json() as { verificationId?: string; reason?: string };
-        if (data.verificationId) {
-          const motivo = data.reason === "EMAIL_VERIFY" ? "&motivo=email" : data.reason === "TWO_FACTOR" ? "&motivo=2fa" : "";
-          return {
-            success: true,
-            redirectTo: `/verificar-dispositivo?vid=${encodeURIComponent(data.verificationId)}${motivo}&callbackUrl=${encodeURIComponent(callbackUrl)}`,
-          };
-        }
+    // NOTE: Response.ok é true para 202 — checar o status ANTES de !res.ok
+    if (res.status === 202) {
+      const data = await res.json() as { verificationId?: string; reason?: string };
+      if (data.verificationId) {
+        const motivo = data.reason === "EMAIL_VERIFY" ? "&motivo=email" : data.reason === "TWO_FACTOR" ? "&motivo=2fa" : "";
+        return {
+          success: true,
+          redirectTo: `/verificar-dispositivo?vid=${encodeURIComponent(data.verificationId)}${motivo}&callbackUrl=${encodeURIComponent(callbackUrl)}`,
+        };
       }
+      return { success: false, error: "Não foi possível iniciar a verificação. Tente novamente." };
+    }
+
+    if (!res.ok) {
       return { success: false, error: "E-mail ou senha incorretos." };
     }
 
