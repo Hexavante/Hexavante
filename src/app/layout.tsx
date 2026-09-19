@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import "./native-shell.css";
 import { AppShell } from "@/components/app-shell";
@@ -19,9 +19,9 @@ import { toNavSession } from "@/lib/nav-session";
 import { getThemeMode } from "@/lib/cosmetics";
 import { buildNativeMetadata, nativeViewport } from "@/lib/native-metadata";
 
-const jakarta = Plus_Jakarta_Sans({
+const grotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-jakarta",
+  variable: "--font-display",
   display: "swap",
 });
 
@@ -58,7 +58,7 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body
-        className={cn(jakarta.variable, "app-shell hx-native-safe-area antialiased font-sans", themeClass)}
+        className={cn(grotesk.variable, "app-shell hx-native-safe-area antialiased font-sans", themeClass)}
         data-theme-mode={themeMode}
       >
         <ErrorBoundary>

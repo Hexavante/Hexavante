@@ -6,7 +6,7 @@
 @import "../styles/theme-light.css";
 
 @theme inline {
-  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-display), ui-sans-serif, system-ui, sans-serif;
   --color-primary: #2563eb;
   --color-primary-hover: #1d4ed8;
   --color-accent: #14b8a6;
