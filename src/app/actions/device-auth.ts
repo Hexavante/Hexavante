@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { getApiUrl } from "@/lib/auth-session";
 import { addAccount } from "@/lib/account-switcher";
+import { getClientDevice } from "@/lib/client-device";
 
 const API_URL = getApiUrl();
 
@@ -24,10 +25,11 @@ export async function verifyDeviceAction(
   code: string,
 ): Promise<DeviceAuthResult> {
   try {
+    const device = await getClientDevice();
     const res = await fetch(`${API_URL}/api/v1/auth/verify-device`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ verificationId, code }),
+      body: JSON.stringify({ verificationId, code, ...device }),
     });
 
     if (!res.ok) {
@@ -46,7 +48,12 @@ export async function verifyDeviceAction(
 
     const cookieStore = await cookies();
     cookieStore.set("__Secure-hexavante.session_token", data.session.token, sessionCookieOpts());
-    await addAccount(data.session.token);
+    // Multiconta é conveniência: nunca pode quebrar o login
+    try {
+      await addAccount(data.session.token);
+    } catch (e) {
+      console.error("[device-auth] addAccount falhou (não bloqueante):", e);
+    }
 
     return { ok: true };
   } catch (e) {

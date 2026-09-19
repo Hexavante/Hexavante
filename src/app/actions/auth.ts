@@ -5,6 +5,7 @@ import { registerSchema, loginSchema } from "@/lib/validations/auth";
 import type { ZodError } from "zod";
 import { getApiUrl } from "@/lib/auth-session";
 import { addAccount } from "@/lib/account-switcher";
+import { getClientDevice } from "@/lib/client-device";
 
 const WEB_ORIGIN =
   process.env.WEB_ORIGIN ||
@@ -136,6 +137,7 @@ export async function registerAction(
       body: JSON.stringify({
         email: parsed.data.email,
         password: parsed.data.password,
+        ...(await getClientDevice()),
       }),
     });
 
@@ -166,7 +168,11 @@ export async function registerAction(
           maxAge: 7 * 24 * 60 * 60, // 7 days
           domain: process.env.NODE_ENV === "production" ? ".hexavante.com.br" : undefined,
         });
-        await addAccount(loginData.session.token);
+        try {
+          await addAccount(loginData.session.token);
+        } catch (e) {
+          console.error("[auth] addAccount falhou (não bloqueante):", e);
+        }
       }
     }
 
@@ -208,6 +214,7 @@ export async function loginAction(_prev: ActionResult, formData: FormData): Prom
       body: JSON.stringify({
         email: parsed.data.email,
         password: parsed.data.password,
+        ...(await getClientDevice()),
       }),
     });
 
@@ -243,7 +250,11 @@ export async function loginAction(_prev: ActionResult, formData: FormData): Prom
         maxAge: 7 * 24 * 60 * 60, // 7 days
         domain: process.env.NODE_ENV === "production" ? ".hexavante.com.br" : undefined,
       });
-      await addAccount(data.session.token);
+      try {
+        await addAccount(data.session.token);
+      } catch (e) {
+        console.error("[auth] addAccount falhou (não bloqueante):", e);
+      }
     }
 
     return { success: true, redirectTo: callbackUrl };

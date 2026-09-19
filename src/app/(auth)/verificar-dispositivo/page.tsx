@@ -27,7 +27,13 @@ function VerificarDispositivoForm({ searchParams }: Props) {
   const [code, setCode] = useState("");
   const [vid2, setVid2] = useState(vid);
   const [state, action, pending] = useActionState(
-    async () => verifyDeviceAction(vid2, code),
+    async (): Promise<Awaited<ReturnType<typeof verifyDeviceAction>> | null> => {
+      try {
+        return await verifyDeviceAction(vid2, code);
+      } catch {
+        return { ok: false, error: "Erro inesperado. Tente novamente." };
+      }
+    },
     null as Awaited<ReturnType<typeof verifyDeviceAction>> | null,
   );
   const [resendState, resendAction, resending] = useActionState(
