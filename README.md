@@ -8,7 +8,21 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Status-produção-brightgreen?style=flat-square" alt="produção" />
+  <a href="https://hexavante.com.br"><strong>🌐 Site</strong></a> ·
+  <a href="https://app.hexavante.com.br"><strong>🚀 App</strong></a> ·
+  <a href="https://api.hexavante.com.br/api/v1/platform/stats"><strong>⚙️ API stats</strong></a> ·
+  <a href="https://painel.hexavante.com.br"><strong>🛡️ Painel</strong></a> ·
+  <a href="https://github.com/Hexavante"><strong>📦 Repositórios</strong></a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Status-produção-brightgreen?style=for-the-badge" alt="produção" />
+  <img src="https://img.shields.io/website?url=https%3A%2F%2Fhexavante.com.br&up_message=site%20online&down_message=site%20offline&style=for-the-badge&color=0ea5e9" alt="site" />
+  <img src="https://img.shields.io/website?url=https%3A%2F%2Fapp.hexavante.com.br&up_message=app%20online&down_message=app%20offline&style=for-the-badge&color=8b5cf6" alt="app" />
+  <img src="https://img.shields.io/website?url=https%3A%2F%2Fapi.hexavante.com.br%2Fapi%2Fv1%2Fplatform%2Fstats&up_message=api%20online&down_message=api%20offline&style=for-the-badge&color=22c55e" alt="api" />
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/Next.js-16-black?logo=next.js&logoColor=white" alt="Next.js" />
   <img src="https://img.shields.io/badge/Fastify-5-black?logo=fastify&logoColor=white" alt="Fastify" />
   <img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white" alt="TypeScript" />
@@ -23,16 +37,26 @@
 </p>
 
 <p align="center">
-  <a href="https://hexavante.com.br">🌐 Site</a> ·
-  <a href="https://app.hexavante.com.br">🚀 App</a> ·
-  <a href="https://api.hexavante.com.br/api/v1/platform/stats">⚙️ API</a> ·
-  <a href="https://painel.hexavante.com.br">🛡️ Painel</a> ·
-  <a href="https://github.com/Hexavante">📦 Repositórios</a>
+  <a href="#-comece-por-aqui">👋 Comece por aqui</a> ·
+  <a href="#-português">🇧🇷 Português</a> ·
+  <a href="#-english">🇺🇸 English</a> ·
+  <a href="#-ecossistema">🧩 Ecossistema</a> ·
+  <a href="#-arquitetura">🏗️ Arquitetura</a> ·
+  <a href="#-segurança">🔐 Segurança</a> ·
+  <a href="#-infra--devops">🚢 Infra</a> ·
+  <a href="#%EF%B8%8F-roadmap-público">🗺️ Roadmap</a>
 </p>
 
-<p align="center">
-  <a href="#-português">🇧🇷 Português</a> · <a href="#-english">🇺🇸 English</a> · <a href="#-ecossistema">Ecossistema</a> · <a href="#-arquitetura">Arquitetura</a> · <a href="#-segurança">Segurança</a> · <a href="#-infra--devops">Infra</a>
-</p>
+---
+
+<a id="-comece-por-aqui"></a>
+## 👋 Comece por aqui
+
+| Você é… | Caminho | Links |
+|---|---|---|
+| 🎓 **Estudante** — quer estudar TI, ENEM e vestibulares | Entre pelo **site**, crie a conta e abra o **app** | 🌐 [Site](https://hexavante.com.br) · 🚀 [App](https://app.hexavante.com.br) |
+| 💻 **Dev** — quer integrar ou contribuir | Leia a **API + docs** (`/api/v1/platform/stats`, Swagger fora de produção) e clone os repos | ⚙️ [API stats](https://api.hexavante.com.br/api/v1/platform/stats) · 📦 [Hexavante-Web](https://github.com/Hexavante/Hexavante-Web) · 📦 [Hexavante-Api](https://github.com/Hexavante/Hexavante-Api) |
+| 🔭 **Curioso** — quer ver como tudo se conecta | Passeie pelos **6 repos** abaixo e pelo diagrama de arquitetura | 🧩 [Ecossistema](#-ecossistema) · 🏗️ [Arquitetura](#-arquitetura) · 📦 [Todos os repos](https://github.com/Hexavante) |
 
 ---
 
@@ -59,16 +83,18 @@ const hexavante = {
 <a id="-ecossistema"></a>
 ### 🧩 Ecossistema — os 6 repositórios
 
-| Repositório | Papel | Stack principal | Onde roda |
+| Repositório | Papel (1 linha) | Stack principal | Onde roda |
 |---|---|---|---|
-| [Hexavante-Web](https://github.com/Hexavante/Hexavante-Web) | App do aluno/instrutor: painel, cursos, tutoriais, simulados, ranking, loja, inventário, certificados, social, DMs, live-rooms, perfil, estatisticas, configurações | Next.js 16 App Router, React 19, Tailwind v4, Prisma, Server Actions | `app.hexavante.com.br` · `:3000` · container `hexavante-app` |
-| [Hexavante-Api](https://github.com/Hexavante/Hexavante-Api) | Backend oficial: auth, regras de negócio, catálogos públicos, ranking, loja, certificados, moderação auditada, notificações, Swagger fora de produção | Fastify 5, Zod, Prisma 6, Redis (cache/sessão/rate-limit), Pino, Vitest | `api.hexavante.com.br` · `:3045` · container `hexavante-api` |
-| [Hexavante-landing](https://github.com/Hexavante/Hexavante-landing) | Vitrine pública independente: hero + mascote, catálogos, competir (ranking/loja), plataforma, sobre com time do TCC — **só via API, sem Prisma** | Next.js 16 standalone | `hexavante.com.br` · `:3001` · container `hexavante-landing` |
-| [Hexavante-admin](https://github.com/Hexavante/Hexavante-admin) | Moderação independente: visão geral, usuários, conteúdo, cursos, tutoriais, simulados/correções, categorias, instrutores, logs, terminal CLI, broadcast, manutenção | Next.js 16, Prisma direto no banco | `painel.hexavante.com.br` · `:3002` · container `hexavante-admin` |
-| [Hexavante-Desktop](https://github.com/Hexavante/Hexavante-Desktop) | Cliente Windows/Linux com mesma conta do web (main + renderer, `contextIsolation` ligado) | Electron 33, React 18, Vite, Zustand, React Query | instalador desktop |
-| Hexavante-Mobile 🔒 | App Android/iOS (Expo Go no dev, EAS p/ APK/AAB/IPA, token em secure store) 🔒 privado | Expo 57, React Native, expo-router | stores / sideload |
+| [📦 Hexavante-Web](https://github.com/Hexavante/Hexavante-Web) | App do aluno/instrutor: painel, cursos, tutoriais, simulados, ranking, loja, inventário, certificados, social, DMs, live-rooms, perfil, estatisticas, configurações | ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js&logoColor=white&style=flat-square) ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black&style=flat-square) ![Tailwind](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss&logoColor=white&style=flat-square) ![Prisma](https://img.shields.io/badge/Prisma-2D3748?logo=prisma&logoColor=white&style=flat-square)<br/>Next.js 16 App Router, React 19, Tailwind v4, Prisma, Server Actions | `app.hexavante.com.br` · `:3000` · container `hexavante-app` |
+| [📦 Hexavante-Api](https://github.com/Hexavante/Hexavante-Api) | Backend oficial: auth, regras de negócio, catálogos públicos, ranking, loja, certificados, moderação auditada, notificações, Swagger fora de produção | ![Fastify](https://img.shields.io/badge/Fastify-5-black?logo=fastify&logoColor=white&style=flat-square) ![Zod](https://img.shields.io/badge/Zod-3E67B1?logo=zod&logoColor=white&style=flat-square) ![Prisma](https://img.shields.io/badge/Prisma-6-2D3748?logo=prisma&logoColor=white&style=flat-square) ![Redis](https://img.shields.io/badge/Redis-DC382D?logo=redis&logoColor=white&style=flat-square)<br/>Fastify 5, Zod, Prisma 6, Redis (cache/sessão/rate-limit), Pino, Vitest | `api.hexavante.com.br` · `:3045` · container `hexavante-api` |
+| [📦 Hexavante-landing](https://github.com/Hexavante/Hexavante-landing) | Vitrine pública independente: hero + mascote, catálogos, competir (ranking/loja), plataforma, sobre com time do TCC — **só via API, sem Prisma** | ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js&logoColor=white&style=flat-square) ![Standalone](https://img.shields.io/badge/standalone-0ea5e9?style=flat-square)<br/>Next.js 16 standalone | `hexavante.com.br` · `:3001` · container `hexavante-landing` |
+| [📦 Hexavante-admin](https://github.com/Hexavante/Hexavante-admin) | Moderação independente: visão geral, usuários, conteúdo, cursos, tutoriais, simulados/correções, categorias, instrutores, logs, terminal CLI, broadcast, manutenção | ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js&logoColor=white&style=flat-square) ![Prisma](https://img.shields.io/badge/Prisma-2D3748?logo=prisma&logoColor=white&style=flat-square)<br/>Next.js 16, Prisma direto no banco | `painel.hexavante.com.br` · `:3002` · container `hexavante-admin` |
+| [📦 Hexavante-Desktop](https://github.com/Hexavante/Hexavante-Desktop) | Cliente Windows/Linux com mesma conta do web (main + renderer, `contextIsolation` ligado) | ![Electron](https://img.shields.io/badge/Electron-33-47848F?logo=electron&logoColor=white&style=flat-square) ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black&style=flat-square) ![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white&style=flat-square)<br/>Electron 33, React 18, Vite, Zustand, React Query | instalador desktop |
+| [📦 Hexavante-Mobile](https://github.com/Hexavante/Hexavante-Mobile) | App Android/iOS com a mesma conta do web (Expo Go no dev, EAS p/ APK/AAB/IPA, token em secure store) | ![Expo](https://img.shields.io/badge/Expo-00001f?logo=expo&logoColor=white&style=flat-square) ![React Native](https://img.shields.io/badge/React_Native-61DAFB?logo=react&logoColor=black&style=flat-square) ![expo-router](https://img.shields.io/badge/expo--router-00001f?style=flat-square)<br/>Expo 57, React Native, expo-router | stores / sideload |
 
-#### Pins
+> Nomes exatos no GitHub: `Hexavante-Web` · `Hexavante-Api` · `Hexavante-landing` · `Hexavante-admin` · `Hexavante-Desktop` · `Hexavante-Mobile`.
+
+#### 📌 Pins
 <p align="center">
   <a href="https://github.com/Hexavante/Hexavante-Web"><img src="https://github-readme-stats.vercel.app/api/pin/?username=Hexavante&repo=Hexavante-Web&theme=tokyonight&hide_border=true&border_radius=12" alt="Web" /></a>
   <a href="https://github.com/Hexavante/Hexavante-Api"><img src="https://github-readme-stats.vercel.app/api/pin/?username=Hexavante&repo=Hexavante-Api&theme=tokyonight&hide_border=true&border_radius=12" alt="Api" /></a>
@@ -79,6 +105,7 @@ const hexavante = {
 </p>
 <p align="center">
   <a href="https://github.com/Hexavante/Hexavante-Desktop"><img src="https://github-readme-stats.vercel.app/api/pin/?username=Hexavante&repo=Hexavante-Desktop&theme=tokyonight&hide_border=true&border_radius=12" alt="Desktop" /></a>
+  <a href="https://github.com/Hexavante/Hexavante-Mobile"><img src="https://github-readme-stats.vercel.app/api/pin/?username=Hexavante&repo=Hexavante-Mobile&theme=tokyonight&hide_border=true&border_radius=12" alt="Mobile" /></a>
 </p>
 
 <a id="-arquitetura"></a>
@@ -138,7 +165,7 @@ flowchart LR
 - [ ] Correção assistida de dissertativas
 - [ ] Trilhas por edital (ENEM/vestibulares)
 
-### GitHub Stats
+### 📊 GitHub Stats
 <p align="center">
   <img src="https://github-readme-stats.vercel.app/api?username=Hexavante&show_icons=true&theme=tokyonight&hide_border=true&border_radius=12&title_color=38bdf8&icon_color=38bdf8&text_color=e2e8f0" alt="GitHub Stats" height="165" />
   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Hexavante&layout=compact&theme=tokyonight&hide_border=true&border_radius=12&langs_count=8&title_color=38bdf8&text_color=e2e8f0" alt="Top Languages" height="165" />
@@ -157,7 +184,7 @@ flowchart LR
 - Single MySQL database with strict schema parity, cookie session + 2FA/device verification via Resend, Docker + Nginx on VPS.
 - Features: video courses, tutorials, objective + essay exams, XP/levels/coins/shop/season rankings, verifiable PDF certificates, live rooms, social feed, DMs, presence, full moderation.
 
-Repos: [Web](https://github.com/Hexavante/Hexavante-Web) · [Api](https://github.com/Hexavante/Hexavante-Api) · [Landing](https://github.com/Hexavante/Hexavante-landing) · [Admin](https://github.com/Hexavante/Hexavante-admin) · [Desktop](https://github.com/Hexavante/Hexavante-Desktop) · Mobile (private)
+Repos: [Web](https://github.com/Hexavante/Hexavante-Web) · [Api](https://github.com/Hexavante/Hexavante-Api) · [Landing](https://github.com/Hexavante/Hexavante-landing) · [Admin](https://github.com/Hexavante/Hexavante-admin) · [Desktop](https://github.com/Hexavante/Hexavante-Desktop) · [Mobile](https://github.com/Hexavante/Hexavante-Mobile)
 
 ---
 
