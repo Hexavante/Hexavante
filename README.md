@@ -1,5 +1,22 @@
 <p align="center">
+  <img src="hexavante-logo.png" width="140" alt="Hexavante" />
+</p>
+
+<p align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Space+Grotesk&size=28&pause=1000&color=0EA5E9&center=true&vCenter=true&width=600&lines=Plataforma+educacional;Web+%2B+API+%2B+Mobile+%2B+Desktop;Cursos+%E2%80%A2+Simulados+%E2%80%A2+Gamifica%C3%A7%C3%A3o" alt="Hexavante — Plataforma educacional" />
+</p>
+
+<p align="center">
   <img src="https://capsule-render.vercel.app/api?type=soft&height=170&radius=20&color=0ea5e9&text=Hexavante&fontSize=54&fontColor=ffffff&desc=Empresa%20de%20tecnologia%20educacional%20%E2%80%A2%20TI%20%E2%80%A2%20ENEM%20%E2%80%A2%20Vestibulares&descAlign=50&descSize=15" alt="Hexavante" />
+</p>
+
+<p align="center">
+  <a href="https://hexavante.com.br"><img src="https://img.shields.io/badge/Site-online-brightgreen?style=for-the-badge" alt="Site" /></a>
+  <a href="https://app.hexavante.com.br"><img src="https://img.shields.io/badge/App-online-8b5cf6?style=for-the-badge" alt="App" /></a>
+  <a href="https://api.hexavante.com.br/api/v1/platform/stats"><img src="https://img.shields.io/badge/API-online-22c55e?style=for-the-badge" alt="API" /></a>
+  <a href="https://painel.hexavante.com.br"><img src="https://img.shields.io/badge/Painel-online-0ea5e9?style=for-the-badge" alt="Painel" /></a>
+  <img src="https://img.shields.io/badge/licen%C3%A7a-MIT-yellow?style=for-the-badge" alt="licença MIT" />
+  <img src="https://img.shields.io/badge/Status-produ%C3%A7%C3%A3o-brightgreen?style=for-the-badge" alt="produção" />
 </p>
 
 <p align="center">
